@@ -6,73 +6,100 @@ interface Player {
   id: number;
   name: string;
   color: string;
-  image: ImageSourcePropType
-  avatar?: ImageSourcePropType
+  image: ImageSourcePropType;
+  avatar: ImageSourcePropType;
 }
 
+
+
 const players: Player[] = [
-  { id: 1, name: 'Marko', color: '#FFB6C1', image: require("../assets/images/croatia.png") },
-  { id: 2, name: 'Ivana', color: '#ADD8E6', image: require("../assets/images/germany.png")},
-  { id: 3, name: 'Petar', color: '#90EE90', image: require("../assets/images/spain.png") },
-  { id: 4, name: 'Ana', color: '#FFD700', image: require("../assets/images/germany.png")},
-  { id: 5, name: 'Luka', color: '#FFA07A', image: require("../assets/images/croatia.png")},
-  { id: 6, name: 'Sara', color: '#DDA0DD', image: require("../assets/images/spain.png")},
+  { id: 1, name: 'Marko', color: '#FFB6C1', image: require("../assets/images/croatia.png"), avatar: require("../assets/images/avatar.jpg")},
+  { id: 2, name: 'Ivana', color: '#ADD8E6', image: require("../assets/images/germany.png"), avatar: require("../assets/images/girl.jpg")},
+  { id: 3, name: 'Petar', color: '#90EE90', image: require("../assets/images/spain.png"), avatar: require("../assets/images/boy.png") },
+  { id: 4, name: 'Ana', color: '#FFD700', image: require("../assets/images/germany.png"), avatar: require("../assets/images/girl.jpg")},
+  { id: 5, name: 'Luka', color: '#FFA07A', image: require("../assets/images/croatia.png"), avatar: require("../assets/images/avatar.jpg")},
+  { id: 6, name: 'Sara', color: '#DDA0DD', image: require("../assets/images/spain.png"), avatar: require("../assets/images/girl.jpg")},
 ];
 
 
 export default function PlayerSelection() {
-  const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
-  const [timerDuration, setTimerDuration] = useState(90000); 
-
+  const [selectedPlayer1, setSelectedPlayer1] = useState<number | null>(null);
+  const [selectedPlayer2, setSelectedPlayer2] = useState<number | null>(null);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Players:</Text>
+    <><View style={styles.container}>
+      <Text style={styles.title}>Player 1:</Text>
       <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
         {players.map((player) => (
           <View key={player.id}>
             <Text style={[styles.playerCard]}>{player.name}</Text>
+            <TouchableOpacity
+              key={player.id}
+              style={[
+                styles.playerCard,
+                { backgroundColor: player.color },
+                selectedPlayer1 === player.id && styles.selectedPlayer,
+              ]}
+
+              onPress={() => setSelectedPlayer1(player.id)}
+            >
+              <Image source={player.image} style={styles.nationality}></Image>
+              <Image source={player.avatar}  style={styles.avatar}></Image>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+
+    <View>
+      <Text style={styles.title}>Player 2:</Text>
+      <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
+        {players.map((player2) => (
+          <View key={player2.id}>
+            <Text style={[styles.playerCard]}>{player2.name}</Text>
           <TouchableOpacity
-            key={player.id}
+            key={player2.id}
             style={[
               styles.playerCard,
-              {backgroundColor: player.color},
-              selectedPlayerId === player.id && styles.selectedPlayer,
+              {backgroundColor: player2.color},
+              selectedPlayer2 === player2.id && styles.selectedPlayer,
             ]}
             
-            onPress={() => setSelectedPlayerId(player.id)}
+            onPress={() => setSelectedPlayer2(player2.id)}
           >          
-            <Image source={player.image}  style={styles.nationality}></Image>
+            <Image source={player2.image}  style={styles.nationality}></Image>
+            <Image source={player2.avatar}  style={styles.avatar}></Image>
           </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
-      {selectedPlayerId && (
+      {selectedPlayer1 && (selectedPlayer1 !== selectedPlayer2) && (
         <View><Text style={styles.selectedText}>
-          Do you want to play against: {players.find(p => p.id === selectedPlayerId)?.name} ?
+          Do you want to play {players.find(p => p.id === selectedPlayer1)?.name} against {players.find(p => p.id === selectedPlayer2)?.name}?
         </Text>
         <Button>Yes</Button> 
-        <Button>No</Button></View>
+</View>
       )}
-      
-    </View>
+      </View></>
+    
   );
 }
 
 const styles = StyleSheet.create({
   nationality: {
-    padding: 30,
-    borderRadius: 10,
-    width: 50,
-    height: 50,
-    bottom: 0,
-    right: 0,
-
-  },
-  tinyLogo: {
-    width: 50,
-    height: 50,
-  },
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  position: 'absolute',   
+  bottom: 5,              
+  right: 5,               
+  overflow: 'hidden',     
+},
+avatar: {
+  width: 80,
+  height: 80,
+  borderRadius: 10,
+},
 
   container: {
     padding: 20,
@@ -87,12 +114,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   playerCard: {
-    padding: 20,
-    borderRadius: 10,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  padding: 30,
+  borderRadius: 10,
+  marginRight: 10,
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+},
   selectedPlayer: {
     borderWidth: 3,
     borderColor: '#333',
