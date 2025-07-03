@@ -85,8 +85,6 @@ export default function PlayerSelection() {
             <Button onPress={() => router.push({
               pathname: '/game',
               params: {
-                player1name: players.find(p1 => p1.id === selectedPlayer1)?.name,
-                player2name: players.find(p2 => p2.id === selectedPlayer2)?.name,
                 player1id: selectedPlayer1,
                 player2id: selectedPlayer2
               }

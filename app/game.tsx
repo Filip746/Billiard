@@ -11,26 +11,27 @@ export default function GameScreen() {
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
-  const { player1name, player2name, player1id, player2id} = useLocalSearchParams();
+  const {player1id, player2id} = useLocalSearchParams();
 
-  const player1 = players.find(p => p.id === Number(player1id))?.avatar;
-  const player2 = players.find(p => p.id === Number(player2id))?.avatar;
+  const player1avatar = players.find(p => p.id === Number(player1id))?.avatar;
+  const player2avatar = players.find(p => p.id === Number(player2id))?.avatar;
 
-
+  const player1name = players.find(p1 => p1.id === Number(player1id))?.name;
+  const player2name = players.find(p2 => p2.id === Number(player2id))?.name;
 
   return (
   <View style={styles.container}>
     <View style={styles.playersContainer}>
       <View style={styles.player}>
         <Text style={styles.title}>{player1name}</Text>
-        <Image source={player1} style={styles.avatar} />
+        <Image source={player1avatar} style={styles.avatar} />
       </View>
 
       <Text style={styles.vs}>vs</Text>
 
       <View style={styles.player}>
         <Text style={styles.title}>{player2name}</Text>
-        <Image source={player2} style={styles.avatar} />
+        <Image source={player2avatar} style={styles.avatar} />
       </View>
     </View>
 
