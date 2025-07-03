@@ -2,7 +2,6 @@ import { Button } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import useCountdown from '../components/timer';
 
 
 interface Player {
@@ -25,83 +24,69 @@ const players: Player[] = [
 ];
 
 
+
 export default function PlayerSelection() {
   const [selectedPlayer1, setSelectedPlayer1] = useState<number | null>(null);
   const [selectedPlayer2, setSelectedPlayer2] = useState<number | null>(null);
-  const initialEndTime = new Date().getTime() + 5 * 60 * 1000; 
-  const [timeLeft, setEndTime] = useCountdown(initialEndTime);
-
-  const minutes = Math.floor(timeLeft / 60000);
-  const seconds = Math.floor((timeLeft % 60000) / 1000);
   const router = useRouter();
 
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Player 1:</Text>
-          <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
-            {players.map((player1) => (
-              <View key={player1.id}>
-                <Text style={[styles.playerCard]}>{player1.name}</Text>
-                <TouchableOpacity
-                  key={player1.id}
-                  style={[
-                    styles.playerCard,
-                    { backgroundColor: player1.color },
-                    selectedPlayer1 === player1.id && styles.selectedPlayer,
-                  ]}
-
-                  onPress={() => setSelectedPlayer1(player1.id)}
-                >
-                  <Image source={player1.image} style={styles.nationality}></Image>
-                  <Image source={player1.avatar} style={styles.avatar}></Image>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
+        <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
+          {players.map((player1) => (
+            <View key={player1.id}>
+              <Text style={[styles.playerCard]}>{player1.name}</Text>
+              <TouchableOpacity
+                key={player1.id}
+                style={[
+                  styles.playerCard,
+                  { backgroundColor: player1.color },
+                  selectedPlayer1 === player1.id && styles.selectedPlayer,
+                ]}
+                onPress={() => setSelectedPlayer1(player1.id)}
+              >
+                <Image source={player1.image} style={styles.nationality} />
+                <Image source={player1.avatar} style={styles.avatar} />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
       </View>
 
       <View>
         <Text style={styles.title}>Player 2:</Text>
-          <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
-            {players.map((player2) => (
-              <View key={player2.id}>
-                <Text style={[styles.playerCard]}>{player2.name}</Text>
+        <ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
+          {players.map((player2) => (
+            <View key={player2.id}>
+              <Text style={[styles.playerCard]}>{player2.name}</Text>
               <TouchableOpacity
                 key={player2.id}
                 style={[
                   styles.playerCard,
-                  {backgroundColor: player2.color},
+                  { backgroundColor: player2.color },
                   selectedPlayer2 === player2.id && styles.selectedPlayer,
                 ]}
-                
                 onPress={() => setSelectedPlayer2(player2.id)}
-              >          
-                <Image source={player2.image} style={styles.nationality}></Image>
-                <Image source={player2.avatar} style={styles.avatar}></Image>
+              >
+                <Image source={player2.image} style={styles.nationality} />
+                <Image source={player2.avatar} style={styles.avatar} />
               </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
-          {selectedPlayer1 && (selectedPlayer1 !== selectedPlayer2) && (
-            <View>
-              <Text style={styles.selectedText}>
-                Do you want to play {players.find(p1 => p1.id === selectedPlayer1)?.name} against {players.find(p2 => p2.id === selectedPlayer2)?.name}?
-              </Text>
-              <Button onPress={() => {
-                setEndTime(new Date().getTime() + 5 * 60 * 1000);
-                router.push('/game'); 
-              }}>
-                yes
-              </Button>
-              <Text style={styles.timer}>
-                {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-              </Text>
             </View>
-          )}
+          ))}
+        </ScrollView>
+
+        {selectedPlayer1 && selectedPlayer1 !== selectedPlayer2 && (
+          <View>
+            <Text style={styles.selectedText}>
+              Do you want to play {players.find(p1 => p1.id === selectedPlayer1)?.name} against {players.find(p2 => p2.id === selectedPlayer2)?.name}?
+            </Text>
+            <Button onPress={() => router.push('/game')}>yes</Button>
+          </View>
+        )}
       </View>
     </>
-    
   );
 }
 
@@ -114,13 +99,6 @@ const styles = StyleSheet.create({
   bottom: 5,              
   right: 5,               
   overflow: 'hidden',     
-},
-
-timer: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  textAlign: 'center',
-  marginVertical: 10,
 },
 
 avatar: {
