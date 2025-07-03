@@ -11,8 +11,7 @@ export default function GameScreen() {
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
-  let imageSource = require('../assets/images/boy.png');
-  const { player1name, player2name, imagePath, player1id, player2id} = useLocalSearchParams();
+  const { player1name, player2name, player1id, player2id} = useLocalSearchParams();
 
   const player1 = players.find(p => p.id === Number(player1id))?.avatar;
   const player2 = players.find(p => p.id === Number(player2id))?.avatar;
