@@ -82,7 +82,14 @@ export default function PlayerSelection() {
             <Text style={styles.selectedText}>
               Do you want to play {players.find(p1 => p1.id === selectedPlayer1)?.name} against {players.find(p2 => p2.id === selectedPlayer2)?.name}?
             </Text>
-            <Button onPress={() => router.push('/game')}>yes</Button>
+            <Button onPress={() => router.push({
+              pathname: '/game',
+              params: {
+                player1name: players.find(p1 => p1.id === selectedPlayer1)?.name,
+                player2name: players.find(p2 => p2.id === selectedPlayer2)?.name,
+              }
+              })}>yes
+            </Button>
           </View>
         )}
       </View>
