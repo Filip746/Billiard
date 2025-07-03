@@ -1,4 +1,5 @@
 import { Button } from '@react-navigation/elements';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import useCountdown from '../components/timer';
@@ -32,6 +33,7 @@ export default function PlayerSelection() {
 
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
+  const router = useRouter();
 
   return (
     <>
@@ -86,7 +88,10 @@ export default function PlayerSelection() {
               <Text style={styles.selectedText}>
                 Do you want to play {players.find(p1 => p1.id === selectedPlayer1)?.name} against {players.find(p2 => p2.id === selectedPlayer2)?.name}?
               </Text>
-              <Button onPress={() => setEndTime(new Date().getTime() + 5 * 60 * 1000)}>
+              <Button onPress={() => {
+                setEndTime(new Date().getTime() + 5 * 60 * 1000);
+                router.push('/game'); 
+              }}>
                 yes
               </Button>
               <Text style={styles.timer}>
