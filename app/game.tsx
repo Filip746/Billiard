@@ -1,48 +1,72 @@
+import { players } from '@/const/players';
+import { useCountdown } from '@/hooks/useCountdown';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { players } from '../components/PlayerSelection';
-import useCountdown from '../components/timer';
+import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
 
-export default function GameScreen() {
-  const initialEndTime = new Date().getTime() + 5 * 60 * 1000;
+
+
+export default function game() {
+    const {player1Id, player2Id, timeLimitMinutes} = useLocalSearchParams<{player1Id: string, player2Id:string, timeLimitMinutes:string}>();
+  const initialEndTime = new Date().getTime() + Number(timeLimitMinutes) * 60 * 1000;
   const [timeLeft] = useCountdown(initialEndTime);
 
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
-  const {player1id, player2id} = useLocalSearchParams();
-
-  const player1avatar = players.find(p => p.id === Number(player1id))?.avatar;
-  const player2avatar = players.find(p => p.id === Number(player2id))?.avatar;
-
-  const player1name = players.find(p1 => p1.id === Number(player1id))?.name;
-  const player2name = players.find(p2 => p2.id === Number(player2id))?.name;
+  const player1 = players.find(p => p.id === Number(player1Id));
+  const player2 = players.find(p => p.id === Number(player2Id));
 
   return (
-  <View style={styles.container}>
-    <View style={styles.playersContainer}>
-      <View style={styles.player}>
-        <Text style={styles.title}>{player1name}</Text>
-        <Image source={player1avatar} style={styles.avatar} />
-      </View>
+    <View style={styles.container}>
+        <View style={styles.playersContainer}>
+            <View style={styles.player}>
+                <Text style={styles.title}>{player1?.name}</Text>
+                <Image source={player1?.avatar} style={styles.avatar} />
+            </View>
 
-      <Text style={styles.vs}>vs</Text>
+            <Text style={styles.vs}>vs</Text>
 
-      <View style={styles.player}>
-        <Text style={styles.title}>{player2name}</Text>
-        <Image source={player2avatar} style={styles.avatar} />
-      </View>
+            <View style={styles.player}>
+                <Text style={styles.title}>{player2?.name}</Text>
+                <Image source={player2?.avatar} style={styles.avatar} />
+            </View>
+        </View>
+
+        <View style={styles.playersContainer}>
+            <View style={styles.score}>
+                <Text style={{color:"blue"}}>1</Text>
+            </View>
+
+            <Text style={styles.vs}>:</Text>
+
+            <View style={styles.score}>
+                <Text style={{color:"blue"}}>2</Text>
+            </View>
+        </View>
+        <Text style={styles.timer}>
+            {`${minutes}:${(seconds) < 10 ? '0' : ''}${seconds}`}
+        </Text>
+
+        <View>
+            <Button
+          title="Finish match"
+          onPress={() => Alert.alert('Simple Button pressed')}
+        />
+        </View>
     </View>
 
-    <Text style={styles.timer}>
-      {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-    </Text>
-  </View>
 );
 }
 
 const styles = StyleSheet.create({
+   score: {
+     position: "fixed",
+     bottom: 0,
+     right: 0,
+     backgroundColor:"white",width:50,height:50,borderRadius:25,borderWidth:1,borderColor:"red",alignItems:"center",justifyContent:"center",
+     flexDirection: 'row',
+},
   container: { 
     flex: 1, 
     justifyContent: 'center', 

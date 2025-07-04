@@ -7,14 +7,14 @@ const calcTimeLeft = (endTime: number): number => {
   return left < 0 ? 0 : left;
 };
 
-export default function useCountdown(initialEndTime: number): [number, (newEndTime: number) => void] {
+export function useCountdown(initialEndTime: number): [number, (newEndTime: number) => void] {
   const [endTime, setEndTime] = useState<number>(initialEndTime);
   const [timeLeft, setTimeLeft] = useState<number>(() => calcTimeLeft(initialEndTime));
 
   useEffect(() => {
     setTimeLeft(calcTimeLeft(endTime));
 
-    const timer = setInterval(() => {
+    const timer = setInterval(() => { //timeout koristit
       const remaining = calcTimeLeft(endTime);
       setTimeLeft(remaining);
 
@@ -28,3 +28,4 @@ export default function useCountdown(initialEndTime: number): [number, (newEndTi
 
   return [timeLeft, setEndTime];
 }
+
