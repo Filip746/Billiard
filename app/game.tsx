@@ -2,7 +2,14 @@ import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function Game() {
   const { player1Id, player2Id, timeLimitMinutes, scoreLimit } = useLocalSearchParams<{
@@ -11,6 +18,8 @@ export default function Game() {
     timeLimitMinutes: string,
     scoreLimit: string
   }>();
+
+  const billiard = require('../assets/images/billiard.jpg');
 
   const initialEndTime = new Date().getTime() + Number(timeLimitMinutes) * 60 * 1000;
   const [timeLeft] = useCountdown(initialEndTime);
@@ -54,135 +63,115 @@ export default function Game() {
   };
 
   return (
-    <View style={gamestyles.container}>
-      <Text style={gamestyles.header}>Game On!</Text>
-
-      <View style={gamestyles.playersContainer}>
+    <ImageBackground source={billiard} style={gamestyles.background}>
+      <View style={gamestyles.topRow}>
         <View style={gamestyles.player}>
-          <Text style={gamestyles.playerName}>{player1?.name}</Text>
           <Image source={player1?.avatar} style={gamestyles.avatar} />
+          <Text style={gamestyles.playerName}>{player1?.name}</Text>
         </View>
-
-        <Text style={gamestyles.vs}>vs</Text>
-
         <View style={gamestyles.player}>
-          <Text style={gamestyles.playerName}>{player2?.name}</Text>
           <Image source={player2?.avatar} style={gamestyles.avatar} />
+          <Text style={gamestyles.playerName}>{player2?.name}</Text>
         </View>
       </View>
 
-      <View style={gamestyles.scoreContainer}>
-        <TouchableOpacity style={gamestyles.scoreBox} onPress={increaseScore1}>
-          <Text style={gamestyles.scoreText}>{scorePlayer1}</Text>
-        </TouchableOpacity>
+      <View style={gamestyles.centerContainer}>
+        <View style={gamestyles.scoreContainer}>
+          <TouchableOpacity style={gamestyles.scoreBox} onPress={increaseScore1}>
+            <Text style={gamestyles.scoreText}>{scorePlayer1}</Text>
+          </TouchableOpacity>
 
-        <Text style={gamestyles.vs}>:</Text>
+          <Text style={gamestyles.vs}>:</Text>
 
-        <TouchableOpacity style={gamestyles.scoreBox} onPress={increaseScore2}>
-          <Text style={gamestyles.scoreText}>{scorePlayer2}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={gamestyles.scoreBox} onPress={increaseScore2}>
+            <Text style={gamestyles.scoreText}>{scorePlayer2}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={gamestyles.timer}>
+          {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+        </Text>
+
+        {(scorePlayer1 === Number(scoreLimit) || scorePlayer2 === Number(scoreLimit)) && scorePlayer1 !== scorePlayer2 && (
+          <TouchableOpacity style={gamestyles.finishButton} onPress={handleFinishMatch}>
+            <Text style={gamestyles.finishButtonText}>Finish Match</Text>
+          </TouchableOpacity>
+        )}
       </View>
-
-      <Text style={gamestyles.timer}>
-        {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-      </Text>
-
-      {(scorePlayer1 === Number(scoreLimit) || scorePlayer2 === Number(scoreLimit)) && scorePlayer1 !== scorePlayer2 && (
-        <TouchableOpacity style={gamestyles.finishButton} onPress={handleFinishMatch}>
-          <Text style={gamestyles.finishButtonText}>Finish Match</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    </ImageBackground>
   );
 }
 
 const gamestyles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    resizeMode: 'cover',
     padding: 20,
-    backgroundColor: '#f9f9f9',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#222',
-    marginBottom: 40,
-  },
-  playersContainer: {
+  topRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
+    justifyContent: 'space-between',
+    paddingTop: 40,
   },
   player: {
     alignItems: 'center',
-    marginHorizontal: 20,
   },
   playerName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
-    marginBottom: 10,
-    color: '#007AFF',
+    color: '#fff',
+    marginTop: 5,
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#ccc',
+    borderColor: '#fff',
   },
-  vs: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginHorizontal: 10,
-    color: '#444',
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scoreContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   scoreBox: {
     width: 80,
-    height: 120,
+    height: 100,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: '#007AFF',
-    backgroundColor: '#E6F0FF',
+    borderColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 4,
+    marginHorizontal: 20,
   },
   scoreText: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#007AFF',
+    color: '#fff',
+  },
+  vs: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#fff',
   },
   timer: {
-    fontSize: 48,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
     marginBottom: 20,
   },
   finishButton: {
-    marginTop: 20,
     backgroundColor: '#28a745',
     paddingVertical: 14,
     paddingHorizontal: 40,
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    marginTop: 20,
   },
   finishButtonText: {
     color: '#fff',
