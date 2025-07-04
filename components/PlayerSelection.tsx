@@ -1,72 +1,77 @@
-import styles from '@/app/styles/styles';
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { Picker } from '@react-native-picker/picker';
-import { Button } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
 export function PlayerSelection() {
   const [selectedPlayer1, setSelectedPlayer1] = useState<number | null>(null);
   const [selectedPlayer2, setSelectedPlayer2] = useState<number | null>(null);
-  const router = useRouter();
-
-  const initialEndTime = new Date().getTime();
-  const [_, setEndTime] = useCountdown(initialEndTime);
   const [selectedMinutes, setSelectedMinutes] = useState<number | null>(null);
   const [scoreLimit, setScoreLimit] = useState<number | null>(null);
 
+  const router = useRouter();
+  const initialEndTime = new Date().getTime();
+  const [_, setEndTime] = useCountdown(initialEndTime);
+
   return (
-    <ScrollView showsVerticalScrollIndicator>
-      <View style={styles.container}>
-        <Text style={styles.title}>Player 1:</Text>
-        {<ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      <Text style={styles.header}>Select Your Players</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Player 1</Text>
+        <ScrollView horizontal contentContainerStyle={styles.scrollContainer} showsHorizontalScrollIndicator={false}>
           {players.map((player1) => (
-            <View key={player1.id}>
-              <Text style={[styles.playerCard]}>{player1.name}</Text>
-              <TouchableOpacity
-                key={player1.id}
-                style={[
-                  styles.playerCard,
-                  { backgroundColor: player1.color },
-                  selectedPlayer1 === player1.id && styles.selectedPlayer,
-                ]}
-                onPress={() => setSelectedPlayer1(player1.id)}
-              >
-                <Image source={player1.image} style={styles.nationality} />
-                <Image source={player1.avatar} style={styles.avatar} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={player1.id}
+              style={[
+                styles.playerCard,
+                { backgroundColor: player1.color },
+                selectedPlayer1 === player1.id && styles.selectedPlayer,
+              ]}
+              onPress={() => setSelectedPlayer1(player1.id)}
+            >
+              <Image source={player1.avatar} style={styles.avatar} />
+              <Text style={styles.playerName}>{player1.name}</Text>
+              <Image source={player1.image} style={styles.nationality} />
+            </TouchableOpacity>
           ))}
-        </ScrollView>}
+        </ScrollView>
       </View>
 
-      <View style={styles.container}>
-        <Text style={styles.title}>Player 2:</Text>
-        {<ScrollView horizontal contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.section}>
+        <Text style={styles.title}>Player 2</Text>
+        <ScrollView horizontal contentContainerStyle={styles.scrollContainer} showsHorizontalScrollIndicator={false}>
           {players.map((player2) => (
-            <View key={player2.id}>
-              <Text style={[styles.playerCard]}>{player2.name}</Text>
-              <TouchableOpacity
-                key={player2.id}
-                style={[
-                  styles.playerCard,
-                  { backgroundColor: player2.color },
-                  selectedPlayer2 === player2.id && styles.selectedPlayer,
-                ]}
-                onPress={() => setSelectedPlayer2(player2.id)}
-              >
-                <Image source={player2.image} style={styles.nationality} />
-                <Image source={player2.avatar} style={styles.avatar} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={player2.id}
+              style={[
+                styles.playerCard,
+                { backgroundColor: player2.color },
+                selectedPlayer2 === player2.id && styles.selectedPlayer,
+              ]}
+              onPress={() => setSelectedPlayer2(player2.id)}
+            >
+              <Image source={player2.avatar} style={styles.avatar} />
+              <Text style={styles.playerName}>{player2.name}</Text>
+              <Image source={player2.image} style={styles.nationality} />
+            </TouchableOpacity>
           ))}
-        </ScrollView>}
+        </ScrollView>
       </View>
 
-      <View>
-        { <Picker
+      <View style={styles.pickerContainer}>
+        <Text style={styles.title}>Time Limit</Text>
+        <Picker
           selectedValue={selectedMinutes}
           onValueChange={(value) => {
             setSelectedMinutes(value);
@@ -75,22 +80,22 @@ export function PlayerSelection() {
               setEndTime(newEndTime);
             }
           }}
-          style={{ height: 50, width: 150 }}
+          style={styles.picker}
         >
           <Picker.Item label="Select time limit" value={null} />
           <Picker.Item label="5 minutes" value={5} />
           <Picker.Item label="10 minutes" value={10} />
           <Picker.Item label="15 minutes" value={15} />
           <Picker.Item label="20 minutes" value={20} />
-        </Picker>} 
-
+        </Picker>
       </View>
 
-      <View>
+      <View style={styles.pickerContainer}>
+        <Text style={styles.title}>Score Limit</Text>
         <Picker
           selectedValue={scoreLimit}
           onValueChange={(value) => setScoreLimit(value)}
-          style={{ height: 50, width: 150 }}
+          style={styles.picker}
         >
           <Picker.Item label="Select score limit" value={null} />
           <Picker.Item label="3 points" value={3} />
@@ -101,22 +106,122 @@ export function PlayerSelection() {
       </View>
 
       {selectedPlayer1 && selectedPlayer2 && selectedPlayer1 !== selectedPlayer2 && selectedMinutes && scoreLimit && (
-        <View>
-          <Text style={styles.selectedText}>
-            Do you want to play {players.find(p1 => p1.id === selectedPlayer1)?.name} against {players.find(p2 => p2.id === selectedPlayer2)?.name}?
+        <View style={styles.confirmContainer}>
+          <Text style={styles.confirmText}>
+            Play {players.find(p => p.id === selectedPlayer1)?.name} vs {players.find(p => p.id === selectedPlayer2)?.name}?
           </Text>
-          <Button onPress={() => router.push({
-            pathname: '/game',
-            params: {
-              player1Id: selectedPlayer1,
-              player2Id: selectedPlayer2,
-              timeLimitMinutes: selectedMinutes,
-              scoreLimit: scoreLimit,
+          <Button
+            title="Start Match"
+            onPress={() =>
+              router.push({
+                pathname: '/game',
+                params: {
+                  player1Id: selectedPlayer1,
+                  player2Id: selectedPlayer2,
+                  timeLimitMinutes: selectedMinutes,
+                  scoreLimit: scoreLimit,
+                },
+              })
             }
-          })}>yes</Button>
+          />
         </View>
       )}
-
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    paddingBottom: 40,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: '#222',
+  },
+  section: {
+    marginBottom: 30,
+    width: '100%',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#007AFF',
+  },
+  scrollContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    paddingHorizontal: 10,
+  },
+  playerCard: {
+    width: 120,
+    height: 160,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  selectedPlayer: {
+    borderWidth: 3,
+    borderColor: '#007AFF',
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginBottom: 10,
+  },
+  playerName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  nationality: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  picker: {
+    width: 180,
+    height: 50,
+    backgroundColor: '#E6F0FF',
+    borderRadius: 12,
+    borderColor: '#007AFF',
+    borderWidth: 1,
+  },
+  confirmContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  confirmText: {
+    fontSize: 16,
+    marginBottom: 10,
+    fontStyle: 'italic',
+    color: '#333',
+    textAlign: 'center',
+  },
+});
