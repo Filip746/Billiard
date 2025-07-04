@@ -1,8 +1,8 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles/styles';
 
 export default function game() {
@@ -66,16 +66,62 @@ export default function game() {
           </TouchableOpacity>
         </View>
 
+        {/* <View style={styles.playersContainer}>
+          <Text style={gamestyles.header}>Team 1</Text>
+          <ScrollView
+            pagingEnabled
+            decelerationRate="fast"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={gamestyles.container}
+          >
+            <View style={gamestyles.section}>
+              
+              <TouchableOpacity onPress={increaseScore1} style={gamestyles.scoreBox}>
+                <Text style={gamestyles.score}>{scorePlayer1}</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+
+          <Text style={gamestyles.header}>Team 2</Text>
+          <ScrollView
+            pagingEnabled
+            decelerationRate="fast"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={gamestyles.container}
+          >
+
+            <View style={gamestyles.section}>
+              
+              <TouchableOpacity onPress={increaseScore2} style={gamestyles.scoreBox}>
+                <Text style={gamestyles.score}>{scorePlayer2}</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View> */}
+
         <Text style={styles.timer}>
             {`${minutes}:${(seconds) < 10 ? '0' : ''}${seconds}`}
         </Text>
 
-        <View>
-            <Button
-          title="Finish match"
-          onPress={() => Alert.alert('Simple Button pressed')}
-        />
-        </View>
+        {((scorePlayer1===Number(scoreLimit)) || (scorePlayer2===Number(scoreLimit))) && (
+                <View>
+                  
+                  <Button title= "zavrsi mec" onPress={() => router.push({
+                    pathname: '/finish',
+                    params: {
+                      scorePlayer1: scorePlayer1,
+                      scorePlayer2: scorePlayer2,
+                      player1Id: player1Id,
+                      player2Id: player2Id,
+                      timeLimitMinutes: timeLimitMinutes,
+                    }
+                  })}/>
+                </View>
+          )}
+
+        
+
+        
     </View>
 
 );
