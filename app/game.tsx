@@ -1,21 +1,42 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { useLocalSearchParams } from 'expo-router';
-import React from 'react';
-import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
-
-
+import React, { useState } from 'react';
+import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { styles } from './styles/styles';
 
 export default function game() {
-    const {player1Id, player2Id, timeLimitMinutes} = useLocalSearchParams<{player1Id: string, player2Id:string, timeLimitMinutes:string}>();
+  const { player1Id, player2Id, timeLimitMinutes, scoreLimit } = useLocalSearchParams<{
+    player1Id: string,
+    player2Id: string,
+    timeLimitMinutes: string,
+    scoreLimit: string
+  }>();
   const initialEndTime = new Date().getTime() + Number(timeLimitMinutes) * 60 * 1000;
   const [timeLeft] = useCountdown(initialEndTime);
+  
 
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
+  const [scorePlayer1, setScorePlayer1] = useState(0);
+  const [scorePlayer2, setScorePlayer2] = useState(0);
+
+   
   const player1 = players.find(p => p.id === Number(player1Id));
   const player2 = players.find(p => p.id === Number(player2Id));
+
+  const increaseScore1 = () => {
+    if (scorePlayer1 < Number(scoreLimit)) {
+      setScorePlayer1(scorePlayer1 + 1);
+    }
+  };
+
+  const increaseScore2 = () => {
+    if (scorePlayer2 < Number(scoreLimit)) {
+      setScorePlayer2(scorePlayer2 + 1);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -34,16 +55,17 @@ export default function game() {
         </View>
 
         <View style={styles.playersContainer}>
-            <View style={styles.score}>
-                <Text style={{color:"blue"}}>1</Text>
-            </View>
+          <TouchableOpacity style={styles.score} onPress={increaseScore1}>
+            <Text style={{ color: "blue" }}>{scorePlayer1}</Text>
+          </TouchableOpacity>
 
-            <Text style={styles.vs}>:</Text>
+          <Text style={styles.vs}>:</Text>
 
-            <View style={styles.score}>
-                <Text style={{color:"blue"}}>2</Text>
-            </View>
+          <TouchableOpacity style={styles.score} onPress={increaseScore2}>
+            <Text style={{ color: "blue" }}>{scorePlayer2}</Text>
+          </TouchableOpacity>
         </View>
+
         <Text style={styles.timer}>
             {`${minutes}:${(seconds) < 10 ? '0' : ''}${seconds}`}
         </Text>
@@ -59,50 +81,20 @@ export default function game() {
 );
 }
 
-const styles = StyleSheet.create({
-   score: {
-     position: "fixed",
-     bottom: 0,
-     right: 0,
-     backgroundColor:"white",width:50,height:50,borderRadius:25,borderWidth:1,borderColor:"red",alignItems:"center",justifyContent:"center",
-     flexDirection: 'row',
-},
-  container: { 
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-  },
+const gamestyles = StyleSheet.create({
   playersContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
   },
-  player: {
-    alignItems: 'center',
-    marginHorizontal: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  score: {
+    padding: 20,
+    backgroundColor: '#eee',
+    borderRadius: 10,
   },
   vs: {
-    fontSize: 22,
-    fontWeight: 'bold',
     marginHorizontal: 10,
-  },
-  timer: { 
-    fontSize: 48, 
+    fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
