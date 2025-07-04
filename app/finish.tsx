@@ -17,25 +17,37 @@ export default function finish() {
     const player2 = players.find(p => p.id === Number(player2Id));
     return (
         <>
-        <View style={gamestyles.playersContainer}>
-            <View>
-                <Text style={{ color: "blue" }}>{player1?.name}</Text>
-                <Image source={player1?.avatar} style={styles.avatar}/>
-                <Text style={{ color: "blue" }}>{scorePlayer1}</Text>
-            </View>
-                <Text style={gamestyles.vs}>:</Text>
-            <View>
-                <Text style={{ color: "blue" }}>{player2?.name}</Text>
-                <Image source={player2?.avatar} style={styles.avatar}/>
-                <Text style={{ color: "blue" }}>{scorePlayer2}</Text>
-            </View>
-            
-        </View>
-        {elapsedTime !== null && (
-          <Text style={{ fontSize: 16, marginTop: 20 }}>
-            Time used: {Math.floor(Number(elapsedTime) / 60000)}:{(Math.floor((Number(elapsedTime) % 60000) / 1000)+1).toString().padStart(2, '0')}
-          </Text>
-        )}
+          <View style={gamestyles.playersContainer}>
+              <View>
+                  <Text style={{ color: "blue" }}>{player1?.name}</Text>
+                  <Image source={player1?.avatar} style={styles.avatar}/>
+                  <Text style={{ color: "blue" }}>{scorePlayer1}</Text>
+              </View>
+                  <Text style={gamestyles.vs}>:</Text>
+              <View>
+                  <Text style={{ color: "blue" }}>{player2?.name}</Text>
+                  <Image source={player2?.avatar} style={styles.avatar}/>
+                  <Text style={{ color: "blue" }}>{scorePlayer2}</Text>
+              </View>
+              
+          </View>
+          
+          {elapsedTime !== null && (
+            <Text style={{ fontSize: 16, marginTop: 20 }}>
+              Time used: {Math.floor(Number(elapsedTime) / 60000)}:{(Math.floor((Number(elapsedTime) % 60000) / 1000)+1).toString().padStart(2, '0')}
+            </Text>
+          )}
+          <View>
+              <Text style={{ color: "blue" }}>The winner is:</Text>
+              {(scorePlayer1 > scorePlayer2) ? (
+              <><Text style={{ fontSize: 16, marginTop: 20}}>
+              {player1?.name}
+            </Text><Image source={player1?.avatar} style={[styles.avatar, {borderWidth: 3}, {borderColor: '#333'}]} /></>
+            ) : (<><Text style={{ fontSize: 16, marginTop: 20}}>
+              {player2?.name}
+            </Text><Image source={player2?.avatar} style={styles.avatar} /></>)
+              }
+          </View>
         </>
     )
 }

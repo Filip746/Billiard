@@ -120,7 +120,7 @@ export default function game() {
             {`${minutes}:${(seconds) < 10 ? '0' : ''}${seconds}`}
         </Text>
 
-        {((scorePlayer1 === Number(scoreLimit)) || (scorePlayer2 === Number(scoreLimit))) && (
+        {((scorePlayer1 === Number(scoreLimit)) || (scorePlayer2 === Number(scoreLimit))) && (scorePlayer1 !== scorePlayer2) && (
           <View>
             <Button
               title="Finish match"
