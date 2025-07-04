@@ -22,6 +22,7 @@ export default function game() {
   const [scorePlayer1, setScorePlayer1] = useState(0);
   const [scorePlayer2, setScorePlayer2] = useState(0);
 
+  const [elapsedTime, setElapsedTime] = useState<number | null>(null);
    
   const player1 = players.find(p => p.id === Number(player1Id));
   const player2 = players.find(p => p.id === Number(player2Id));
@@ -36,6 +37,22 @@ export default function game() {
     if (scorePlayer2 < Number(scoreLimit)) {
       setScorePlayer2(scorePlayer2 + 1);
     }
+  };
+
+  const handleFinishMatch = () => {
+    const totalTimeMs = Number(timeLimitMinutes) * 60 * 1000;
+    const timeUsed = totalTimeMs - timeLeft;
+    setElapsedTime(timeUsed);
+    router.push({
+    pathname: '/finish',
+    params: {
+      scorePlayer1: scorePlayer1,
+      scorePlayer2: scorePlayer2,
+      player1Id: player1Id,
+      player2Id: player2Id,
+      elapsedTime: timeUsed,
+    }
+  });
   };
 
   return (
@@ -103,22 +120,14 @@ export default function game() {
             {`${minutes}:${(seconds) < 10 ? '0' : ''}${seconds}`}
         </Text>
 
-        {((scorePlayer1===Number(scoreLimit)) || (scorePlayer2===Number(scoreLimit))) && (
-                <View>
-                  
-                  <Button title= "zavrsi mec" onPress={() => router.push({
-                    pathname: '/finish',
-                    params: {
-                      scorePlayer1: scorePlayer1,
-                      scorePlayer2: scorePlayer2,
-                      player1Id: player1Id,
-                      player2Id: player2Id,
-                      timeLimitMinutes: timeLimitMinutes,
-                    }
-                  })}/>
-                </View>
-          )}
-
+        {((scorePlayer1 === Number(scoreLimit)) || (scorePlayer2 === Number(scoreLimit))) && (
+          <View>
+            <Button
+              title="Finish match"
+              onPress={handleFinishMatch}
+            />
+          </View>
+        )}
         
 
         
