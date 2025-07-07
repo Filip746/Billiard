@@ -1,6 +1,7 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { router, useLocalSearchParams } from 'expo-router';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import React, { useState } from 'react';
 import {
   Image,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { db } from '../lib/firebase';
 
 export default function Game() {
   const { player1Id, player2Id, timeLimitMinutes, scoreLimit } = useLocalSearchParams<{
@@ -29,7 +31,7 @@ export default function Game() {
 
   const [scorePlayer1, setScorePlayer1] = useState(0);
   const [scorePlayer2, setScorePlayer2] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState<number | null>(null);
+  const [_, setElapsedTime] = useState<number | null>(null);
 
   const player1 = players.find(p => p.id === Number(player1Id));
   const player2 = players.find(p => p.id === Number(player2Id));
@@ -46,21 +48,38 @@ export default function Game() {
     }
   };
 
-  const handleFinishMatch = () => {
-    const totalTimeMs = Number(timeLimitMinutes) * 60 * 1000;
-    const timeUsed = totalTimeMs - timeLeft;
-    setElapsedTime(timeUsed);
-    router.push({
-      pathname: '/finish',
-      params: {
-        scorePlayer1: scorePlayer1,
-        scorePlayer2: scorePlayer2,
-        player1Id: player1Id,
-        player2Id: player2Id,
-        elapsedTime: timeUsed,
-      }
+  const handleFinishMatch = async () => {
+  const totalTimeMs = Number(timeLimitMinutes) * 60 * 1000;
+  const timeUsed = totalTimeMs - timeLeft;
+  setElapsedTime(timeUsed);
+
+  try {
+    await addDoc(collection(db, 'matches'), {
+      player1Id: player1Id,
+      player2Id: player2Id,
+      player1Name: player1?.name,
+      player2Name: player2?.name,
+      scorePlayer1: scorePlayer1,
+      scorePlayer2: scorePlayer2,
+      timeUsedMs: timeUsed,
+      createdAt: Timestamp.now(),
     });
-  };
+    console.log('Uspješno spremljena utakmica u Firestore.');
+  } catch (error) {
+    console.error('Greška pri spremanju u Firestore:', error);
+  }
+
+  router.push({
+    pathname: '/finish',
+    params: {
+      scorePlayer1: scorePlayer1,
+      scorePlayer2: scorePlayer2,
+      player1Id: player1Id,
+      player2Id: player2Id,
+      elapsedTime: timeUsed,
+    }
+  });
+};
 
   return (
     <ImageBackground source={billiard} style={gamestyles.background}>
