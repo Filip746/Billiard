@@ -1,6 +1,7 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { db } from '@/lib/firebase';
+import { saveMatchForUser } from '@/lib/saveMatchForUser';
 import { router, useLocalSearchParams } from 'expo-router';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
@@ -54,6 +55,26 @@ export function useGameLogic() {
         timeUsedMs: timeUsed,
         createdAt: Timestamp.now(),
       });
+
+      const today = new Date();
+      const dateString = `${today.getDate()}. ${today.getMonth()}. ${today.getFullYear()}.`;
+
+      await saveMatchForUser(
+        player1Id,
+        player1?.name || '',
+        player2Id,
+        `${scorePlayer1} : ${scorePlayer2}`,
+        dateString
+      );
+
+      await saveMatchForUser(
+        player2Id,
+        player2?.name || '',
+        player1Id,
+        `${scorePlayer2} : ${scorePlayer1}`,
+        dateString
+      );
+
       console.log('Match saved');
     } catch (error) {
       console.error('Error saving match:', error);
