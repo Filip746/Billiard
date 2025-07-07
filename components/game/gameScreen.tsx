@@ -1,16 +1,16 @@
 import { billiard } from '@/const/images';
 import React from 'react';
 import {
-    Image,
-    ImageBackground,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { gameStyles } from './gameStyles';
 import { useGameLogic } from './useGameLogic';
 
-export function GameScreen() {
+export function gameScreen() {
   const {
     player1,
     player2,

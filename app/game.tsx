@@ -1,3 +1,3 @@
-import { GameScreen } from "../components/game/gameScreen";
+import { gameScreen } from "../components/game/gameScreen";
 
-export default GameScreen;
+export default gameScreen;
