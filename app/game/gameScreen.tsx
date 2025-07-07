@@ -10,7 +10,7 @@ import {
 import { gameStyles } from './gameStyles';
 import { useGameLogic } from './useGameLogic';
 
-export default function GameScreen() {
+export function GameScreen() {
   const {
     player1,
     player2,

@@ -1,4 +1,3 @@
-// /app/game/gameStyles.ts
 import { StyleSheet } from 'react-native';
 
 export const gameStyles = StyleSheet.create({

@@ -54,9 +54,9 @@ export function useGameLogic() {
         timeUsedMs: timeUsed,
         createdAt: Timestamp.now(),
       });
-      console.log('✅ Match saved');
+      console.log('Match saved');
     } catch (error) {
-      console.error('❌ Error saving match:', error);
+      console.error('Error saving match:', error);
     }
 
     router.push({

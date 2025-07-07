@@ -1,0 +1,97 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    paddingBottom: 40,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: '#222',
+  },
+  section: {
+    marginBottom: 30,
+    width: '100%',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#007AFF',
+  },
+  scrollContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    paddingHorizontal: 10,
+  },
+  playerCard: {
+    width: 120,
+    height: 160,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  selectedPlayer: {
+    borderWidth: 3,
+    borderColor: '#007AFF',
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginBottom: 10,
+  },
+  playerName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  nationality: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  picker: {
+    width: 180,
+    height: 50,
+    backgroundColor: '#E6F0FF',
+    borderRadius: 12,
+    borderColor: '#007AFF',
+    borderWidth: 1,
+  },
+  confirmContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  confirmText: {
+    fontSize: 16,
+    marginBottom: 10,
+    fontStyle: 'italic',
+    color: '#333',
+    textAlign: 'center',
+  },
+});
