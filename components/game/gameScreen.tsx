@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Image,
   ImageBackground,
+  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -23,6 +24,9 @@ export function gameScreen() {
     handleFinishMatch,
     shouldShowFinish,
   } = useGameLogic();
+
+  const [isModalVisible, setModalVisible] = React.useState(false);
+  const [timeUsedMs, setTimeUsedMs] = React.useState<number | null>(null);
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
@@ -55,11 +59,47 @@ export function gameScreen() {
         </Text>
 
         {shouldShowFinish && (
-          <TouchableOpacity style={gameStyles.finishButton} onPress={handleFinishMatch}>
+          <TouchableOpacity
+            style={gameStyles.finishButton}
+            onPress={() => setModalVisible(true)}
+          >
             <Text style={gameStyles.finishButtonText}>Finish Match</Text>
           </TouchableOpacity>
         )}
       </View>
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={gameStyles.modalOverlay}>
+          <View style={gameStyles.modalContent}>
+            <Text style={gameStyles.modalHeader}>Match Summary</Text>
+
+            <Text style={gameStyles.modalText}>
+              {player1?.name} vs {player2?.name}
+            </Text>
+            <Text style={gameStyles.modalText}>
+              {scorePlayer1} : {scorePlayer2}
+            </Text>
+
+            <TouchableOpacity
+              style={gameStyles.confirmButton}
+              onPress={() => {
+                setModalVisible(false);
+                handleFinishMatch(); 
+              }}
+            >
+              <Text style={gameStyles.confirmButtonText}>Confirm & Finish</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text style={gameStyles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ImageBackground>
   );
 }

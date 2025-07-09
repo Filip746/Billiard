@@ -76,4 +76,44 @@ export const gameStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  modalOverlay: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent: {
+  width: '80%',
+  backgroundColor: '#fff',
+  borderRadius: 16,
+  padding: 20,
+  alignItems: 'center',
+},
+modalHeader: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 16,
+},
+modalText: {
+  fontSize: 18,
+  marginVertical: 4,
+},
+confirmButton: {
+  marginTop: 20,
+  backgroundColor: '#2196F3',
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+},
+confirmButtonText: {
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'bold',
+},
+cancelText: {
+  marginTop: 10,
+  color: '#888',
+  fontSize: 16,
+},
+
 });
