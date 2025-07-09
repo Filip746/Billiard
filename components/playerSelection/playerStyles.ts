@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const playerStyles = StyleSheet.create({
   container: {
     padding: 20,
     paddingBottom: 40,
