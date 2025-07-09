@@ -27,7 +27,6 @@ export function useLeaderboard() {
         const user = docSnap.data();
         if (!user.name) return;
 
-        // Pronađi igrača po playerId ili name
         const player = players.find(
           p => p.id === user.playerId || p.name === user.name
         );
