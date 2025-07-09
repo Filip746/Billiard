@@ -1,9 +1,19 @@
-import React from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLeaderboard } from './useLeaderboard';
+
+type LeaderboardEntry = {
+  id: string;
+  name: string;
+  points: number;
+  avatar: any;
+};
 
 export default function leaderboardScreen() {
   const { leaderboard, loading } = useLeaderboard();
+
+  const [selectedPlayer, setSelectedPlayer] = useState<LeaderboardEntry | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   if (loading) {
     return (
@@ -12,6 +22,12 @@ export default function leaderboardScreen() {
       </View>
     );
   }
+
+  const handleNamePress = (player: LeaderboardEntry) => {
+    setSelectedPlayer(player);
+    setModalVisible(true);
+  };
+
 
   
   const renderItem = ({ item, index }: { item: any; index: number }) => {
@@ -28,7 +44,9 @@ export default function leaderboardScreen() {
         ) : (
           <View style={styles.avatarPlaceholder} />
         )}
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name} onPress={() => handleNamePress(item)}>
+          {item.name}
+        </Text>
         <Text style={styles.points}>{item.points} pts</Text>
       </View>
     );
@@ -43,6 +61,31 @@ export default function leaderboardScreen() {
         keyExtractor={item => item.id}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={modalStyles.overlay}>
+          <View style={modalStyles.container}>
+            <TouchableOpacity style={modalStyles.closeBtn} onPress={() => setModalVisible(false)}>
+              <Text style={modalStyles.closeText}>×</Text>
+            </TouchableOpacity>
+            {selectedPlayer && selectedPlayer.avatar ? (
+              <Image source={selectedPlayer.avatar} style={modalStyles.avatar} />
+            ) : (
+              <View style={modalStyles.profileCircle} />
+            )}
+            <Text style={modalStyles.playerName}>{selectedPlayer?.name}</Text>
+            <View style={modalStyles.tabRow}>
+              <Text style={modalStyles.tabActive}>Stats</Text>
+              <Text style={modalStyles.tabInactive}>About</Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 }
@@ -114,3 +157,73 @@ const styles = StyleSheet.create({
     backgroundColor: '#CD7F3233', 
   },
 });
+
+const modalStyles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    elevation: 6,
+  },
+  closeBtn: {
+    position: 'absolute',
+    right: 16,
+    top: 12,
+    zIndex: 2,
+  },
+  closeText: {
+    fontSize: 28,
+    color: '#888',
+  },
+  profileCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#eee',
+    marginBottom: 12,
+    marginTop: 10,
+  },
+  playerName: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  tabRow: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderColor: '#eee',
+  },
+  tabActive: {
+    fontWeight: '700',
+    color: '#1976d2',
+    marginRight: 32,
+    paddingBottom: 6,
+    borderBottomWidth: 2,
+    borderColor: '#1976d2',
+  },
+  tabInactive: {
+    color: '#888',
+    paddingBottom: 6,
+    marginLeft: 32,
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 12,
+    marginTop: 10,
+    backgroundColor: '#eee',
+  },
+});
+
