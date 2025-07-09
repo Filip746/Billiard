@@ -11,14 +11,8 @@ const RankDifferenceIcon = (difference: number) => {
   return <Minus color="gray" size={18} />;
 };
 
-type User = {
-  name: string;
-  points: number;
-  avatar?: string; 
-};
-
 export default function CustomLeaderboard() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<{ name: string; points: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,18 +21,18 @@ export default function CustomLeaderboard() {
       try {
         const usersCol = collection(db, 'users');
         const usersSnapshot = await getDocs(usersCol);
-        const usersList: User[] = [];
+        const usersList: { name: string; points: number }[] = [];
 
         usersSnapshot.forEach(doc => {
           const data = doc.data();
-
+          
           usersList.push({
             name: data.name || 'No Name',
             points: data.points || 0,
-            avatar: data.avatar || undefined,
           });
         });
 
+        
         usersList.sort((a, b) => b.points - a.points);
 
         setUsers(usersList);
@@ -115,8 +109,6 @@ export default function CustomLeaderboard() {
             fontWeight: '700',
           },
           avatarStyle: {
-            width: 50,
-            height: 50,
             borderRadius: 25,
           },
           searchBarStyle: {
