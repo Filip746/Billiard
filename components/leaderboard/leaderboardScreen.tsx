@@ -1,9 +1,9 @@
-import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { Leaderboard } from 'react-native-ranking-leaderboard';
+import { leaderboardStyles } from './leaderboardStyles';
+import { useLeaderboard } from './useLeaderboard';
 
 const RankDifferenceIcon = (difference: number) => {
   if (difference < 0) return <ArrowDownRight color="red" size={18} />;
@@ -11,45 +11,12 @@ const RankDifferenceIcon = (difference: number) => {
   return <Minus color="gray" size={18} />;
 };
 
-export default function CustomLeaderboard() {
-  const [users, setUsers] = useState<{ name: string; points: number }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const usersCol = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersCol);
-        const usersList: { name: string; points: number }[] = [];
-
-        usersSnapshot.forEach(doc => {
-          const data = doc.data();
-          
-          usersList.push({
-            name: data.name || 'No Name',
-            points: data.points || 0,
-          });
-        });
-
-        
-        usersList.sort((a, b) => b.points - a.points);
-
-        setUsers(usersList);
-      } catch (e) {
-        setError('Failed to load leaderboard data');
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchUsers();
-  }, []);
+export function leaderboardScreen() {
+  const { users, loading, error } = useLeaderboard();
 
   if (loading) {
     return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+      <View style={[leaderboardStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
@@ -57,14 +24,14 @@ export default function CustomLeaderboard() {
 
   if (error) {
     return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+      <View style={[leaderboardStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
         <Text style={{ color: 'red' }}>{error}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={leaderboardStyles.container}>
       <Leaderboard
         entries={users}
         showPodium={true}
@@ -123,12 +90,3 @@ export default function CustomLeaderboard() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 80,
-    paddingHorizontal: 20,
-    backgroundColor: '#f5f5f5',
-  },
-});

@@ -1,3 +1,3 @@
-import leaderboard from "@/components/leaderboard/leaderboard";
+import { leaderboardScreen } from "@/components/leaderboard/leaderboardScreen";
 
-export default leaderboard;
+export default leaderboardScreen;
