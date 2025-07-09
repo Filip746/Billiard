@@ -1,39 +1,53 @@
+import { players } from '@/const/players';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
+type LeaderboardEntry = {
+  id: string;
+  name: string;
+  points: number;
+  avatar: any;
+};
+
 export function useLeaderboard() {
-  const [users, setUsers] = useState<{ name: string; points: number }[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const usersCol = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersCol);
-        const usersList: { name: string; points: number }[] = [];
-
-        usersSnapshot.forEach(doc => {
-          const data = doc.data();
-          usersList.push({
-            name: data.name || 'No Name',
-            points: data.points || 0,
-          });
-        });
-
-        usersList.sort((a, b) => b.points - a.points);
-        setUsers(usersList);
-      } catch (e) {
-        setError('Failed to load leaderboard data');
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchUsers();
+    fetchLeaderboard();
   }, []);
 
-  return { users, loading, error };
+  const fetchLeaderboard = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'users'));
+      const data: LeaderboardEntry[] = [];
+
+      snapshot.forEach(docSnap => {
+        const user = docSnap.data();
+        if (!user.name) return;
+
+        // Pronađi igrača po playerId ili name
+        const player = players.find(
+          p => p.id === user.playerId || p.name === user.name
+        );
+
+        data.push({
+          id: docSnap.id,
+          name: user.name,
+          points: user.points ?? 0,
+          avatar: user.avatar || player?.avatar || null,
+        });
+      });
+
+      const sorted = data.sort((a, b) => b.points - a.points);
+      setLeaderboard(sorted);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { leaderboard, loading };
 }
