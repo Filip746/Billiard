@@ -1,5 +1,5 @@
 import { billiard } from '@/const/images';
-import React from 'react';
+import { useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { gameStyles } from './gameStyles';
 import { useGameLogic } from './useGameLogic';
+import React = require('react');
 
 export function gameScreen() {
   const {
@@ -25,8 +26,7 @@ export function gameScreen() {
     shouldShowFinish,
   } = useGameLogic();
 
-  const [isModalVisible, setModalVisible] = React.useState(false);
-  const [timeUsedMs, setTimeUsedMs] = React.useState<number | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
