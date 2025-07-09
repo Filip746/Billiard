@@ -1,9 +1,10 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { finishStyles } from './finishStyles';
 import { useFinishScreen } from './useFinishScreen';
 
-export function FinishScreen() {
+export function finishScreen() {
   const {
     player1,
     player2,
@@ -12,6 +13,12 @@ export function FinishScreen() {
     winner,
     formattedTime,
   } = useFinishScreen();
+
+  const router = useRouter();
+
+  const goToLeaderboard = () => {
+    router.push('/leaderboard');
+  };
 
   return (
     <View style={finishStyles.container}>
@@ -47,6 +54,13 @@ export function FinishScreen() {
           style={[finishStyles.avatar, finishStyles.winnerAvatar]}
         />
       </View>
+
+      <TouchableOpacity
+        style={finishStyles.leaderboardButton}
+        onPress={goToLeaderboard}
+      >
+        <Text style={finishStyles.leaderboardButtonText}>Go to Leaderboard</Text>
+      </TouchableOpacity>
     </View>
   );
 }

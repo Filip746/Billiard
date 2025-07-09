@@ -1,5 +1,3 @@
-import React from 'react';
+import { finishScreen } from "@/components/finishScreen/finishScreen";
 
-export default function Finish() {
-  return <Finish/>
-}
+export default finishScreen;

@@ -78,4 +78,19 @@ export const finishStyles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#28a745',
   },
+  leaderboardButton: {
+  marginTop: 30,
+  backgroundColor: '#007bff',
+  paddingVertical: 12,
+  paddingHorizontal: 30,
+  borderRadius: 10,
+  alignSelf: 'center',
+},
+
+leaderboardButtonText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: '600',
+},
+
 });
