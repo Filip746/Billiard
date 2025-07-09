@@ -47,7 +47,7 @@ export default function leaderboardScreen() {
         <Text style={styles.name} onPress={() => handleNamePress(item)}>
           {item.name}
         </Text>
-        <Text style={styles.points}>{item.points} pts</Text>
+        <Text style={styles.points}>{(item.points * 100).toFixed(2)}%</Text>
       </View>
     );
   };

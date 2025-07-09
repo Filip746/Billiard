@@ -27,11 +27,15 @@ export async function saveMatchForUser(
 
   matches = [...matches, newMatch];
 
-  const points = matches.reduce((acc: number, match: any) => {
+  const wins = matches.reduce((acc: number, match: any) => {
     if (!match.result) return acc;
     const [score1, score2] = match.result.split(' : ').map(Number);
     return score1 > score2 ? acc + 1 : acc;
   }, 0);
+
+  const totalMatches = matches.length;
+
+  const points = totalMatches > 0 ? wins / totalMatches : 0;
 
   await updateDoc(userRef, {
     matches,
