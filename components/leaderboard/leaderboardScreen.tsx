@@ -1,3 +1,5 @@
+import { players } from '@/const/players';
+import { getLastMatchesForUser } from '@/lib/matchesCollection';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLeaderboard } from './useLeaderboard';
@@ -7,6 +9,7 @@ export default function leaderboardScreen() {
 
   const [selectedPlayer, setSelectedPlayer] = useState<LeaderboardEntry | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [recentMatches, setRecentMatches] = useState<any[]>([]);
 
   if (loading) {
     return (
@@ -16,9 +19,11 @@ export default function leaderboardScreen() {
     );
   }
 
-  const handleNamePress = (player: LeaderboardEntry) => {
+  const handleNamePress = async (player: LeaderboardEntry) => {
     setSelectedPlayer(player);
     setModalVisible(true);
+    const matches = await getLastMatchesForUser(player.id, 5);
+    setRecentMatches(matches);
   };
 
 
@@ -75,13 +80,38 @@ export default function leaderboardScreen() {
               <Text style={modalStyles.tabActive}>Stats</Text>
               <Text style={modalStyles.tabInactive}>About</Text>
             </View>
+             <View style={{ width: '100%', marginTop: 10 }}>
+               {recentMatches.length === 0 && (
+                 <Text style={{ color: '#888', textAlign: 'center' }}>No recent matches.</Text>
+               )}
+               {recentMatches.map((match, idx) => {
+                 const opponent = players.find(p => p.id === Number(match.opponentId));
+                 const [score1, score2] = match.result.split(' : ').map(Number);
+                 const win = score1 > score2;
+                 return (
+                   <View key={idx} style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 2 }}>
+                     <Text style={{ flex: 1, color: '#333' }}>
+                       v {opponent?.name || 'Unknown'}
+                     </Text>
+                     <Text style={{ width: 60, textAlign: 'center', color: win ? '#28a745' : '#d32f2f', fontWeight: win ? 'bold' : '600' }}>
+                       {match.result}
+                     </Text>
+                     <Text style={{ width: 80, textAlign: 'center', color: '#555' }}>
+                       {match.date}
+                     </Text>
+                     <Text style={{ width: 40, textAlign: 'right', color: win ? '#28a745' : '#d32f2f', fontWeight: 'bold' }}>
+                       {win ? 'win' : 'lose'}
+                     </Text>
+                   </View>
+                 );
+               })}
+             </View>
+            </View>
           </View>
-        </View>
-      </Modal>
-
-    </View>
-  );
-}
+        </Modal>
+      </View>
+    );
+  }
 
 const styles = StyleSheet.create({
   container: {

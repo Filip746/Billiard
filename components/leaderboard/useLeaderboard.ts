@@ -3,13 +3,6 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-type LeaderboardEntry = {
-  id: string;
-  name: string;
-  points: number;
-  avatar: any;
-};
-
 export function useLeaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);

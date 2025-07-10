@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebase';
-import { addDoc, collection, getDocs, limit, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, Timestamp } from 'firebase/firestore';
 
 export type Match = {
   player1Id: string;
@@ -19,13 +19,10 @@ export async function addMatch(match: Omit<Match, 'createdAt'>) {
   });
 }
 
-export async function getLastMatchesForPlayer(playerId: string, n: number = 5) {
-  const q = query(
-    collection(db, 'matches'),
-    where('player1Id', '==', playerId),
-    orderBy('createdAt', 'desc'),
-    limit(n)
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+export async function getLastMatchesForUser(userId: string, n: number = 5) {
+  const userRef = doc(db, 'users', userId);
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists() || !userSnap.data().matches) return [];
+  const matches = userSnap.data().matches;
+  return matches.slice(-n).reverse();
 }
