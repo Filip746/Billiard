@@ -98,12 +98,15 @@ export function useGameLogic() {
     player1,
     player2,
     scorePlayer1,
+    setScorePlayer1, 
     scorePlayer2,
+    setScorePlayer2, 
     minutes,
     seconds,
     increaseScore1,
     increaseScore2,
     handleFinishMatch,
     shouldShowFinish,
+    scoreLimit
   };
 }

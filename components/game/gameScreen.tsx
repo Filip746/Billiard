@@ -1,4 +1,5 @@
 import { billiard } from '@/const/images';
+import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { useState } from 'react';
 import {
   Image,
@@ -17,13 +18,14 @@ export function gameScreen() {
     player1,
     player2,
     scorePlayer1,
+    setScorePlayer1, 
     scorePlayer2,
+    setScorePlayer2, 
     minutes,
     seconds,
-    increaseScore1,
-    increaseScore2,
     handleFinishMatch,
     shouldShowFinish,
+    scoreLimit
   } = useGameLogic();
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -37,18 +39,23 @@ export function gameScreen() {
         </View>
         
         <View style={gameStyles.centerBlock}>
-          <View style={gameStyles.scoreContainer}>
-            <TouchableOpacity style={gameStyles.scoreBox} onPress={increaseScore1}>
-              <Text style={gameStyles.scoreText}>{scorePlayer1}</Text>
-            </TouchableOpacity>
-            <Text style={gameStyles.vs}>:</Text>
-            <TouchableOpacity style={gameStyles.scoreBox} onPress={increaseScore2}>
-              <Text style={gameStyles.scoreText}>{scorePlayer2}</Text>
-            </TouchableOpacity>
+          <View style={gameStyles.scoreSnapRow}>
+            <View style={gameStyles.scoreSnapColumn}>
+              <ScoreSnapScroll value={scorePlayer1} onChange={setScorePlayer1} max={Number(scoreLimit)} />
+              <Text style={gameStyles.playerLabel}>Player 1</Text>
+            </View>
+            <View style={gameStyles.scoreSnapMiddle}>
+              <Text style={gameStyles.vsLarge}>:</Text>
+              <Text style={gameStyles.timerLarge}>
+                {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+              </Text>
+            </View>
+            <View style={gameStyles.scoreSnapColumn}>
+              <ScoreSnapScroll value={scorePlayer2} onChange={setScorePlayer2} max={Number(scoreLimit)} />
+              <Text style={gameStyles.playerLabel}>Player 2</Text>
+            </View>
           </View>
-          <Text style={gameStyles.timer}>
-            {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-          </Text>
+
           {shouldShowFinish && (
             <TouchableOpacity
               style={gameStyles.finishButton}
