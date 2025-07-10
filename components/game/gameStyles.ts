@@ -32,11 +32,6 @@ export const gameStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  scoreContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   scoreBox: {
     width: 80,
     height: 100,
@@ -115,5 +110,34 @@ cancelText: {
   color: '#888',
   fontSize: 16,
 },
-
+landscapeRow: {
+  flex: 1,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 30,
+},
+sidePlayer: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 1,
+},
+avatarLarge: {
+  width: 90,
+  height: 90,
+  borderRadius: 45,
+  borderWidth: 3,
+  borderColor: '#fff',
+  marginBottom: 12,
+},
+centerBlock: {
+  flex: 2,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+scoreContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 18,
+},
 });
