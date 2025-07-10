@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLeaderboard } from './useLeaderboard';
 
-type LeaderboardEntry = {
-  id: string;
-  name: string;
-  points: number;
-  avatar: any;
-};
-
 export default function leaderboardScreen() {
   const { leaderboard, loading } = useLeaderboard();
 
