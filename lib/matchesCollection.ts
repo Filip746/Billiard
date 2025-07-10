@@ -26,3 +26,11 @@ export async function getLastMatchesForUser(userId: string, n: number = 5) {
   const matches = userSnap.data().matches;
   return matches.slice(-n).reverse();
 }
+
+export async function getAllMatchesForUser(userId: string) {
+  const userRef = doc(db, 'users', userId);
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists() || !userSnap.data().matches) return [];
+  const matches = userSnap.data().matches;
+  return [...matches].reverse();
+}
