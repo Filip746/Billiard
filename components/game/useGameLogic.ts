@@ -1,9 +1,8 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
-import { db } from '@/lib/firebase';
+import { addMatch } from '@/lib/matchesCollection';
 import { saveMatchForUser } from '@/lib/saveMatchForUser';
 import { router, useLocalSearchParams } from 'expo-router';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
 
 export function useGameLogic() {
@@ -45,15 +44,14 @@ export function useGameLogic() {
     setElapsedTime(timeUsed);
 
     try {
-      await addDoc(collection(db, 'matches'), {
+      await addMatch({
         player1Id,
         player2Id,
-        player1Name: player1?.name,
-        player2Name: player2?.name,
+        player1Name: player1?.name || '',
+        player2Name: player2?.name || '',
         scorePlayer1,
         scorePlayer2,
         timeUsedMs: timeUsed,
-        createdAt: Timestamp.now(),
       });
 
       const today = new Date();
