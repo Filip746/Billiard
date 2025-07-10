@@ -1,14 +1,10 @@
-import { Dimensions, StyleSheet } from 'react-native';
-
-const { width } = Dimensions.get('window');
-const AVATAR_SIZE = 90;
-const WINNER_AVATAR_SIZE = 70; // smanjen avatar pobjednika
+import { StyleSheet } from 'react-native';
 
 export const finishStyles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#fff', // bijela pozadina
+    backgroundColor: '#fff', 
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 30,
@@ -32,9 +28,9 @@ export const finishStyles = StyleSheet.create({
     minWidth: 140,
   },
   avatar: {
-    width: AVATAR_SIZE,
-    height: AVATAR_SIZE,
-    borderRadius: AVATAR_SIZE / 2,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     borderWidth: 2,
     borderColor: '#4fd1c5',
     marginBottom: 10,
@@ -90,16 +86,14 @@ export const finishStyles = StyleSheet.create({
     color: '#888',
     marginHorizontal: 6,
   },
-  // Uvećani timer
   timeUsed: {
-    fontSize: 28, // VEĆE!
+    fontSize: 28, 
     color: '#555',
     marginBottom: 18,
     marginTop: 6,
     fontWeight: '600',
     letterSpacing: 0.5,
   },
-  // Manji winner box
   winnerBox: {
     alignItems: 'center',
     marginBottom: 18,
@@ -123,9 +117,9 @@ export const finishStyles = StyleSheet.create({
     letterSpacing: 0.7,
   },
   winnerAvatar: {
-    width: WINNER_AVATAR_SIZE,
-    height: WINNER_AVATAR_SIZE,
-    borderRadius: WINNER_AVATAR_SIZE / 2,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     borderWidth: 3,
     borderColor: '#ffd700',
     marginVertical: 4,
