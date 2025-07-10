@@ -99,9 +99,29 @@ export default function leaderboardScreen() {
                      <Text style={{ width: 80, textAlign: 'center', color: '#555' }}>
                        {match.date}
                      </Text>
-                     <Text style={{ width: 40, textAlign: 'right', color: win ? '#28a745' : '#d32f2f', fontWeight: 'bold' }}>
-                       {win ? 'win' : 'lose'}
-                     </Text>
+                     <View
+                        style={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: 5,
+                          backgroundColor: win ? '#28a745' : '#d32f2f',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          marginLeft: 8,
+                          alignSelf: 'center',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontWeight: 'bold',
+                            fontSize: 12,
+                            letterSpacing: 1,
+                          }}
+                        >
+                          {win ? 'W' : 'L'}
+                        </Text>
+                      </View>
                    </View>
                  );
                })}
