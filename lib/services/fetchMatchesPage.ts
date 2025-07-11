@@ -1,13 +1,5 @@
 import { db } from '@/lib/firebase';
-import { Match } from '@/types/match';
-import { addDoc, collection, getDocs, limit, orderBy, query, startAfter, Timestamp } from 'firebase/firestore';
-
-export async function addMatch(match: Omit<Match, 'createdAt'>) {
-  return await addDoc(collection(db, 'matches'), {
-    ...match,
-    createdAt: Timestamp.now(),
-  });
-}
+import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 
 export async function fetchMatchesPage(pageSize = 10, lastDoc = null) {
   let q = query(

@@ -1,5 +1,5 @@
  import { players } from '@/const/players';
-import { getMatchesForUser } from '@/lib/services/userMatchService';
+import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';

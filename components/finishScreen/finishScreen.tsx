@@ -1,5 +1,5 @@
 import { players } from '@/const/players';
-import { getMatchesForUser } from '@/lib/services/userMatchService';
+import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';

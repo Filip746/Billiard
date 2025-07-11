@@ -1,7 +1,7 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { saveMatchForUser } from '@/lib/saveMatchForUser';
-import { addMatch } from '@/lib/services/matchService';
+import { addMatch } from '@/lib/services/addMatch';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 

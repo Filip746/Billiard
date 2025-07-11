@@ -1,7 +1,7 @@
 import { billiard } from '@/const/images';
 import { players } from '@/const/players';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
-import { getMatchesForUser } from '@/lib/services/userMatchService';
+import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useState } from 'react';
 import {
