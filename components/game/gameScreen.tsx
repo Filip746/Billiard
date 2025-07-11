@@ -3,6 +3,7 @@ import { players } from '@/const/players';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
+import { useKeepAwake } from '@sayem314/react-native-keep-awake';
 import { useState } from 'react';
 import {
   Image,
@@ -17,6 +18,7 @@ import { useGameLogic } from './useGameLogic';
 import React = require('react');
 
 export function gameScreen() {
+  useKeepAwake();
   const {
     player1,
     player2,
