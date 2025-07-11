@@ -1,6 +1,7 @@
 import { players } from '@/const/players';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { historyStyles } from './historyStyles';
 import { useHistory } from './useHistory';
 
@@ -16,18 +17,33 @@ export function historyScreen() {
     } else {
       dateStr = item.createdAt || item.date;
     }
+    const router = useRouter();
     return (
-      <View style={historyStyles.matchRow}>
-        <Text style={historyStyles.matchPlayers}>
-          {player1?.name || 'Player 1'} vs {player2?.name || 'Player 2'}
-        </Text>
-        <Text style={historyStyles.matchResult}>
-          {item.scorePlayer1} : {item.scorePlayer2}
-        </Text>
-        <Text style={historyStyles.matchDate}>{dateStr}</Text>
-      </View>
-    );
-  };
+       <TouchableOpacity
+         style={historyStyles.matchRow}
+         onPress={() => {
+           router.push({
+             pathname: '/finish',
+             params: {
+               player1Id: item.player1Id,
+               player2Id: item.player2Id,
+               scorePlayer1: item.scorePlayer1,
+               scorePlayer2: item.scorePlayer2,
+               elapsedTime: item.timeUsedMs || item.elapsedTime || '',
+             },
+           });
+         }}
+       >
+         <Text style={historyStyles.matchPlayers}>
+           {player1?.name || 'Player 1'} vs {player2?.name || 'Player 2'}
+         </Text>
+         <Text style={historyStyles.matchResult}>
+           {item.scorePlayer1} : {item.scorePlayer2}
+         </Text>
+         <Text style={historyStyles.matchDate}>{dateStr}</Text>
+       </TouchableOpacity>
+     );
+    };
 
   return (
     <View style={historyStyles.container}>
