@@ -3,7 +3,7 @@ import { players } from '@/const/players';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import { useKeepAwake } from '@sayem314/react-native-keep-awake';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 import { useState } from 'react';
 import {
   Image,
@@ -18,7 +18,6 @@ import { useGameLogic } from './useGameLogic';
 import React = require('react');
 
 export function gameScreen() {
-  useKeepAwake();
   const {
     player1,
     player2,
@@ -58,6 +57,7 @@ export function gameScreen() {
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
+      <KeepAwake />
       <View style={gameStyles.landscapeRow}>
         <TouchableOpacity onPress={() => player1 && handlePlayerPress(player1)}>
           <Image source={player1?.avatar} style={gameStyles.avatarLarge} />
