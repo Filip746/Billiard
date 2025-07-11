@@ -1,5 +1,6 @@
 import { players } from '@/const/players';
 import { Picker } from '@react-native-picker/picker';
+import { router } from 'expo-router';
 import React from 'react';
 import { Button, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { playerStyles } from './playerStyles';
@@ -17,7 +18,21 @@ export function PlayerSelection() {
 
   return (
     <ScrollView contentContainerStyle={playerStyles.container} showsVerticalScrollIndicator={false}>
-      <Text style={playerStyles.header}>Select Your Players</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#1976d2',
+            paddingVertical: 6,
+            paddingHorizontal: 16,
+            borderRadius: 8,
+            marginRight: 12,
+          }}
+          onPress={() => router.push('/history')}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>History</Text>
+        </TouchableOpacity>
+        <Text style={playerStyles.header}>Select Your Players</Text>
+      </View>
 
       <View style={playerStyles.section}>
         <Text style={playerStyles.title}>Player 1</Text>
