@@ -1,5 +1,8 @@
 import { billiard } from '@/const/images';
+import { players } from '@/const/players';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
+import { getAllMatchesForUser, getLastMatchesForUser } from '@/lib/matchesCollection';
+import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useState } from 'react';
 import {
   Image,
@@ -29,14 +32,35 @@ export function gameScreen() {
   } = useGameLogic();
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [playerModalVisible, setPlayerModalVisible] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [activeTab, setActiveTab] = useState<'stats' | 'about'>('stats');
+  const [recentMatches, setRecentMatches] = useState<any[]>([]);
+  const [allMatches, setAllMatches] = useState<any[]>([]);
+  const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
+
+  const handlePlayerPress = async (player: Player) => {
+    setSelectedPlayer(player);
+    setPlayerModalVisible(true);
+    setActiveTab('stats');
+    const matches = await getLastMatchesForUser(String(player.id), 5);
+    setRecentMatches(matches);
+  };
+  const handleShowAllMatches = async () => {
+    if (selectedPlayer) {
+      const matches = await getAllMatchesForUser(String(selectedPlayer.id));
+      setAllMatches(matches);
+      setShowAllMatchesModal(true);
+    }
+  };
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
       <View style={gameStyles.landscapeRow}>
-        <View style={gameStyles.sidePlayer}>
+        <TouchableOpacity onPress={() => player1 && handlePlayerPress(player1)}>
           <Image source={player1?.avatar} style={gameStyles.avatarLarge} />
           <Text style={gameStyles.playerName}>{player1?.name}</Text>
-        </View>
+        </TouchableOpacity>
         
         <View style={gameStyles.centerBlock}>
           <View style={gameStyles.scoreSnapRow}>
@@ -66,10 +90,10 @@ export function gameScreen() {
           )}
         </View>
         
-        <View style={gameStyles.sidePlayer}>
+        <TouchableOpacity onPress={() => player2 && handlePlayerPress(player2)}>
           <Image source={player2?.avatar} style={gameStyles.avatarLarge} />
           <Text style={gameStyles.playerName}>{player2?.name}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <Modal
         visible={isModalVisible}
@@ -104,6 +128,19 @@ export function gameScreen() {
           </View>
         </View>
       </Modal>
+      <LeaderboardPlayerModal
+        visible={playerModalVisible}
+        onClose={() => setPlayerModalVisible(false)}
+        selectedPlayer={selectedPlayer}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        recentMatches={recentMatches}
+        allMatches={allMatches}
+        showAllMatchesModal={showAllMatchesModal}
+        setShowAllMatchesModal={setShowAllMatchesModal}
+        onShowAllMatches={handleShowAllMatches}
+        players={players}
+      />
     </ImageBackground>
   );
 }
