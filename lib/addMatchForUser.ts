@@ -2,7 +2,7 @@ import { players } from '@/const/players';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
-export async function saveMatchForUser(
+export async function addMatchForUser(
   userId: string,
   userName: string,
   opponentId: string,

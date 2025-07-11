@@ -1,6 +1,6 @@
 import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
-import { saveMatchForUser } from '@/lib/saveMatchForUser';
+import { addMatchForUser } from '@/lib/addMatchForUser';
 import { addMatch } from '@/lib/services/addMatch';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -57,7 +57,7 @@ export function useGameLogic() {
       const today = new Date();
       const dateString = `${today.getDate()}. ${today.getMonth()}. ${today.getFullYear()}.`;
 
-      await saveMatchForUser(
+      await addMatchForUser(
         player1Id,
         player1?.name || '',
         player2Id,
@@ -65,7 +65,7 @@ export function useGameLogic() {
         dateString
       );
 
-      await saveMatchForUser(
+      await addMatchForUser(
         player2Id,
         player2?.name || '',
         player1Id,
