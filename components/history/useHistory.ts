@@ -1,4 +1,4 @@
-import { fetchMatchesPage } from '@/lib/matchesCollection';
+import { fetchMatchesPage } from '@/lib/services/matchService';
 import { useEffect, useState } from 'react';
 
 export function useHistory(pageSize: number = 10) {

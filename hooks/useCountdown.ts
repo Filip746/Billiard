@@ -14,7 +14,7 @@ export function useCountdown(initialEndTime: number): [number, (newEndTime: numb
   useEffect(() => {
     setTimeLeft(calcTimeLeft(endTime));
 
-    const timer = setInterval(() => { //timeout koristit
+    const timer = setInterval(() => { 
       const remaining = calcTimeLeft(endTime);
       setTimeLeft(remaining);
 

@@ -1,5 +1,5 @@
  import { players } from '@/const/players';
-import { getAllMatchesForUser, getLastMatchesForUser } from '@/lib/matchesCollection';
+import { getMatchesForUser } from '@/lib/services/userMatchService';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
@@ -26,14 +26,14 @@ import { useLeaderboard } from './useLeaderboard';
       const player = players.find(p => p.id === Number(entry.id) || p.name === entry.name) ?? null;
       setSelectedPlayer(player);
       setModalVisible(true);
-      const matches = await getLastMatchesForUser(entry.id, 5);
+      const matches = await getMatchesForUser(entry.id, 5);
       setRecentMatches(matches);
       setActiveTab('stats');
     };
 
    const handleShowAllMatches = async () => {
      if (selectedPlayer) {
-       const matches = await getAllMatchesForUser(String(selectedPlayer.id));
+       const matches = await getMatchesForUser(String(selectedPlayer.id));
        setAllMatches(matches);
        setShowAllMatchesModal(true);
      }

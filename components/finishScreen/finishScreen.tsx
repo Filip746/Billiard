@@ -1,5 +1,5 @@
 import { players } from '@/const/players';
-import { getAllMatchesForUser, getLastMatchesForUser } from '@/lib/matchesCollection';
+import { getMatchesForUser } from '@/lib/services/userMatchService';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -34,13 +34,13 @@ export function finishScreen() {
       setSelectedPlayer(player);
       setPlayerModalVisible(true);
       setActiveTab('stats');
-      const matches = await getLastMatchesForUser(String(player.id), 5);
+      const matches = await getMatchesForUser(String(player.id), 5);
       setRecentMatches(matches);
     };
 
   const handleShowAllMatches = async () => {
     if (selectedPlayer) {
-      const matches = await getAllMatchesForUser(String(selectedPlayer.id));
+      const matches = await getMatchesForUser(String(selectedPlayer.id));
       setAllMatches(matches);
       setShowAllMatchesModal(true);
     }
