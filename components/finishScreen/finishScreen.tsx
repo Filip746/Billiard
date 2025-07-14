@@ -1,5 +1,5 @@
-import { players } from '@/const/players';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
+import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -22,6 +22,7 @@ export function finishScreen() {
   const goToLeaderboard = () => {
     router.push('/leaderboard');
   };
+  
 
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -29,6 +30,7 @@ export function finishScreen() {
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [allMatches, setAllMatches] = useState<any[]>([]);
   const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
+  const players = usePlayers();
 
   const handlePlayerPress = async (player: Player) => {
       setSelectedPlayer(player);

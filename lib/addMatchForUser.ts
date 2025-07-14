@@ -1,4 +1,3 @@
-import { players } from '@/const/players';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
@@ -7,7 +6,8 @@ export async function addMatchForUser(
   userName: string,
   opponentId: string,
   result: string,
-  dateString: string
+  dateString: string,
+  players: Player[]
 ) {
   const userRef = doc(db, 'users', userId);
 

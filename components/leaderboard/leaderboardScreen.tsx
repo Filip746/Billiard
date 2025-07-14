@@ -1,5 +1,5 @@
- import { players } from '@/const/players';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
+import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
@@ -12,6 +12,7 @@ import { useLeaderboard } from './useLeaderboard';
     points: number;
     avatar: any;
   };
+  
 
   export default function LeaderboardScreen() {
     const { leaderboard, loading } = useLeaderboard();
@@ -21,6 +22,7 @@ import { useLeaderboard } from './useLeaderboard';
    const [activeTab, setActiveTab] = useState<'stats' | 'about'>('stats');
    const [allMatches, setAllMatches] = useState<any[]>([]);
    const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
+   const players = usePlayers();
 
     const handleNamePress = async (entry: LeaderboardEntry) => {
       const player = players.find(p => p.id === Number(entry.id) || p.name === entry.name) ?? null;

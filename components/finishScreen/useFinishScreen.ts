@@ -1,4 +1,4 @@
-import { players } from '@/const/players';
+import { usePlayers } from '@/lib/usePlayers';
 import { useLocalSearchParams } from 'expo-router';
 
 export function useFinishScreen() {
@@ -9,6 +9,7 @@ export function useFinishScreen() {
     player2Id: string,
     elapsedTime: string,
   }>();
+  const players = usePlayers();
 
   const player1 = players.find(p => p.id === Number(player1Id));
   const player2 = players.find(p => p.id === Number(player2Id));

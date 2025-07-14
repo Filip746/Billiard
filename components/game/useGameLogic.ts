@@ -1,7 +1,7 @@
-import { players } from '@/const/players';
 import { useCountdown } from '@/hooks/useCountdown';
 import { addMatchForUser } from '@/lib/addMatchForUser';
 import { addMatch } from '@/lib/services/addMatch';
+import { usePlayers } from '@/lib/usePlayers';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 
@@ -12,6 +12,7 @@ export function useGameLogic() {
     timeLimitMinutes: string;
     scoreLimit: string;
   }>();
+  
 
   const [scorePlayer1, setScorePlayer1] = useState(0);
   const [scorePlayer2, setScorePlayer2] = useState(0);
@@ -19,6 +20,8 @@ export function useGameLogic() {
 
   const initialEndTime = new Date().getTime() + Number(timeLimitMinutes) * 60 * 1000;
   const [timeLeft] = useCountdown(initialEndTime);
+
+  const players = usePlayers();
 
   const player1 = players.find(p => p.id === Number(player1Id));
   const player2 = players.find(p => p.id === Number(player2Id));
@@ -62,7 +65,8 @@ export function useGameLogic() {
         player1?.name || '',
         player2Id,
         `${scorePlayer1} : ${scorePlayer2}`,
-        dateString
+        dateString,
+        players
       );
 
       await addMatchForUser(
@@ -70,7 +74,8 @@ export function useGameLogic() {
         player2?.name || '',
         player1Id,
         `${scorePlayer2} : ${scorePlayer1}`,
-        dateString
+        dateString,
+        players
       );
 
       console.log('Match saved');

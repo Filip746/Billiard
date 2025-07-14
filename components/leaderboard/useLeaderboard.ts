@@ -1,5 +1,5 @@
-import { players } from '@/const/players';
 import { db } from '@/lib/firebase';
+import { usePlayers } from '@/lib/usePlayers';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -10,6 +10,7 @@ export function useLeaderboard() {
   useEffect(() => {
     fetchLeaderboard();
   }, []);
+  const players = usePlayers();
 
   const fetchLeaderboard = async () => {
     try {

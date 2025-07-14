@@ -1,4 +1,4 @@
-import { players } from '@/const/players';
+import { usePlayers } from '@/lib/usePlayers';
 import { Picker } from '@react-native-picker/picker';
 import { router } from 'expo-router';
 import React from 'react';
@@ -15,6 +15,7 @@ export function PlayerSelection() {
     scoreLimit, setScoreLimit,
     startMatch,
   } = usePlayerSelection(initialEndTime);
+  const players = usePlayers();
 
   return (
     <ScrollView contentContainerStyle={playerStyles.container} showsVerticalScrollIndicator={false}>
@@ -120,3 +121,7 @@ export function PlayerSelection() {
     </ScrollView>
   );
 }
+function addPlayersToFirestore() {
+  throw new Error('Function not implemented.');
+}
+

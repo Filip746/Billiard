@@ -1,9 +1,8 @@
 import { billiard } from '@/const/images';
-import { players } from '@/const/players';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
+import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import KeepAwake from '@sayem314/react-native-keep-awake';
 import { useState } from 'react';
 import {
   Image,
@@ -31,6 +30,7 @@ export function gameScreen() {
     shouldShowFinish,
     scoreLimit
   } = useGameLogic();
+  
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
@@ -39,6 +39,7 @@ export function gameScreen() {
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [allMatches, setAllMatches] = useState<any[]>([]);
   const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
+  const players = usePlayers();
 
   const handlePlayerPress = async (player: Player) => {
     setSelectedPlayer(player);
@@ -57,7 +58,6 @@ export function gameScreen() {
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
-      <KeepAwake />
       <View style={gameStyles.landscapeRow}>
         <TouchableOpacity onPress={() => player1 && handlePlayerPress(player1)}>
           <Image source={player1?.avatar} style={gameStyles.avatarLarge} />

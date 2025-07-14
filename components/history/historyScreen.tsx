@@ -1,4 +1,4 @@
-import { players } from '@/const/players';
+import { usePlayers } from '@/lib/usePlayers';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
@@ -7,7 +7,7 @@ import { useHistory } from './useHistory';
 
 export function historyScreen() {
   const { matches, loading, fetchingMore, hasMore, loadMore } = useHistory();
-
+  const players = usePlayers();
   const renderItem = ({ item }: { item: any }) => {
     const player1 = players.find(p => p.id === Number(item.player1Id));
     const player2 = players.find(p => p.id === Number(item.player2Id));
