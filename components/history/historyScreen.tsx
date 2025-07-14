@@ -8,6 +8,8 @@ import { useHistory } from './useHistory';
 export function historyScreen() {
   const { matches, loading, fetchingMore, hasMore, loadMore } = useHistory();
   const players = usePlayers();
+  const router = useRouter();
+
   const renderItem = ({ item }: { item: any }) => {
     const player1 = players.find(p => p.id === Number(item.player1Id));
     const player2 = players.find(p => p.id === Number(item.player2Id));
@@ -17,24 +19,23 @@ export function historyScreen() {
     } else {
       dateStr = item.createdAt || item.date;
     }
-    const router = useRouter();
     return (
-       <TouchableOpacity
-         style={historyStyles.matchRow}
-         onPress={() => {
-           router.push('/finish');
-         }}
-       >
-         <Text style={historyStyles.matchPlayers}>
-           {player1?.name || 'Player 1'} vs {player2?.name || 'Player 2'}
-         </Text>
-         <Text style={historyStyles.matchResult}>
-           {item.scorePlayer1} : {item.scorePlayer2}
-         </Text>
-         <Text style={historyStyles.matchDate}>{dateStr}</Text>
-       </TouchableOpacity>
-     );
-    };
+      <TouchableOpacity
+        style={historyStyles.matchRow}
+        onPress={() => {
+          router.push('/finish');
+        }}
+      >
+        <Text style={historyStyles.matchPlayers}>
+          {player1?.name || 'Player 1'} vs {player2?.name || 'Player 2'}
+        </Text>
+        <Text style={historyStyles.matchResult}>
+          {item.scorePlayer1} : {item.scorePlayer2}
+        </Text>
+        <Text style={historyStyles.matchDate}>{dateStr}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={historyStyles.container}>

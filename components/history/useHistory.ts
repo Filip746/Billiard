@@ -1,12 +1,20 @@
 import { fetchMatchesPage } from '@/lib/services/fetchMatchesPage';
-import { useEffect, useState } from 'react';
+import {
+  fetchingMoreAtom,
+  hasMoreAtom,
+  lastDocAtom,
+  loadingAtom,
+  matchesAtom,
+} from '@/state/historyAtoms';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 
 export function useHistory(pageSize: number = 10) {
-  const [matches, setMatches] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchingMore, setFetchingMore] = useState(false);
-  const [lastDoc, setLastDoc] = useState<any>(null);
-  const [hasMore, setHasMore] = useState(true);
+  const [matches, setMatches] = useAtom(matchesAtom);
+  const [loading, setLoading] = useAtom(loadingAtom);
+  const [fetchingMore, setFetchingMore] = useAtom(fetchingMoreAtom);
+  const [lastDoc, setLastDoc] = useAtom(lastDocAtom);
+  const [hasMore, setHasMore] = useAtom(hasMoreAtom);
 
   useEffect(() => {
     loadFirstPage();
