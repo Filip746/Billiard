@@ -6,14 +6,6 @@ import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 import { leaderboardStyles } from './leaderboardStyles';
 import { useLeaderboard } from './useLeaderboard';
 
-  type LeaderboardEntry = {
-    id: string;
-    name: string;
-    points: number;
-    avatar: any;
-  };
-  
-
   export default function LeaderboardScreen() {
     const { leaderboard, loading } = useLeaderboard();
     const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
