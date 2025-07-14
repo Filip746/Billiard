@@ -64,15 +64,7 @@ export function usePlayerSelection() {
       setEndTime(newEndTime);
     }
 
-    router.push({
-      pathname: '/game',
-      params: {
-        player1Id: selectedPlayer1,
-        player2Id: selectedPlayer2,
-        timeLimitMinutes: selectedMinutes,
-        scoreLimit: scoreLimit,
-      },
-    });
+    router.push('/game');
   }
 
   return {

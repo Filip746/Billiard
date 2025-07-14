@@ -83,16 +83,7 @@ export function useGameLogic() {
       console.error('Error saving match:', error);
     }
 
-    router.push({
-      pathname: '/finish',
-      params: {
-        scorePlayer1,
-        scorePlayer2,
-        player1Id: selectedPlayer1,
-        player2Id: selectedPlayer2,
-        elapsedTime: timeUsed,
-      },
-    });
+    router.push('/finish');
   };
 
   const shouldShowFinish =
