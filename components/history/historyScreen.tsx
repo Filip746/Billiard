@@ -23,7 +23,16 @@ export function historyScreen() {
       <TouchableOpacity
         style={historyStyles.matchRow}
         onPress={() => {
-          router.push('/finish');
+          router.push({
+            pathname: '/finish',
+            params: {
+              player1Id: item.player1Id,
+              player2Id: item.player2Id,
+              scorePlayer1: item.scorePlayer1,
+              scorePlayer2: item.scorePlayer2,
+              elapsedTime: item.elapsedTime ?? item.timeUsedMs ?? '',
+            },
+          });
         }}
       >
         <Text style={historyStyles.matchPlayers}>

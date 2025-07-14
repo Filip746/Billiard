@@ -1,26 +1,23 @@
 import { usePlayers } from '@/lib/usePlayers';
-import {
-  elapsedTimeAtom,
-  scorePlayer1Atom,
-  scorePlayer2Atom,
-} from '@/state/gameAtoms';
-import {
-  selectedPlayer1Atom,
-  selectedPlayer2Atom,
-} from '@/state/playerSelectionAtoms';
-import { useAtom } from 'jotai';
+import { elapsedTimeAtom, scorePlayer1Atom, scorePlayer2Atom } from '@/state/gameAtoms';
+import { selectedPlayer1Atom, selectedPlayer2Atom } from '@/state/playerSelectionAtoms';
+import { useLocalSearchParams } from 'expo-router';
+import { useAtomValue } from 'jotai';
 
 export function useFinishScreen() {
   const players = usePlayers();
+  const params = useLocalSearchParams();
 
-  const [selectedPlayer1] = useAtom(selectedPlayer1Atom);
-  const [selectedPlayer2] = useAtom(selectedPlayer2Atom);
-  const [scorePlayer1] = useAtom(scorePlayer1Atom);
-  const [scorePlayer2] = useAtom(scorePlayer2Atom);
-  const [elapsedTime] = useAtom(elapsedTimeAtom);
+  const player1Id = params.player1Id ? Number(params.player1Id) : useAtomValue(selectedPlayer1Atom);
+  const player2Id = params.player2Id ? Number(params.player2Id) : useAtomValue(selectedPlayer2Atom);
+  const scorePlayer1 = params.scorePlayer1 ? Number(params.scorePlayer1) : useAtomValue(scorePlayer1Atom);
+  const scorePlayer2 = params.scorePlayer2 ? Number(params.scorePlayer2) : useAtomValue(scorePlayer2Atom);
+  const elapsedTime = params.elapsedTime
+    ? Number(params.elapsedTime)
+    : useAtomValue(elapsedTimeAtom);
 
-  const player1 = players.find(p => p.id === selectedPlayer1);
-  const player2 = players.find(p => p.id === selectedPlayer2);
+  const player1 = players.find(p => p.id === player1Id);
+  const player2 = players.find(p => p.id === player2Id);
 
   const winner =
     scorePlayer1 > scorePlayer2
