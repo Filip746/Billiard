@@ -1,18 +1,21 @@
 import { db } from '@/lib/firebase';
 import { usePlayers } from '@/lib/usePlayers';
+import { leaderboardAtom, leaderboardLoadingAtom } from '@/state/leaderboardAtoms';
 import { collection, getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 
 export function useLeaderboard() {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [leaderboard, setLeaderboard] = useAtom(leaderboardAtom);
+  const [loading, setLoading] = useAtom(leaderboardLoadingAtom);
+  const players = usePlayers();
 
   useEffect(() => {
     fetchLeaderboard();
-  }, []);
-  const players = usePlayers();
+  }, [players.length]); 
 
   const fetchLeaderboard = async () => {
+    setLoading(true);
     try {
       const snapshot = await getDocs(collection(db, 'users'));
       const data: LeaderboardEntry[] = [];
@@ -37,6 +40,7 @@ export function useLeaderboard() {
       setLeaderboard(sorted);
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
+      setLeaderboard([]);
     } finally {
       setLoading(false);
     }

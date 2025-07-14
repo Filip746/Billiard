@@ -7,14 +7,13 @@ import { playerStyles } from './playerStyles';
 import { usePlayerSelection } from './usePlayerSelection';
 
 export function PlayerSelection() {
-  const initialEndTime = new Date().getTime();
   const {
     selectedPlayer1, setSelectedPlayer1,
     selectedPlayer2, setSelectedPlayer2,
     selectedMinutes, handleTimeChange,
     scoreLimit, setScoreLimit,
     startMatch,
-  } = usePlayerSelection(initialEndTime);
+  } = usePlayerSelection();
   const players = usePlayers();
 
   return (
@@ -121,7 +120,3 @@ export function PlayerSelection() {
     </ScrollView>
   );
 }
-function addPlayersToFirestore() {
-  throw new Error('Function not implemented.');
-}
-

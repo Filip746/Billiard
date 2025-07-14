@@ -3,7 +3,7 @@ import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -14,23 +14,21 @@ import {
 } from 'react-native';
 import { gameStyles } from './gameStyles';
 import { useGameLogic } from './useGameLogic';
-import React = require('react');
 
 export function gameScreen() {
   const {
     player1,
     player2,
     scorePlayer1,
-    setScorePlayer1, 
+    setScorePlayer1,
     scorePlayer2,
-    setScorePlayer2, 
+    setScorePlayer2,
     minutes,
     seconds,
     handleFinishMatch,
     shouldShowFinish,
-    scoreLimit
+    scoreLimit,
   } = useGameLogic();
-  
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
