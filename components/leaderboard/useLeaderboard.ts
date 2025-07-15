@@ -1,3 +1,4 @@
+import { avatars } from '@/const/images';
 import { db } from '@/lib/firebase';
 import { updateAllPlayersPoints } from '@/lib/services/updateAllPlayerPoints';
 import { usePlayers } from '@/lib/usePlayers';
@@ -30,7 +31,7 @@ export function useLeaderboard() {
           id: docSnap.id,
           name: player.name,
           points: player.points ?? 0,
-          avatar: player.avatar || null,
+          avatar: player.avatar ? avatars[player.avatar] : null,
         });
       });
 
