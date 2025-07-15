@@ -1,13 +1,14 @@
-import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
-import { usePlayers } from '@/lib/usePlayers';
-import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+
+import { usePlayerModal } from '@/hooks/usePlayerModal';
+import { usePlayers } from '@/lib/usePlayers';
+import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { finishStyles } from './finishStyles';
 import { useFinishScreen } from './useFinishScreen';
 
-export function finishScreen() {
+export function FinishScreen() {
   const {
     player1,
     player2,
@@ -17,43 +18,47 @@ export function finishScreen() {
     formattedTime,
   } = useFinishScreen();
 
+  const [playerModalVisible, setPlayerModalVisible] = useState(false);
+
   const router = useRouter();
+  const players = usePlayers();
+
+  const {
+    selectedPlayer,
+    setSelectedPlayer,
+    recentMatches,
+    allMatches,
+    activeTab,
+    setActiveTab,
+    showAllMatchesModal,
+    setShowAllMatchesModal,
+    handlePlayerPress,
+    handleShowAllMatches,
+  } = usePlayerModal(players);
+
+  const onPlayerPress = async (player: Player) => {
+    await handlePlayerPress(player);
+    setPlayerModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setPlayerModalVisible(false);
+    setSelectedPlayer(null);
+  };
 
   const goToLeaderboard = () => {
     router.push('/leaderboard');
-  };
-
-  const [playerModalVisible, setPlayerModalVisible] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [activeTab, setActiveTab] = useState<'stats' | 'about'>('stats');
-  const [recentMatches, setRecentMatches] = useState<any[]>([]);
-  const [allMatches, setAllMatches] = useState<any[]>([]);
-  const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
-  const players = usePlayers();
-
-  const handlePlayerPress = async (player: Player) => {
-    setSelectedPlayer(player);
-    setPlayerModalVisible(true);
-    setActiveTab('stats');
-    const matches = await getMatchesForUser(String(player.id), 5);
-    setRecentMatches(matches);
-  };
-
-  const handleShowAllMatches = async () => {
-    if (selectedPlayer) {
-      const matches = await getMatchesForUser(String(selectedPlayer.id));
-      setAllMatches(matches);
-      setShowAllMatchesModal(true);
-    }
   };
 
   return (
     <>
       <View style={finishStyles.root}>
         <View style={finishStyles.playerColumn}>
-          <TouchableOpacity onPress={() => player1 && handlePlayerPress(player1)}>
+          <TouchableOpacity onPress={() => player1 && onPlayerPress(player1)}>
             <View style={finishStyles.cardShadow}>
-              <Image source={player1?.avatar} style={finishStyles.avatar} />
+              {player1?.avatar && (
+                <Image source={player1.avatar} style={finishStyles.avatar} />
+              )}
               <Text style={finishStyles.playerName}>{player1?.name}</Text>
               <Text style={finishStyles.score}>{scorePlayer1}</Text>
             </View>
@@ -69,11 +74,15 @@ export function finishScreen() {
           {formattedTime && (
             <Text style={finishStyles.timeUsed}>⏱ {formattedTime}</Text>
           )}
+
           <View style={finishStyles.winnerBox}>
             <Text style={finishStyles.winnerLabel}>🏆 Winner</Text>
-            <Image source={winner?.avatar} style={finishStyles.winnerAvatar} />
+            {winner?.avatar && (
+              <Image source={winner.avatar} style={finishStyles.winnerAvatar} />
+            )}
             <Text style={finishStyles.winnerName}>{winner?.name}</Text>
           </View>
+
           <TouchableOpacity
             style={finishStyles.leaderboardBtn}
             onPress={goToLeaderboard}
@@ -84,9 +93,11 @@ export function finishScreen() {
         </View>
 
         <View style={finishStyles.playerColumn}>
-          <TouchableOpacity onPress={() => player2 && handlePlayerPress(player2)}>
+          <TouchableOpacity onPress={() => player2 && onPlayerPress(player2)}>
             <View style={finishStyles.cardShadow}>
-              <Image source={player2?.avatar} style={finishStyles.avatar} />
+              {player2?.avatar && (
+                <Image source={player2.avatar} style={finishStyles.avatar} />
+              )}
               <Text style={finishStyles.playerName}>{player2?.name}</Text>
               <Text style={finishStyles.score}>{scorePlayer2}</Text>
             </View>
@@ -95,7 +106,7 @@ export function finishScreen() {
       </View>
       <LeaderboardPlayerModal
         visible={playerModalVisible}
-        onClose={() => setPlayerModalVisible(false)}
+        onClose={closeModal}
         selectedPlayer={selectedPlayer}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
