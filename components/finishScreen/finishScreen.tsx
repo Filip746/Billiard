@@ -8,7 +8,7 @@ import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlay
 import { finishStyles } from './finishStyles';
 import { useFinishScreen } from './useFinishScreen';
 
-export function FinishScreen() {
+export function finishScreen() {
   const {
     player1,
     player2,
