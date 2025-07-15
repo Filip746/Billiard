@@ -1,4 +1,4 @@
-import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
+import { usePlayerModal } from '@/hooks/usePlayerModal';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
@@ -9,30 +9,28 @@ import { useLeaderboard } from './useLeaderboard';
 
 export default function LeaderboardScreen() {
   const { leaderboard, loading } = useLeaderboard();
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [recentMatches, setRecentMatches] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'stats' | 'about'>('stats');
-  const [allMatches, setAllMatches] = useState<any[]>([]);
-  const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
   const players = usePlayers();
   const [searchText, setSearchText] = useState('');
+
+  const {
+    selectedPlayer,
+    recentMatches,
+    allMatches,
+    activeTab,
+    setActiveTab,
+    showAllMatchesModal,
+    setShowAllMatchesModal,
+    handlePlayerPress,
+    handleShowAllMatches,
+  } = usePlayerModal(players);
   
   const handleNamePress = async (entry: LeaderboardEntry) => {
-    const player = players.find(p => p.id === Number(entry.id) || p.name === entry.name) ?? null;
-    setSelectedPlayer(player);
+    const player = players.find(
+      p => p.id === Number(entry.id) || p.name === entry.name
+    );
+    if (player) await handlePlayerPress(player);
     setModalVisible(true);
-    const matches = await getMatchesForUser(entry.id, 5);
-    setRecentMatches(matches);
-    setActiveTab('stats');
-  };
-
-  const handleShowAllMatches = async () => {
-    if (selectedPlayer) {
-      const matches = await getMatchesForUser(String(selectedPlayer.id));
-      setAllMatches(matches);
-      setShowAllMatchesModal(true);
-    }
   };
   
   const filteredLeaderboard = leaderboard.filter(player =>

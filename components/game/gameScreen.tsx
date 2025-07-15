@@ -1,6 +1,6 @@
 import { billiard } from '@/const/images';
 import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
-import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
+import { usePlayerModal } from '@/hooks/usePlayerModal';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import React, { useState } from 'react';
@@ -32,27 +32,19 @@ export function gameScreen() {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [activeTab, setActiveTab] = useState<'stats' | 'about'>('stats');
-  const [recentMatches, setRecentMatches] = useState<any[]>([]);
-  const [allMatches, setAllMatches] = useState<any[]>([]);
-  const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
   const players = usePlayers();
 
-  const handlePlayerPress = async (player: Player) => {
-    setSelectedPlayer(player);
-    setPlayerModalVisible(true);
-    setActiveTab('stats');
-    const matches = await getMatchesForUser(String(player.id), 5);
-    setRecentMatches(matches);
-  };
-  const handleShowAllMatches = async () => {
-    if (selectedPlayer) {
-      const matches = await getMatchesForUser(String(selectedPlayer.id));
-      setAllMatches(matches);
-      setShowAllMatchesModal(true);
-    }
-  };
+  const {
+    selectedPlayer,
+    recentMatches,
+    allMatches,
+    activeTab,
+    setActiveTab,
+    showAllMatchesModal,
+    setShowAllMatchesModal,
+    handlePlayerPress,
+    handleShowAllMatches,
+  } = usePlayerModal(players);
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
