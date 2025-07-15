@@ -1,7 +1,7 @@
 import { db } from '@/lib/firebase';
 import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 
-export async function fetchMatchesPage(pageSize = 10, lastDoc = null) {
+export async function fetchMatchesPage(pageSize = 10, lastDoc = null, all = false) {
   let q = query(
     collection(db, 'matches'),
     orderBy('createdAt', 'desc'),
@@ -13,6 +13,12 @@ export async function fetchMatchesPage(pageSize = 10, lastDoc = null) {
       orderBy('createdAt', 'desc'),
       startAfter(lastDoc),
       limit(pageSize)
+    );
+  }
+  if (all) {
+    q = query(
+      collection(db, 'matches'),
+      orderBy('createdAt', 'desc'),
     );
   }
   const snapshot = await getDocs(q);

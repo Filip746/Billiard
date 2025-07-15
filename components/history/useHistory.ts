@@ -39,11 +39,21 @@ export function useHistory(pageSize: number = 10) {
     setFetchingMore(false);
   };
 
+  const loadAllMatches = async () => {
+    setLoading(true);
+    const res = await fetchMatchesPage(5000, null, true);
+    setMatches(res.matches);
+    setLastDoc(res.lastDoc);
+    setHasMore(false);
+    setLoading(false);
+  };
+
   return {
     matches,
     loading,
     fetchingMore,
     hasMore,
     loadMore,
+    loadAllMatches,
   };
 }

@@ -1,14 +1,39 @@
 import { usePlayers } from '@/lib/usePlayers';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { historyStyles } from './historyStyles';
 import { useHistory } from './useHistory';
 
 export function historyScreen() {
-  const { matches, loading, fetchingMore, hasMore, loadMore } = useHistory();
+  const [searchText, setSearchText] = useState('');
+  const [dateText, setDateText] = useState('');
+  const { matches, loading, fetchingMore, hasMore, loadMore, loadAllMatches  } = useHistory();
   const players = usePlayers();
   const router = useRouter();
+
+  useEffect(() => {
+    if ((searchText.trim().length > 0 || dateText.trim().length > 0) && hasMore) {
+      loadAllMatches();
+    }
+  }, [searchText, dateText]);
+
+  const filteredMatches = matches.filter(item => {
+    const player1 = players.find(p => p.id === Number(item.player1Id));
+    const player2 = players.find(p => p.id === Number(item.player2Id));
+    const playerNames = [player1?.name || '', player2?.name || ''].join(' ').toLowerCase();
+    const dateStr =
+      typeof item.createdAt === 'object' && item.createdAt.seconds
+        ? new Date(item.createdAt.seconds * 1000).toLocaleDateString()
+        : item.createdAt || item.date || '';
+    const nameMatch =
+      searchText.trim().length === 0 ||
+      playerNames.includes(searchText.trim().toLowerCase());
+    const dateMatch =
+      dateText.trim().length === 0 ||
+      dateStr.includes(dateText.trim());
+    return nameMatch && dateMatch;
+  });
 
   const renderItem = ({ item }: { item: any }) => {
     const player1 = players.find(p => p.id === Number(item.player1Id));
@@ -48,12 +73,26 @@ export function historyScreen() {
 
   return (
     <View style={historyStyles.container}>
-      <Text style={historyStyles.title}>Match History</Text>
+      <View style={historyStyles.searchHeaderContainer}>
+        <TextInput
+          style={historyStyles.searchInput}
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="Pretraži po imenu"
+        />
+        <TextInput
+          style={historyStyles.dateInput}
+          value={dateText}
+          onChangeText={setDateText}
+          placeholder="Datum (npr. 15. 07. 2025)"
+        />
+        <Text style={historyStyles.title}>Match History</Text>
+      </View>
       {loading ? (
         <ActivityIndicator size="large" color="#1976d2" style={{ marginTop: 40 }} />
       ) : (
         <FlatList
-          data={matches}
+          data={filteredMatches}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           onEndReached={hasMore ? loadMore : undefined}
