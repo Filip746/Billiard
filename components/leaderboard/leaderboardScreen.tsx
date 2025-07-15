@@ -1,6 +1,7 @@
 import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
+import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 import { leaderboardStyles } from './leaderboardStyles';
@@ -15,7 +16,8 @@ export default function LeaderboardScreen() {
   const [allMatches, setAllMatches] = useState<any[]>([]);
   const [showAllMatchesModal, setShowAllMatchesModal] = useState(false);
   const players = usePlayers();
-
+  const [searchText, setSearchText] = useState('');
+  
   const handleNamePress = async (entry: LeaderboardEntry) => {
     const player = players.find(p => p.id === Number(entry.id) || p.name === entry.name) ?? null;
     setSelectedPlayer(player);
@@ -32,17 +34,18 @@ export default function LeaderboardScreen() {
       setShowAllMatchesModal(true);
     }
   };
+  
+  const filteredLeaderboard = leaderboard.filter(player =>
+    player.name.toLowerCase().includes(searchText.trim().toLowerCase())
+  );
 
   const renderItem = ({ item, index }: { item: LeaderboardEntry; index: number }) => {
     const rank = index + 1;
     const podiumStyle =
-      rank === 1
-        ? leaderboardStyles.firstPlace
-        : rank === 2
-        ? leaderboardStyles.secondPlace
-        : rank === 3
-        ? leaderboardStyles.thirdPlace
-        : {};
+      rank === 1 ? leaderboardStyles.firstPlace
+      : rank === 2 ? leaderboardStyles.secondPlace
+      : rank === 3 ? leaderboardStyles.thirdPlace
+      : {};
 
     return (
       <View style={[leaderboardStyles.itemContainer, podiumStyle]}>
@@ -60,16 +63,22 @@ export default function LeaderboardScreen() {
     );
   };
 
+  
   return (
     <View style={leaderboardStyles.container}>
       <Text style={leaderboardStyles.title}>Leaderboard</Text>
+      <MatchSearchBar
+        searchText={searchText}
+        setSearchText={setSearchText}
+        showDateInput={false}
+      />
       {loading ? (
         <View style={leaderboardStyles.center}>
           <ActivityIndicator size="large" color="#000" />
         </View>
       ) : (
         <FlatList
-          data={leaderboard}
+          data={filteredLeaderboard}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={{ paddingBottom: 20 }}

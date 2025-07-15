@@ -1,7 +1,8 @@
 import { usePlayers } from '@/lib/usePlayers';
+import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { historyStyles } from './historyStyles';
 import { useHistory } from './useHistory';
 
@@ -73,21 +74,12 @@ export function historyScreen() {
 
   return (
     <View style={historyStyles.container}>
-      <View style={historyStyles.searchHeaderContainer}>
-        <TextInput
-          style={historyStyles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholder="Pretraži po imenu"
-        />
-        <TextInput
-          style={historyStyles.dateInput}
-          value={dateText}
-          onChangeText={setDateText}
-          placeholder="Datum (npr. 15. 07. 2025)"
-        />
-        <Text style={historyStyles.title}>Match History</Text>
-      </View>
+      <MatchSearchBar
+        searchText={searchText}
+        setSearchText={setSearchText}
+        dateText={dateText}
+        setDateText={setDateText}
+      />
       {loading ? (
         <ActivityIndicator size="large" color="#1976d2" style={{ marginTop: 40 }} />
       ) : (
