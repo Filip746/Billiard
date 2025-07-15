@@ -1,4 +1,5 @@
 import { db } from '@/lib/firebase';
+import { updateAllPlayersPoints } from '@/lib/services/updateAllPlayerPoints';
 import { usePlayers } from '@/lib/usePlayers';
 import { leaderboardAtom, leaderboardLoadingAtom } from '@/state/leaderboardAtoms';
 import { collection, getDocs } from 'firebase/firestore';
@@ -17,22 +18,19 @@ export function useLeaderboard() {
   const fetchLeaderboard = async () => {
     setLoading(true);
     try {
-      const snapshot = await getDocs(collection(db, 'users'));
-      const data: LeaderboardEntry[] = [];
+      await updateAllPlayersPoints();
+      const snapshot = await getDocs(collection(db, 'players'));
+      const data: { id: string; name: any; points: any; avatar: any; }[] = [];
 
       snapshot.forEach(docSnap => {
-        const user = docSnap.data();
-        if (!user.name) return;
-
-        const player = players.find(
-          p => p.id === user.playerId || p.name === user.name
-        );
+        const player = docSnap.data();
+        if (!player.name) return;
 
         data.push({
           id: docSnap.id,
-          name: user.name,
-          points: user.points ?? 0,
-          avatar: user.avatar || player?.avatar || null,
+          name: player.name,
+          points: player.points ?? 0,
+          avatar: player.avatar || null,
         });
       });
 

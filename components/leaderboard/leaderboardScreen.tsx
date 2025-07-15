@@ -93,7 +93,6 @@ export default function LeaderboardScreen() {
         showAllMatchesModal={showAllMatchesModal}
         setShowAllMatchesModal={setShowAllMatchesModal}
         onShowAllMatches={handleShowAllMatches}
-        players={players}
       />
     </View>
   );

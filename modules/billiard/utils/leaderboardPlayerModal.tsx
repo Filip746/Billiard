@@ -2,10 +2,23 @@ import { leaderboardModalStyles } from '@/components/leaderboard/leaderboardStyl
 import React from 'react';
 import { Image, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-type Match = {
+type RawMatch = {
+  player1Id: string;
+  player2Id: string;
+  player1Name: string;
+  player2Name: string;
+  scorePlayer1: number;
+  scorePlayer2: number;
+  createdAt: any;
+};
+
+type FormattedMatch = {
   opponentId: string;
-  result: string;
-  date: any;
+  opponentName: string;
+  scoreSelf: number;
+  scoreOpponent: number;
+  date: string;
+  win: boolean;
 };
 
 type LeaderboardPlayerModalProps = {
@@ -14,13 +27,37 @@ type LeaderboardPlayerModalProps = {
   selectedPlayer: Player | null;
   activeTab: 'stats' | 'about';
   setActiveTab: (tab: 'stats' | 'about') => void;
-  recentMatches: Match[];
-  allMatches: Match[];
+  recentMatches: RawMatch[];
+  allMatches: RawMatch[];
   showAllMatchesModal: boolean;
   setShowAllMatchesModal: (b: boolean) => void;
   onShowAllMatches: () => Promise<void>;
-  players: Player[];
 };
+
+function formatMatches(matches: RawMatch[], selectedPlayer: Player | null): FormattedMatch[] {
+  if (!selectedPlayer) return [];
+  return matches.map(match => {
+    const isPlayer1 = match.player1Id === String(selectedPlayer.id);
+    const opponentId = isPlayer1 ? match.player2Id : match.player1Id;
+    const opponentName = isPlayer1 ? match.player2Name : match.player1Name;
+    const scoreSelf = isPlayer1 ? match.scorePlayer1 : match.scorePlayer2;
+    const scoreOpponent = isPlayer1 ? match.scorePlayer2 : match.scorePlayer1;
+    let dateStr = '';
+    if (match.createdAt && typeof match.createdAt === 'object' && match.createdAt.seconds) {
+      dateStr = new Date(match.createdAt.seconds * 1000).toLocaleDateString();
+    } else if (typeof match.createdAt === 'string') {
+      dateStr = match.createdAt;
+    }
+    return {
+      opponentId,
+      opponentName,
+      scoreSelf,
+      scoreOpponent,
+      date: dateStr,
+      win: scoreSelf > scoreOpponent,
+    };
+  });
+}
 
 export function LeaderboardPlayerModal({
   visible,
@@ -33,8 +70,10 @@ export function LeaderboardPlayerModal({
   showAllMatchesModal,
   setShowAllMatchesModal,
   onShowAllMatches,
-  players,
 }: LeaderboardPlayerModalProps) {
+  const formattedRecentMatches = formatMatches(recentMatches, selectedPlayer);
+  const formattedAllMatches = formatMatches(allMatches, selectedPlayer);
+
   return (
     <Modal
       visible={visible}
@@ -67,44 +106,37 @@ export function LeaderboardPlayerModal({
           </View>
           {activeTab === 'stats' ? (
             <View style={leaderboardModalStyles.matchesList}>
-              {recentMatches.length === 0 ? (
+              {formattedRecentMatches.length === 0 ? (
                 <Text style={leaderboardModalStyles.noMatchesText}>No recent matches.</Text>
               ) : (
-                recentMatches.map((match, idx) => {
-                  const opponent = players.find(p => p.id === Number(match.opponentId));
-                  const [score1, score2] = match.result.split(' : ').map(Number);
-                  const win = score1 > score2;
-                  return (
-                    <View key={idx} style={leaderboardModalStyles.matchRow}>
-                      <Text style={leaderboardModalStyles.matchOpponent}>
-                        v {opponent?.name || 'Unknown'}
+                formattedRecentMatches.map((match, idx) => (
+                  <View key={idx} style={leaderboardModalStyles.matchRow}>
+                    <Text style={leaderboardModalStyles.matchOpponent}>
+                      v {match.opponentName || 'Unknown'}
+                    </Text>
+                    <Text style={{
+                      width: 60,
+                      textAlign: 'center',
+                      color: match.win ? '#28a745' : '#d32f2f',
+                      fontWeight: match.win ? 'bold' : '600'
+                    }}>
+                      {match.scoreSelf} : {match.scoreOpponent}
+                    </Text>
+                    <Text style={leaderboardModalStyles.matchDate}>
+                      {match.date}
+                    </Text>
+                    <View
+                      style={[
+                        leaderboardModalStyles.winLoseBox,
+                        match.win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
+                      ]}
+                    >
+                      <Text style={leaderboardModalStyles.winLoseText}>
+                        {match.win ? 'W' : 'L'}
                       </Text>
-                      <Text style={{
-                        width: 60,
-                        textAlign: 'center',
-                        color: win ? '#28a745' : '#d32f2f',
-                        fontWeight: win ? 'bold' : '600'
-                      }}>
-                        {match.result}
-                      </Text>
-                      <Text style={leaderboardModalStyles.matchDate}>
-                        {typeof match.date === 'object' && match.date.seconds
-                          ? new Date(match.date.seconds * 1000).toLocaleDateString()
-                          : match.date}
-                      </Text>
-                      <View
-                        style={[
-                          leaderboardModalStyles.winLoseBox,
-                          win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
-                        ]}
-                      >
-                        <Text style={leaderboardModalStyles.winLoseText}>
-                          {win ? 'W' : 'L'}
-                        </Text>
-                      </View>
                     </View>
-                  );
-                })
+                  </View>
+                ))
               )}
             </View>
           ) : (
@@ -141,47 +173,35 @@ export function LeaderboardPlayerModal({
                 <Text style={[leaderboardModalStyles.playerName, { marginBottom: 12 }]}>All Matches</Text>
                 <View style={{ width: '100%', maxHeight: '85%' }}>
                   <ScrollView>
-                    {allMatches.length === 0 ? (
+                    {formattedAllMatches.length === 0 ? (
                       <Text style={leaderboardModalStyles.noMatchesText}>No matches found.</Text>
                     ) : (
-                      allMatches.map((match, idx) => {
-                        const opponent = players.find(p => p.id === Number(match.opponentId));
-                        const [score1, score2] = match.result.split(' : ').map(Number);
-                        const win = score1 > score2;
-                        let dateStr = match.date;
-                        if (typeof dateStr === 'object' && dateStr.seconds) {
-                          const d = new Date(dateStr.seconds * 1000);
-                          dateStr = d.toLocaleDateString();
-                        }
-                        return (
-                          <View key={idx} style={leaderboardModalStyles.matchRow}>
-                            <Text style={leaderboardModalStyles.matchOpponent}>
-                              v {opponent?.name || 'Unknown'}
+                      formattedAllMatches.map((match, idx) => (
+                        <View key={idx} style={leaderboardModalStyles.matchRow}>
+                          <Text style={leaderboardModalStyles.matchOpponent}>
+                            v {match.opponentName || 'Unknown'}
+                          </Text>
+                          <Text style={{
+                            width: 60,
+                            textAlign: 'center',
+                            color: match.win ? '#28a745' : '#d32f2f',
+                            fontWeight: match.win ? 'bold' : '600'
+                          }}>
+                            {match.scoreSelf} : {match.scoreOpponent}
+                          </Text>
+                          <Text style={leaderboardModalStyles.matchDate}>{match.date}</Text>
+                          <View
+                            style={[
+                              leaderboardModalStyles.winLoseBox,
+                              match.win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
+                            ]}
+                          >
+                            <Text style={leaderboardModalStyles.winLoseText}>
+                              {match.win ? 'W' : 'L'}
                             </Text>
-                            <Text style={{
-                              width: 60,
-                              textAlign: 'center',
-                              color: win ? '#28a745' : '#d32f2f',
-                              fontWeight: win ? 'bold' : '600'
-                            }}>
-                              {match.result}
-                            </Text>
-                            <Text style={leaderboardModalStyles.matchDate}>
-                              {dateStr}
-                            </Text>
-                            <View
-                              style={[
-                                leaderboardModalStyles.winLoseBox,
-                                win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
-                              ]}
-                            >
-                              <Text style={leaderboardModalStyles.winLoseText}>
-                                {win ? 'W' : 'L'}
-                              </Text>
-                            </View>
                           </View>
-                        );
-                      })
+                        </View>
+                      ))
                     )}
                   </ScrollView>
                 </View>

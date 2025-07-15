@@ -1,5 +1,4 @@
 import { useCountdown } from '@/hooks/useCountdown';
-import { addMatchForUser } from '@/lib/addMatchForUser';
 import { addMatch } from '@/lib/services/addMatch';
 import { usePlayers } from '@/lib/usePlayers';
 import {
@@ -59,26 +58,6 @@ export function useGameLogic() {
         scorePlayer2,
         timeUsedMs: timeUsed,
       });
-
-      const today = new Date();
-      const dateString = `${today.getDate()}. ${today.getMonth()}. ${today.getFullYear()}.`;
-
-      await addMatchForUser(
-        String(selectedPlayer1),
-        player1?.name || '',
-        String(selectedPlayer2),
-        `${scorePlayer1} : ${scorePlayer2}`,
-        dateString,
-        players
-      );
-      await addMatchForUser(
-        String(selectedPlayer2),
-        player2?.name || '',
-        String(selectedPlayer1),
-        `${scorePlayer2} : ${scorePlayer1}`,
-        dateString,
-        players
-      );
     } catch (error) {
       console.error('Error saving match:', error);
     }

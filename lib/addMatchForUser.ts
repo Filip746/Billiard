@@ -1,44 +1,24 @@
 import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDocs, updateDoc } from 'firebase/firestore';
 
-export async function addMatchForUser(
-  userId: string,
-  userName: string,
-  opponentId: string,
-  result: string,
-  dateString: string,
-  players: Player[]
-) {
-  const userRef = doc(db, 'users', userId);
+export async function addMatchForUser(playerId: number) {
+  const matchesSnap = await getDocs(collection(db, 'matches'));
+  const playerMatches: DocumentData[] = [];
+  matchesSnap.forEach(doc => {
+    const m = doc.data();
+    if (m.player1Id == playerId.toString() || m.player2Id == playerId.toString())
+      playerMatches.push(m);
+  });
 
-  const player = players.find(p => p.id === Number(userId));
-  const playerId = player?.id || null;
-
-  await setDoc(userRef, { name: userName, playerId }, { merge: true });
-
-  const userSnap = await getDoc(userRef);
-  let matches = userSnap.exists() && userSnap.data().matches ? userSnap.data().matches : [];
-
-  const newMatch = {
-    opponentId,
-    result,
-    date: dateString,
-  };
-
-  matches = [...matches, newMatch];
-
-  const wins = matches.reduce((acc: number, match: any) => {
-    if (!match.result) return acc;
-    const [score1, score2] = match.result.split(' : ').map(Number);
-    return score1 > score2 ? acc + 1 : acc;
+  const wins = playerMatches.reduce((acc, match) => {
+    let result = 0;
+    if (match.player1Id == playerId.toString() && match.scorePlayer1 > match.scorePlayer2) result = 1;
+    if (match.player2Id == playerId.toString() && match.scorePlayer2 > match.scorePlayer1) result = 1;
+    return acc + result;
   }, 0);
 
-  const totalMatches = matches.length;
+  const total = playerMatches.length;
+  const points = total > 0 ? wins / total : 0;
 
-  const points = totalMatches > 0 ? wins / totalMatches : 0;
-
-  await updateDoc(userRef, {
-    matches,
-    points,
-  });
+  await updateDoc(doc(db, 'players', playerId.toString()), { points });
 }

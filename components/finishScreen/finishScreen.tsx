@@ -115,7 +115,6 @@ export function finishScreen() {
         showAllMatchesModal={showAllMatchesModal}
         setShowAllMatchesModal={setShowAllMatchesModal}
         onShowAllMatches={handleShowAllMatches}
-        players={players}
       />
     </>
   );
