@@ -1,5 +1,5 @@
-import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
+import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
+import { MatchSearchBar } from '@/shared/components/common/matchSearchBar';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import React, { useEffect, useRef, useState } from 'react';

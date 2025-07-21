@@ -1,4 +1,4 @@
-import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
+import { MatchSearchBar } from '@/shared/components/common/matchSearchBar';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';

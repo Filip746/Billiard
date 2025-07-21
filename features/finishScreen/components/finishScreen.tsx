@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 
-import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
+import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import { useFinishScreen } from '../hooks/useFinishScreen';

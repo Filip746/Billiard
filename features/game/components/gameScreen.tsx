@@ -1,5 +1,5 @@
 import { billiard } from '@/const/images';
-import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
+import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
 import { ScoreSnapScroll } from '@/shared/hooks/scoreSnapScroll';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
