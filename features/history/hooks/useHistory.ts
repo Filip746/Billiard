@@ -1,11 +1,11 @@
-import { fetchMatchesPage } from '@/lib/services/fetchMatchesPage';
 import {
   fetchingMoreAtom,
   hasMoreAtom,
   lastDocAtom,
   loadingAtom,
   matchesAtom,
-} from '@/state/historyAtoms';
+} from '@/features/history/state/historyAtoms';
+import { fetchMatchesPage } from '@/lib/services/fetchMatchesPage';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 

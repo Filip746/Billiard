@@ -12,8 +12,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { historyStyles } from './historyStyles';
-import { useHistory } from './useHistory';
+import { useHistory } from '../hooks/useHistory';
+import { historyStyles } from '../styles/historyStyles';
 
 const MatchItem = React.memo(({ item, index, players, router }: { 
   item: any; 

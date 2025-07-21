@@ -1,4 +1,4 @@
-import { historyStyles } from '@/components/history/historyStyles';
+import { historyStyles } from '@/features/history/styles/historyStyles';
 import React from 'react';
 import { TextInput, View } from 'react-native';
 

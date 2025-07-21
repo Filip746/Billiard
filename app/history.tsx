@@ -1,3 +1,3 @@
-import { historyScreen } from "@/components/history/historyScreen";
+import { historyScreen } from "@/features/history/components/historyScreen";
 
 export default historyScreen;
