@@ -9,7 +9,7 @@ import {
   selectedMinutesAtom,
   selectedPlayer1Atom,
   selectedPlayer2Atom,
-} from '@/state/playerSelectionAtoms';
+} from '@/features/playerSelection/state/playerSelectionAtoms';
 import { useRouter } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';

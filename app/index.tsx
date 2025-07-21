@@ -1,4 +1,4 @@
-import { PlayerSelection } from '@/components/playerSelection/playerSelection';
+import { PlayerSelection } from '@/features/playerSelection';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';

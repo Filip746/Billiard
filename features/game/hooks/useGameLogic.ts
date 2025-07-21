@@ -3,16 +3,16 @@ import {
   scorePlayer1Atom,
   scorePlayer2Atom,
 } from '@/features/game/state/gameAtoms';
-import { useCountdown } from '@/hooks/useCountdown';
-import { addMatch } from '@/lib/services/addMatch';
-import { usePlayers } from '@/lib/usePlayers';
 import {
   endTimeAtom,
   scoreLimitAtom,
   selectedMinutesAtom,
   selectedPlayer1Atom,
   selectedPlayer2Atom,
-} from '@/state/playerSelectionAtoms';
+} from '@/features/playerSelection/state/playerSelectionAtoms';
+import { useCountdown } from '@/hooks/useCountdown';
+import { addMatch } from '@/lib/services/addMatch';
+import { usePlayers } from '@/lib/usePlayers';
 import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 
