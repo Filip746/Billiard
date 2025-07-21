@@ -1,5 +1,4 @@
-export * from '../playerSelection/components';
-export * from '../playerSelection/hooks';
-export * from '../playerSelection/state';
-export * from '../playerSelection/styles';
+export * from '../finishScreen/components';
+export * from '../finishScreen/hooks';
+export * from '../finishScreen/styles';
 
