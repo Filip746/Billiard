@@ -200,7 +200,13 @@ export function gameScreen() {
         >
           <View style={gameStyles.scoreSnapRow}>
             <View style={gameStyles.scoreSnapColumn}>
-              <ScoreSnapScroll value={scorePlayer1} onChange={setScorePlayer1} max={Number(scoreLimit)} />
+              <ScoreSnapScroll
+                value={scorePlayer1}
+                onChange={setScorePlayer1}
+                min={0}
+                max={Number(scoreLimit)}
+                itemHeight={90}
+              />
               <Text style={gameStyles.playerLabel}>Player 1</Text>
             </View>
             
@@ -227,7 +233,13 @@ export function gameScreen() {
             </View>
             
             <View style={gameStyles.scoreSnapColumn}>
-              <ScoreSnapScroll value={scorePlayer2} onChange={setScorePlayer2} max={Number(scoreLimit)} />
+              <ScoreSnapScroll
+                value={scorePlayer2}
+                onChange={setScorePlayer2}
+                min={0}
+                max={Number(scoreLimit)}
+                itemHeight={90}
+              />
               <Text style={gameStyles.playerLabel}>Player 2</Text>
             </View>
           </View>

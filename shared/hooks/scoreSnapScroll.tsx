@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Dimensions, FlatList, Text, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 
 type ScoreSnapScrollProps = {
   value: number;
@@ -20,6 +20,23 @@ export function ScoreSnapScroll({
   const scoreRange = Array.from({ length: max - min + 1 }, (_, i) => i + min);
   const screenHeight = Dimensions.get('window').height;
   const paddingVertical = (screenHeight - itemHeight) / 2;
+  
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.spring(pulseAnim, {
+        toValue: 1.2,
+        friction: 3,
+        useNativeDriver: true,
+      }),
+      Animated.spring(pulseAnim, {
+        toValue: 1,
+        friction: 3,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [value]);
 
   return (
     <FlatList
@@ -29,57 +46,76 @@ export function ScoreSnapScroll({
       snapToInterval={itemHeight}
       snapToAlignment="center"
       decelerationRate="fast"
-      contentContainerStyle={{ alignItems: 'center', paddingVertical }}
+      contentContainerStyle={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical,
+      }}
       getItemLayout={(_, index) => ({
         length: itemHeight,
         offset: itemHeight * index,
         index,
       })}
-      renderItem={({ item }) => (
-        <View
-          style={{
-            width: 70,
-            height: itemHeight,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <View
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 16,
-              backgroundColor: value === item ? '#e3f0ff' : '#f2f2f2',
-              borderWidth: value === item ? 3 : 1,
-              borderColor: value === item ? '#007AFF' : '#ddd',
-              justifyContent: 'center',
-              alignItems: 'center',
-              shadowColor: value === item ? '#007AFF' : '#000',
-              shadowOffset: { width: 0, height: value === item ? 4 : 1 },
-              shadowOpacity: value === item ? 0.18 : 0.07,
-              shadowRadius: value === item ? 8 : 2,
-              elevation: value === item ? 6 : 1,
-              marginVertical: 2,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 28,
-                fontWeight: value === item ? 'bold' : '600',
-                color: value === item ? '#007AFF' : '#888',
-              }}
-            >
-              {item}
-            </Text>
-          </View>
-        </View>
-      )}
+      keyExtractor={item => item.toString()}
+      initialScrollIndex={value}
       onMomentumScrollEnd={e => {
         const index = Math.round(e.nativeEvent.contentOffset.y / itemHeight);
-        onChange(scoreRange[index]);
+        if (scoreRange[index] !== undefined) onChange(scoreRange[index]);
       }}
-      initialScrollIndex={value}
-      keyExtractor={item => item.toString()}
+      renderItem={({ item, index }) => {
+        const isSelected = value === item;
+        return (
+          <TouchableOpacity
+            style={{ 
+              width: 80, 
+              height: itemHeight,
+              justifyContent: 'center', 
+              alignItems: 'center' 
+            }}
+            activeOpacity={isSelected ? 1 : 0.7}
+            onPress={() => {
+              if (!isSelected) {
+                flatListRef.current?.scrollToIndex({ index, animated: true });
+                onChange(item);
+              }
+            }}
+          >
+            <Animated.View
+              style={{
+                width: isSelected ? 66 : 52,
+                height: isSelected ? 66 : 52,
+                borderRadius: 18,
+                backgroundColor: isSelected ? '#4fd1c580' : '#f2f7fb',
+                borderWidth: isSelected ? 3.5 : 1.5,
+                borderColor: isSelected ? '#007AFF' : '#dae6fa',
+                shadowColor: isSelected ? '#007AFF' : '#b6c3e3',
+                shadowOpacity: isSelected ? 0.2 : 0.08,
+                shadowOffset: { width: 0, height: isSelected ? 7 : 2 },
+                shadowRadius: isSelected ? 12 : 3,
+                elevation: isSelected ? 8 : 2,
+                transform: [{ scale: isSelected ? pulseAnim : 1 }],
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginVertical: 2,
+              }}
+            >
+              <Animated.Text
+                style={{
+                  fontSize: isSelected ? 32 : 22,
+                  fontWeight: isSelected ? 'bold' : '700',
+                  color: isSelected ? '#0c50b6' : '#b5bfd8',
+                  letterSpacing: isSelected ? 1.5 : 0.5,
+                  textShadowColor: isSelected ? '#7fc5ff33' : 'transparent',
+                  textShadowRadius: isSelected ? 7 : 0,
+                  opacity: isSelected ? 1 : 0.6,
+                }}
+              >
+                {item}
+              </Animated.Text>
+            </Animated.View>
+          </TouchableOpacity>
+        );
+      }}
     />
   );
 }
