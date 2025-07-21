@@ -1,4 +1,4 @@
-import { finishScreen } from "@/components/finishScreen/finishScreen";
+import { finishScreen } from "@/features/finishScreen/components/finishScreen";
 import { useFocusEffect } from '@react-navigation/native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React from 'react';

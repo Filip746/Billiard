@@ -13,8 +13,8 @@ import {
 import { usePlayerModal } from '@/hooks/usePlayerModal';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import { finishStyles } from './finishStyles';
-import { useFinishScreen } from './useFinishScreen';
+import { useFinishScreen } from '../hooks/useFinishScreen';
+import { finishStyles } from '../styles/finishStyles';
 
 export function finishScreen() {
   const {
