@@ -1,16 +1,7 @@
 import { avatars, images } from '@/const/images';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { ImageSourcePropType } from 'react-native';
 import { db } from '../services/firebase';
-
-export interface Player {
-  id: number;
-  name: string;
-  color: string;
-  image: ImageSourcePropType;
-  avatar: ImageSourcePropType;
-}
 
 export const usePlayers = (): Player[] => {
   const [players, setPlayers] = useState<Player[]>([]);

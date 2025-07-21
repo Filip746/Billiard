@@ -1,15 +1,15 @@
 import { db } from '@/shared/services/firebase';
 import { Match } from '@/shared/types/match';
 import {
-    addDoc,
-    collection,
-    getDocs,
-    limit,
-    orderBy,
-    query,
-    startAfter,
-    Timestamp,
-    where
+  addDoc,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  Timestamp,
+  where
 } from 'firebase/firestore';
 
 export async function addMatch(match: Omit<Match, 'createdAt'>) {

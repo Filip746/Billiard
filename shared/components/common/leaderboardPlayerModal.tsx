@@ -1,25 +1,9 @@
 import { leaderboardModalStyles } from '@/features/leaderboard/styles/leaderboardStyles';
+import { Match } from '@/shared/types/match';
+import { ViewMatch } from '@/shared/types/viewMatch';
 import React from 'react';
 import { Image, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-
-type RawMatch = {
-  player1Id: string;
-  player2Id: string;
-  player1Name: string;
-  player2Name: string;
-  scorePlayer1: number;
-  scorePlayer2: number;
-  createdAt: any;
-};
-
-type FormattedMatch = {
-  opponentId: string;
-  opponentName: string;
-  scoreSelf: number;
-  scoreOpponent: number;
-  date: string;
-  win: boolean;
-};
+import { MatchList } from './matchList';
 
 type LeaderboardPlayerModalProps = {
   visible: boolean;
@@ -27,14 +11,14 @@ type LeaderboardPlayerModalProps = {
   selectedPlayer: Player | null;
   activeTab: 'stats' | 'about';
   setActiveTab: (tab: 'stats' | 'about') => void;
-  recentMatches: RawMatch[];
-  allMatches: RawMatch[];
+  recentMatches: Match[];
+  allMatches: Match[];
   showAllMatchesModal: boolean;
   setShowAllMatchesModal: (b: boolean) => void;
   onShowAllMatches: () => Promise<void>;
 };
 
-function formatMatches(matches: RawMatch[], selectedPlayer: Player | null): FormattedMatch[] {
+function formatMatches(matches: Match[], selectedPlayer: Player | null): ViewMatch[] {
   if (!selectedPlayer) return [];
   return matches.map(match => {
     const isPlayer1 = match.player1Id === String(selectedPlayer.id);
@@ -92,6 +76,8 @@ export function LeaderboardPlayerModal({
             <View style={leaderboardModalStyles.profileCircle} />
           )}
           <Text style={leaderboardModalStyles.playerName}>{selectedPlayer?.name}</Text>
+
+          {/* Tabs */}
           <View style={leaderboardModalStyles.tabRow}>
             <TouchableOpacity onPress={() => setActiveTab('stats')} style={{ flex: 1 }}>
               <Text style={activeTab === 'stats' ? leaderboardModalStyles.tabActive : leaderboardModalStyles.tabInactive}>
@@ -104,40 +90,11 @@ export function LeaderboardPlayerModal({
               </Text>
             </TouchableOpacity>
           </View>
+
+          {/* Tab sadržaj */}
           {activeTab === 'stats' ? (
             <View style={leaderboardModalStyles.matchesList}>
-              {formattedRecentMatches.length === 0 ? (
-                <Text style={leaderboardModalStyles.noMatchesText}>No recent matches.</Text>
-              ) : (
-                formattedRecentMatches.map((match, idx) => (
-                  <View key={idx} style={leaderboardModalStyles.matchRow}>
-                    <Text style={leaderboardModalStyles.matchOpponent}>
-                      v {match.opponentName || 'Unknown'}
-                    </Text>
-                    <Text style={{
-                      width: 60,
-                      textAlign: 'center',
-                      color: match.win ? '#28a745' : '#d32f2f',
-                      fontWeight: match.win ? 'bold' : '600'
-                    }}>
-                      {match.scoreSelf} : {match.scoreOpponent}
-                    </Text>
-                    <Text style={leaderboardModalStyles.matchDate}>
-                      {match.date}
-                    </Text>
-                    <View
-                      style={[
-                        leaderboardModalStyles.winLoseBox,
-                        match.win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
-                      ]}
-                    >
-                      <Text style={leaderboardModalStyles.winLoseText}>
-                        {match.win ? 'W' : 'L'}
-                      </Text>
-                    </View>
-                  </View>
-                ))
-              )}
+              <MatchList matches={formattedRecentMatches} emptyText="No recent matches." />
             </View>
           ) : (
             <View style={{ width: '100%', marginTop: 20, alignItems: 'center' }}>
@@ -156,6 +113,7 @@ export function LeaderboardPlayerModal({
             </View>
           )}
 
+          {/* Modal za sve utakmice */}
           <Modal
             visible={showAllMatchesModal}
             transparent
@@ -173,36 +131,7 @@ export function LeaderboardPlayerModal({
                 <Text style={[leaderboardModalStyles.playerName, { marginBottom: 12 }]}>All Matches</Text>
                 <View style={{ width: '100%', maxHeight: '85%' }}>
                   <ScrollView>
-                    {formattedAllMatches.length === 0 ? (
-                      <Text style={leaderboardModalStyles.noMatchesText}>No matches found.</Text>
-                    ) : (
-                      formattedAllMatches.map((match, idx) => (
-                        <View key={idx} style={leaderboardModalStyles.matchRow}>
-                          <Text style={leaderboardModalStyles.matchOpponent}>
-                            v {match.opponentName || 'Unknown'}
-                          </Text>
-                          <Text style={{
-                            width: 60,
-                            textAlign: 'center',
-                            color: match.win ? '#28a745' : '#d32f2f',
-                            fontWeight: match.win ? 'bold' : '600'
-                          }}>
-                            {match.scoreSelf} : {match.scoreOpponent}
-                          </Text>
-                          <Text style={leaderboardModalStyles.matchDate}>{match.date}</Text>
-                          <View
-                            style={[
-                              leaderboardModalStyles.winLoseBox,
-                              match.win ? leaderboardModalStyles.win : leaderboardModalStyles.lose,
-                            ]}
-                          >
-                            <Text style={leaderboardModalStyles.winLoseText}>
-                              {match.win ? 'W' : 'L'}
-                            </Text>
-                          </View>
-                        </View>
-                      ))
-                    )}
+                    <MatchList matches={formattedAllMatches} emptyText="No matches found." />
                   </ScrollView>
                 </View>
               </View>
