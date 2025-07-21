@@ -14,8 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { gameStyles } from './gameStyles';
-import { useGameLogic } from './useGameLogic';
+import { useGameLogic } from '../hooks/useGameLogic';
+import { gameStyles } from '../styles/gameStyles';
 
 export function gameScreen() {
   const {

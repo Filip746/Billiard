@@ -1,11 +1,11 @@
-import { useCountdown } from '@/hooks/useCountdown';
-import { addMatch } from '@/lib/services/addMatch';
-import { usePlayers } from '@/lib/usePlayers';
 import {
   elapsedTimeAtom,
   scorePlayer1Atom,
   scorePlayer2Atom,
-} from '@/state/gameAtoms';
+} from '@/features/game/state/gameAtoms';
+import { useCountdown } from '@/hooks/useCountdown';
+import { addMatch } from '@/lib/services/addMatch';
+import { usePlayers } from '@/lib/usePlayers';
 import {
   endTimeAtom,
   scoreLimitAtom,

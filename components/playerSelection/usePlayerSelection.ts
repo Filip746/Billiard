@@ -2,7 +2,7 @@ import {
   elapsedTimeAtom,
   scorePlayer1Atom,
   scorePlayer2Atom,
-} from '@/state/gameAtoms';
+} from '@/features/game/state/gameAtoms';
 import {
   endTimeAtom,
   scoreLimitAtom,

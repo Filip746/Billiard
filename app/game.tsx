@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React from 'react';
-import { gameScreen } from "../components/game/gameScreen";
+import { gameScreen } from "../features/game/components/gameScreen";
 
 export default function Game() {
   useFocusEffect(

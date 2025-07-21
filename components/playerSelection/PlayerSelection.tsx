@@ -14,6 +14,12 @@ import {
 import { playerStyles } from './playerStyles';
 import { usePlayerSelection } from './usePlayerSelection';
 
+const MAX_MINUTES = 60;
+
+const timeOptions = Array.from(
+  { length: MAX_MINUTES / 5 },
+  (_, i) => (i + 1) * 5
+);
 
 export function PlayerSelection() {
   const {
@@ -229,14 +235,17 @@ export function PlayerSelection() {
               style={playerStyles.picker}
             >
               <Picker.Item label="Select time limit" value={null} />
-              <Picker.Item label="5 minutes" value={5} />
-              <Picker.Item label="10 minutes" value={10} />
-              <Picker.Item label="15 minutes" value={15} />
-              <Picker.Item label="20 minutes" value={20} />
+              {timeOptions.map(minutes => (
+                <Picker.Item
+                  key={minutes}
+                  label={`${minutes} minutes`}
+                  value={minutes}
+                />
+              ))}
             </Picker>
           </View>
         </View>
-
+        
         <View style={playerStyles.pickerContainer}>
           <Text style={playerStyles.pickerLabel}>🎯 Score Limit</Text>
           <View style={playerStyles.pickerWrapper}>
