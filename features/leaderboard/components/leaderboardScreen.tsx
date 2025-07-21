@@ -1,7 +1,7 @@
-import { usePlayerModal } from '@/hooks/usePlayerModal';
-import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
 import { MatchSearchBar } from '@/modules/billiard/utils/matchSearchBar';
+import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
+import { usePlayers } from '@/shared/hooks/usePlayers';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,

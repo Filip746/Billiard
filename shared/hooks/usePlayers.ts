@@ -2,7 +2,7 @@ import { avatars, images } from '@/const/images';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
-import { db } from './firebase';
+import { db } from '../services/firebase';
 
 export interface Player {
   id: number;

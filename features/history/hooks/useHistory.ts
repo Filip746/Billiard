@@ -5,7 +5,7 @@ import {
   loadingAtom,
   matchesAtom,
 } from '@/features/history/state/historyAtoms';
-import { fetchMatchesPage } from '@/lib/services/fetchMatchesPage';
+import { fetchMatchesPage } from '@/shared/services/matchService';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 

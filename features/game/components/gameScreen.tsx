@@ -1,8 +1,8 @@
 import { billiard } from '@/const/images';
-import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
-import { usePlayerModal } from '@/hooks/usePlayerModal';
-import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
+import { ScoreSnapScroll } from '@/shared/hooks/scoreSnapScroll';
+import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
+import { usePlayers } from '@/shared/hooks/usePlayers';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,

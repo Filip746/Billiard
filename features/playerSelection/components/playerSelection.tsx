@@ -1,4 +1,4 @@
-import { usePlayers } from '@/lib/usePlayers';
+import { usePlayers } from '@/shared/hooks/usePlayers';
 import { Picker } from '@react-native-picker/picker';
 import { router } from 'expo-router';
 import React, { useEffect, useRef } from 'react';

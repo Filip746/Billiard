@@ -1,5 +1,5 @@
-import { getMatchesForUser } from '@/lib/services/getMatchesForUser';
 import { useState } from 'react';
+import { getMatchesForUser } from '../services/matchService';
 
 export function usePlayerModal(players: Player[]) {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);

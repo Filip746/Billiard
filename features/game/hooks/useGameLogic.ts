@@ -10,9 +10,9 @@ import {
   selectedPlayer1Atom,
   selectedPlayer2Atom,
 } from '@/features/playerSelection/state/playerSelectionAtoms';
-import { useCountdown } from '@/hooks/useCountdown';
-import { addMatch } from '@/lib/services/addMatch';
-import { usePlayers } from '@/lib/usePlayers';
+import { useCountdown } from '@/shared/hooks/useCountdown';
+import { usePlayers } from '@/shared/hooks/usePlayers';
+import { addMatch } from '@/shared/services/matchService';
 import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 

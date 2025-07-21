@@ -1,4 +1,4 @@
-import { db } from '@/lib/firebase';
+import { db } from '@/shared/services/firebase';
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 
 export async function updateAllPlayersPoints() {
