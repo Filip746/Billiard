@@ -1,3 +1,3 @@
-import leaderboardScreen from "@/components/leaderboard/leaderboardScreen";
+import { leaderboardScreen } from "@/features/leaderboard/components/leaderboardScreen";
 
 export default leaderboardScreen;

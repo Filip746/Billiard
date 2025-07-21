@@ -13,11 +13,11 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { leaderboardStyles } from './leaderboardStyles';
-import { useLeaderboard } from './useLeaderboard';
+import { useLeaderboard } from '../hooks/useLeaderboard';
+import { leaderboardStyles } from '../styles/leaderboardStyles';
 
 
-export default function LeaderboardScreen() {
+export function leaderboardScreen() {
   const { leaderboard, loading } = useLeaderboard();
   const [isModalVisible, setModalVisible] = useState(false);
   const players = usePlayers();

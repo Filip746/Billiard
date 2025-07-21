@@ -1,8 +1,8 @@
 import { avatars } from '@/const/images';
+import { leaderboardAtom, leaderboardLoadingAtom } from '@/features/leaderboard/state/leaderboardAtoms';
 import { db } from '@/lib/firebase';
 import { updateAllPlayersPoints } from '@/lib/services/updateAllPlayerPoints';
 import { usePlayers } from '@/lib/usePlayers';
-import { leaderboardAtom, leaderboardLoadingAtom } from '@/state/leaderboardAtoms';
 import { collection, getDocs } from 'firebase/firestore';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';

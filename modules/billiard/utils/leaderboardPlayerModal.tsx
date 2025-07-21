@@ -1,4 +1,4 @@
-import { leaderboardModalStyles } from '@/components/leaderboard/leaderboardStyles';
+import { leaderboardModalStyles } from '@/features/leaderboard/styles/leaderboardStyles';
 import React from 'react';
 import { Image, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
