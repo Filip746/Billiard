@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function NotFound() {
+export default function notFound() {
   const router = useRouter();
 
   const goHome = () => {
