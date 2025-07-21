@@ -274,7 +274,6 @@ export function historyScreen() {
 
   return (
     <View style={historyStyles.container}>
-      {/* Header */}
       <Animated.View 
         style={[
           historyStyles.header,
@@ -290,7 +289,6 @@ export function historyScreen() {
         </Text>
       </Animated.View>
 
-      {/* Search Bar */}
       <Animated.View 
         style={[
           historyStyles.searchContainer,
@@ -311,7 +309,6 @@ export function historyScreen() {
         />
       </Animated.View>
 
-      {/* Content */}
       {loading && matches.length === 0 ? (
         <Animated.View 
           style={[

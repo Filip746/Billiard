@@ -77,7 +77,6 @@ export function LeaderboardPlayerModal({
           )}
           <Text style={leaderboardModalStyles.playerName}>{selectedPlayer?.name}</Text>
 
-          {/* Tabs */}
           <View style={leaderboardModalStyles.tabRow}>
             <TouchableOpacity onPress={() => setActiveTab('stats')} style={{ flex: 1 }}>
               <Text style={activeTab === 'stats' ? leaderboardModalStyles.tabActive : leaderboardModalStyles.tabInactive}>
@@ -90,8 +89,6 @@ export function LeaderboardPlayerModal({
               </Text>
             </TouchableOpacity>
           </View>
-
-          {/* Tab sadržaj */}
           {activeTab === 'stats' ? (
             <View style={leaderboardModalStyles.matchesList}>
               <MatchList matches={formattedRecentMatches} emptyText="No recent matches." />
@@ -113,7 +110,6 @@ export function LeaderboardPlayerModal({
             </View>
           )}
 
-          {/* Modal za sve utakmice */}
           <Modal
             visible={showAllMatchesModal}
             transparent
