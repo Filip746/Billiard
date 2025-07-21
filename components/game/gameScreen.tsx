@@ -3,8 +3,10 @@ import { ScoreSnapScroll } from '@/hooks/scoreSnapScroll';
 import { usePlayerModal } from '@/hooks/usePlayerModal';
 import { usePlayers } from '@/lib/usePlayers';
 import { LeaderboardPlayerModal } from '@/modules/billiard/utils/leaderboardPlayerModal';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
+  Easing,
   Image,
   ImageBackground,
   Modal,
@@ -34,8 +36,18 @@ export function gameScreen() {
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
   const players = usePlayers();
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideLeftAnim = useRef(new Animated.Value(-100)).current;
+  const slideRightAnim = useRef(new Animated.Value(100)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const timerPulseAnim = useRef(new Animated.Value(1)).current;
+  const finishButtonAnim = useRef(new Animated.Value(0)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+
   const {
     selectedPlayer,
+    setSelectedPlayer,
     recentMatches,
     allMatches,
     activeTab,
@@ -46,26 +58,174 @@ export function gameScreen() {
     handleShowAllMatches,
   } = usePlayerModal(players);
 
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideLeftAnim, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.bounce),
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideRightAnim, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.bounce),
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.bounce,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.1,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(timerPulseAnim, {
+          toValue: 1.05,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(timerPulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    Animated.loop(
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 4000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, []);
+
+  useEffect(() => {
+    if (shouldShowFinish) {
+      Animated.spring(finishButtonAnim, {
+        toValue: 1,
+        tension: 100,
+        friction: 8,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      finishButtonAnim.setValue(0);
+    }
+  }, [shouldShowFinish]);
+
+  const onPlayerPress = async (player: any) => {
+    await handlePlayerPress(player);
+    setPlayerModalVisible(true);
+  };
+
+  const closePlayerModal = () => {
+    setPlayerModalVisible(false);
+    setSelectedPlayer(null);
+  };
+
+  const spin = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  });
+
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
-      <View style={gameStyles.landscapeRow}>
-        <TouchableOpacity onPress={() => player1 && handlePlayerPress(player1)}>
-          <Image source={player1?.avatar} style={gameStyles.avatarLarge} />
-          <Text style={gameStyles.playerName}>{player1?.name}</Text>
-        </TouchableOpacity>
+      <Animated.View 
+        style={[
+          gameStyles.landscapeRow,
+          { opacity: fadeAnim }
+        ]}
+      >
+        <Animated.View
+          style={[
+            gameStyles.sidePlayer,
+            {
+              transform: [
+                { translateX: slideLeftAnim },
+                { scale: pulseAnim }
+              ]
+            }
+          ]}
+        >
+          <TouchableOpacity 
+            onPress={() => player1 && onPlayerPress(player1)}
+            activeOpacity={0.8}
+          >
+            <Animated.View style={gameStyles.playerContainer}>
+              <Image source={player1?.avatar} style={gameStyles.avatarLarge} />
+              <View style={gameStyles.playerBadge}>
+                <Text style={gameStyles.playerBadgeText}>P1</Text>
+              </View>
+            </Animated.View>
+            <Text style={gameStyles.playerName}>{player1?.name}</Text>
+          </TouchableOpacity>
+        </Animated.View>
         
-        <View style={gameStyles.centerBlock}>
+        <Animated.View 
+          style={[
+            gameStyles.centerBlock,
+            {
+              transform: [{ scale: scaleAnim }]
+            }
+          ]}
+        >
           <View style={gameStyles.scoreSnapRow}>
             <View style={gameStyles.scoreSnapColumn}>
               <ScoreSnapScroll value={scorePlayer1} onChange={setScorePlayer1} max={Number(scoreLimit)} />
               <Text style={gameStyles.playerLabel}>Player 1</Text>
             </View>
+            
             <View style={gameStyles.scoreSnapMiddle}>
-              <Text style={gameStyles.vsLarge}>:</Text>
-              <Text style={gameStyles.timerLarge}>
-                {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-              </Text>
+              <Animated.Text 
+                style={[
+                  gameStyles.vsLarge,
+                  { transform: [{ rotate: spin }] }
+                ]}
+              >
+                ⚡
+              </Animated.Text>
+              <Animated.View 
+                style={[
+                  gameStyles.timerContainer,
+                  { transform: [{ scale: timerPulseAnim }] }
+                ]}
+              >
+                <Text style={gameStyles.timerLarge}>
+                  {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+                </Text>
+                <Text style={gameStyles.timerLabel}>TIME</Text>
+              </Animated.View>
             </View>
+            
             <View style={gameStyles.scoreSnapColumn}>
               <ScoreSnapScroll value={scorePlayer2} onChange={setScorePlayer2} max={Number(scoreLimit)} />
               <Text style={gameStyles.playerLabel}>Player 2</Text>
@@ -73,20 +233,49 @@ export function gameScreen() {
           </View>
 
           {shouldShowFinish && (
-            <TouchableOpacity
-              style={gameStyles.finishButton}
-              onPress={() => setModalVisible(true)}
+            <Animated.View
+              style={{
+                opacity: finishButtonAnim,
+                transform: [{ scale: finishButtonAnim }]
+              }}
             >
-              <Text style={gameStyles.finishButtonText}>Finish Match</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={gameStyles.finishButton}
+                onPress={() => setModalVisible(true)}
+                activeOpacity={0.9}
+              >
+                <Text style={gameStyles.finishButtonText}>🏁 Finish Match</Text>
+              </TouchableOpacity>
+            </Animated.View>
           )}
-        </View>
+        </Animated.View>
         
-        <TouchableOpacity onPress={() => player2 && handlePlayerPress(player2)}>
-          <Image source={player2?.avatar} style={gameStyles.avatarLarge} />
-          <Text style={gameStyles.playerName}>{player2?.name}</Text>
-        </TouchableOpacity>
-      </View>
+        <Animated.View
+          style={[
+            gameStyles.sidePlayer,
+            {
+              transform: [
+                { translateX: slideRightAnim },
+                { scale: pulseAnim }
+              ]
+            }
+          ]}
+        >
+          <TouchableOpacity 
+            onPress={() => player2 && onPlayerPress(player2)}
+            activeOpacity={0.8}
+          >
+            <Animated.View style={gameStyles.playerContainer}>
+              <Image source={player2?.avatar} style={gameStyles.avatarLarge} />
+              <View style={gameStyles.playerBadge}>
+                <Text style={gameStyles.playerBadgeText}>P2</Text>
+              </View>
+            </Animated.View>
+            <Text style={gameStyles.playerName}>{player2?.name}</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </Animated.View>
+
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -94,13 +283,26 @@ export function gameScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={gameStyles.modalOverlay}>
-          <View style={gameStyles.modalContent}>
-            <Text style={gameStyles.modalHeader}>Match Summary</Text>
+          <Animated.View 
+            style={[
+              gameStyles.modalContent,
+              {
+                transform: [{ scale: scaleAnim }]
+              }
+            ]}
+          >
+            <Text style={gameStyles.modalHeader}>🏆 Match Summary</Text>
+
+            <View style={gameStyles.modalPlayersRow}>
+              <Image source={player1?.avatar} style={gameStyles.modalAvatar} />
+              <Text style={gameStyles.modalVs}>VS</Text>
+              <Image source={player2?.avatar} style={gameStyles.modalAvatar} />
+            </View>
 
             <Text style={gameStyles.modalText}>
               {player1?.name} vs {player2?.name}
             </Text>
-            <Text style={gameStyles.modalText}>
+            <Text style={gameStyles.modalScore}>
               {scorePlayer1} : {scorePlayer2}
             </Text>
 
@@ -110,19 +312,21 @@ export function gameScreen() {
                 setModalVisible(false);
                 handleFinishMatch(); 
               }}
+              activeOpacity={0.8}
             >
-              <Text style={gameStyles.confirmButtonText}>Confirm & Finish</Text>
+              <Text style={gameStyles.confirmButtonText}>✅ Confirm & Finish</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={gameStyles.cancelText}>Cancel</Text>
+              <Text style={gameStyles.cancelText}>❌ Cancel</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
       </Modal>
+
       <LeaderboardPlayerModal
         visible={playerModalVisible}
-        onClose={() => setPlayerModalVisible(false)}
+        onClose={closePlayerModal}
         selectedPlayer={selectedPlayer}
         activeTab={activeTab}
         setActiveTab={setActiveTab}

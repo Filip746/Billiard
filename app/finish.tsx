@@ -1,11 +1,14 @@
 import { finishScreen } from "@/components/finishScreen/finishScreen";
+import { useFocusEffect } from '@react-navigation/native';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function Finish() {
-  useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    }, [])
+  );
 
   const FinishComponent = finishScreen;
   return <FinishComponent />;
