@@ -59,8 +59,13 @@ export function ScoreSnapScroll({
       keyExtractor={item => item.toString()}
       initialScrollIndex={value}
       onMomentumScrollEnd={e => {
-        const index = Math.round(e.nativeEvent.contentOffset.y / itemHeight);
-        if (scoreRange[index] !== undefined) onChange(scoreRange[index]);
+        let index = Math.round(e.nativeEvent.contentOffset.y / itemHeight);
+        if (index < 0) index = 0;
+        if (index > scoreRange.length - 1) index = scoreRange.length - 1;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index, animated: true });
+        }
+        onChange(scoreRange[index]);
       }}
       renderItem={({ item, index }) => {
         const isSelected = value === item;

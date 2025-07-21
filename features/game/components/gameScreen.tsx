@@ -207,7 +207,6 @@ export function gameScreen() {
                 max={Number(scoreLimit)}
                 itemHeight={90}
               />
-              <Text style={gameStyles.playerLabel}>Player 1</Text>
             </View>
             
             <View style={gameStyles.scoreSnapMiddle}>
@@ -240,11 +239,10 @@ export function gameScreen() {
                 max={Number(scoreLimit)}
                 itemHeight={90}
               />
-              <Text style={gameStyles.playerLabel}>Player 2</Text>
             </View>
           </View>
 
-          {shouldShowFinish && (
+          {shouldShowFinish ? (
             <Animated.View
               style={{
                 opacity: finishButtonAnim,
@@ -259,6 +257,8 @@ export function gameScreen() {
                 <Text style={gameStyles.finishButtonText}>🏁 Finish Match</Text>
               </TouchableOpacity>
             </Animated.View>
+          ) : (
+          <View style={{ minHeight: 60, width: '100%' }} />
           )}
         </Animated.View>
         
