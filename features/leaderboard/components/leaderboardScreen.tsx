@@ -13,8 +13,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { useLeaderboard } from '../hooks/useLeaderboard';
-import { leaderboardStyles } from '../styles/leaderboardStyles';
+import { useLeaderboard } from '../hooks';
+import { leaderboardStyles } from '../styles';
+
 
 
 export function leaderboardScreen() {

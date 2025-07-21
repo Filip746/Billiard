@@ -11,8 +11,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { usePlayerSelection } from '../hooks/usePlayerSelection';
-import { playerStyles } from '../styles/playerStyles';
+import { usePlayerSelection } from '../hooks';
+import { playerStyles } from '../styles';
 
 const MAX_MINUTES = 60;
 

@@ -13,8 +13,8 @@ import {
 import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
-import { useFinishScreen } from '../hooks/useFinishScreen';
-import { finishStyles } from '../styles/finishStyles';
+import { useFinishScreen } from '../hooks';
+import { finishStyles } from '../styles';
 
 export function finishScreen() {
   const {

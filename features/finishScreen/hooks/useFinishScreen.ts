@@ -1,5 +1,5 @@
-import { elapsedTimeAtom, scorePlayer1Atom, scorePlayer2Atom } from '@/features/game/state/gameAtoms';
-import { selectedPlayer1Atom, selectedPlayer2Atom } from '@/features/playerSelection/state/playerSelectionAtoms';
+import { elapsedTimeAtom, scorePlayer1Atom, scorePlayer2Atom } from '@/features/game/state';
+import { selectedPlayer1Atom, selectedPlayer2Atom } from '@/features/playerSelection/state';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import { useLocalSearchParams } from 'expo-router';
 import { useAtomValue } from 'jotai';

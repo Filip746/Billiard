@@ -1,13 +1,7 @@
-import {
-  fetchingMoreAtom,
-  hasMoreAtom,
-  lastDocAtom,
-  loadingAtom,
-  matchesAtom,
-} from '@/features/history/state/historyAtoms';
 import { fetchMatchesPage } from '@/shared/services/matchService';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { fetchingMoreAtom, hasMoreAtom, lastDocAtom, loadingAtom, matchesAtom } from '../state';
 
 export function useHistory(pageSize: number = 10) {
   const [matches, setMatches] = useAtom(matchesAtom);

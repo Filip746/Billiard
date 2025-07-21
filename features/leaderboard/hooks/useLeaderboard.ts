@@ -1,11 +1,11 @@
 import { avatars } from '@/const/images';
-import { leaderboardAtom, leaderboardLoadingAtom } from '@/features/leaderboard/state/leaderboardAtoms';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import { db } from '@/shared/services/firebase';
 import { updateAllPlayersPoints } from '@/shared/services/playerService';
 import { collection, getDocs } from 'firebase/firestore';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { leaderboardAtom, leaderboardLoadingAtom } from '../state';
 
 export function useLeaderboard() {
   const [leaderboard, setLeaderboard] = useAtom(leaderboardAtom);
@@ -21,7 +21,7 @@ export function useLeaderboard() {
     try {
       await updateAllPlayersPoints();
       const snapshot = await getDocs(collection(db, 'players'));
-      const data: { id: string; name: any; points: any; avatar: any; }[] = [];
+      const data: LeaderboardEntry[] = [];
 
       snapshot.forEach(docSnap => {
         const player = docSnap.data();
