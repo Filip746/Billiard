@@ -178,8 +178,6 @@ export const historyStyles = StyleSheet.create({
     color: '#667eea',
     fontWeight: '600',
   },
-
-  // Legacy styles za kompatibilnost s MatchSearchBar
   searchHeaderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
