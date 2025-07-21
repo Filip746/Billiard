@@ -5,9 +5,9 @@ import { SafeAreaView } from 'react-native';
 
 export default function HomeScreen() {
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
   }, []);
-  
+
   return (
     <SafeAreaView>
       <PlayerSelection />
