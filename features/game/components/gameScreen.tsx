@@ -1,21 +1,18 @@
 import { billiard } from '@/const/images';
 import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
-import { ScoreSnapScroll } from '@/shared/hooks/scoreSnapScroll';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Easing,
-  Image,
-  ImageBackground,
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
+  ImageBackground
 } from 'react-native';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { gameStyles } from '../styles/gameStyles';
+import { GameCenter } from './GameCenter';
+import GameSummaryModal from './GameSummaryModal';
+import PlayerCard from './PlayerCard';
 
 export function gameScreen() {
   const {
@@ -165,176 +162,57 @@ export function gameScreen() {
           { opacity: fadeAnim }
         ]}
       >
-        <Animated.View
-          style={[
-            gameStyles.sidePlayer,
-            {
-              transform: [
-                { translateX: slideLeftAnim },
-                { scale: pulseAnim }
-              ]
-            }
-          ]}
-        >
-          <TouchableOpacity 
-            onPress={() => player1 && onPlayerPress(player1)}
-            activeOpacity={0.8}
-          >
-            <Animated.View style={gameStyles.playerContainer}>
-              <Image source={player1?.avatar} style={gameStyles.avatarLarge} />
-              <View style={gameStyles.playerBadge}>
-                <Text style={gameStyles.playerBadgeText}>P1</Text>
-              </View>
-            </Animated.View>
-            <Text style={gameStyles.playerName}>{player1?.name}</Text>
-          </TouchableOpacity>
-        </Animated.View>
+        <PlayerCard
+          player={player1}
+          badge="P1"
+          onPress={onPlayerPress}
+          animStyle={{
+            transform: [
+              { translateX: slideLeftAnim },
+              { scale: pulseAnim }
+            ]
+          }}
+        />
         
-        <Animated.View 
-          style={[
-            gameStyles.centerBlock,
-            {
-              transform: [{ scale: scaleAnim }]
-            }
-          ]}
-        >
-          <View style={gameStyles.scoreSnapRow}>
-            <View style={gameStyles.scoreSnapColumn}>
-              <ScoreSnapScroll
-                value={scorePlayer1}
-                onChange={setScorePlayer1}
-                min={0}
-                max={Number(scoreLimit)}
-                itemHeight={90}
-              />
-            </View>
-            
-            <View style={gameStyles.scoreSnapMiddle}>
-              <Animated.Text 
-                style={[
-                  gameStyles.vsLarge,
-                  { transform: [{ rotate: spin }] }
-                ]}
-              >
-                ⚡
-              </Animated.Text>
-              <Animated.View 
-                style={[
-                  gameStyles.timerContainer,
-                  { transform: [{ scale: timerPulseAnim }] }
-                ]}
-              >
-                <Text style={gameStyles.timerLarge}>
-                  {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
-                </Text>
-                <Text style={gameStyles.timerLabel}>TIME</Text>
-              </Animated.View>
-            </View>
-            
-            <View style={gameStyles.scoreSnapColumn}>
-              <ScoreSnapScroll
-                value={scorePlayer2}
-                onChange={setScorePlayer2}
-                min={0}
-                max={Number(scoreLimit)}
-                itemHeight={90}
-              />
-            </View>
-          </View>
-
-          {shouldShowFinish ? (
-            <Animated.View
-              style={{
-                opacity: finishButtonAnim,
-                transform: [{ scale: finishButtonAnim }]
-              }}
-            >
-              <TouchableOpacity
-                style={gameStyles.finishButton}
-                onPress={() => setModalVisible(true)}
-                activeOpacity={0.9}
-              >
-                <Text style={gameStyles.finishButtonText}>🏁 Finish Match</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          ) : (
-          <View style={{ minHeight: 60, width: '100%' }} />
-          )}
-        </Animated.View>
+        <GameCenter
+          scorePlayer1={scorePlayer1}
+          setScorePlayer1={setScorePlayer1}
+          scorePlayer2={scorePlayer2}
+          setScorePlayer2={setScorePlayer2}
+          scoreLimit={scoreLimit}
+          spin={spin}
+          minutes={minutes}
+          seconds={seconds}
+          timerPulseAnim={timerPulseAnim}
+          shouldShowFinish={shouldShowFinish}
+          finishButtonAnim={finishButtonAnim}
+          scaleAnim={scaleAnim}
+          onFinishPress={() => setModalVisible(true)}
+        />
         
-        <Animated.View
-          style={[
-            gameStyles.sidePlayer,
-            {
-              transform: [
-                { translateX: slideRightAnim },
-                { scale: pulseAnim }
-              ]
-            }
-          ]}
-        >
-          <TouchableOpacity 
-            onPress={() => player2 && onPlayerPress(player2)}
-            activeOpacity={0.8}
-          >
-            <Animated.View style={gameStyles.playerContainer}>
-              <Image source={player2?.avatar} style={gameStyles.avatarLarge} />
-              <View style={gameStyles.playerBadge}>
-                <Text style={gameStyles.playerBadgeText}>P2</Text>
-              </View>
-            </Animated.View>
-            <Text style={gameStyles.playerName}>{player2?.name}</Text>
-          </TouchableOpacity>
-        </Animated.View>
+        <PlayerCard
+          player={player2}
+          badge="P2"
+          onPress={onPlayerPress}
+          animStyle={{
+            transform: [
+              { translateX: slideRightAnim },
+              { scale: pulseAnim }
+            ]
+          }}
+        />
       </Animated.View>
 
-      <Modal
-        visible={isModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={gameStyles.modalOverlay}>
-          <Animated.View 
-            style={[
-              gameStyles.modalContent,
-              {
-                transform: [{ scale: scaleAnim }]
-              }
-            ]}
-          >
-            <Text style={gameStyles.modalHeader}>🏆 Match Summary</Text>
-
-            <View style={gameStyles.modalPlayersRow}>
-              <Image source={player1?.avatar} style={gameStyles.modalAvatar} />
-              <Text style={gameStyles.modalVs}>VS</Text>
-              <Image source={player2?.avatar} style={gameStyles.modalAvatar} />
-            </View>
-
-            <Text style={gameStyles.modalText}>
-              {player1?.name} vs {player2?.name}
-            </Text>
-            <Text style={gameStyles.modalScore}>
-              {scorePlayer1} : {scorePlayer2}
-            </Text>
-
-            <TouchableOpacity
-              style={gameStyles.confirmButton}
-              onPress={() => {
-                setModalVisible(false);
-                handleFinishMatch(); 
-              }}
-              activeOpacity={0.8}
-            >
-              <Text style={gameStyles.confirmButtonText}>✅ Confirm & Finish</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={gameStyles.cancelText}>❌ Cancel</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </View>
-      </Modal>
+      <GameSummaryModal
+        isModalVisible={isModalVisible}
+        onConfirm={() => { setModalVisible(false); handleFinishMatch(); }}
+        onCancel={() => setModalVisible(false)}
+        player1={player1}
+        player2={player2}
+        score1={scorePlayer1}
+        score2={scorePlayer2}
+        animStyle={{ transform: [{ scale: scaleAnim }] }}
+      />
 
       <LeaderboardPlayerModal
         visible={playerModalVisible}

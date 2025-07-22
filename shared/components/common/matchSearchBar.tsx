@@ -9,7 +9,7 @@ type MatchSearchBarProps = {
   dateText?: string;
   setDateText?: (text: string) => void;
   showDateInput?: boolean;
-  showFilterIcon?: boolean; // NOVO!
+  showFilterIcon?: boolean; 
 };
 
 export function MatchSearchBar({
@@ -19,7 +19,7 @@ export function MatchSearchBar({
   dateText = '',
   setDateText = () => {},
   showDateInput = false,
-  showFilterIcon = true, // defaultno prikazuj ako nije specificirano
+  showFilterIcon = true,
 }: MatchSearchBarProps) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#12a8ff', padding: 10 }}>

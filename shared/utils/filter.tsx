@@ -12,7 +12,6 @@ export default function YearMonthFilter({ onFilterChange }: YearMonthFilterProps
   const [selectedYear, setSelectedYear] = React.useState('');
   const [selectedMonth, setSelectedMonth] = React.useState('');
 
-  // ANIMACIJA pojave
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(-10)).current;
 
