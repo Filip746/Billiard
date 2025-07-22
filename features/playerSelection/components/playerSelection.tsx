@@ -244,100 +244,142 @@ export function PlayerSelection() {
 
       <Animated.View 
         style={[
-          playerStyles.settingsSection,
+          playerStyles.billiardTable,
           {
             opacity: fadeAnim,
             transform: [{ scale: scaleAnim }]
           }
         ]}
       >
-        <Text style={playerStyles.settingsTitle}>⚙️ Match Settings</Text>
+        <View style={playerStyles.tableHeader}>
+          <Text style={playerStyles.tableTitle}>🎱 TABLE SETUP</Text>
+          <Text style={playerStyles.tableSubtitle}>Configure your match</Text>
+        </View>
         
-        <View style={playerStyles.pickerContainer}>
-          <Text style={playerStyles.pickerLabel}>⏰ Time Limit</Text>
-          <View style={playerStyles.pickerWrapper}>
-            <Picker
-              selectedValue={selectedMinutes}
-              onValueChange={handleTimeChange}
-              style={playerStyles.picker}
-            >
-              <Picker.Item label="Select time limit" value={null} />
-              {timeOptions.map(minutes => (
-                <Picker.Item
-                  key={minutes}
-                  label={`${minutes} minutes`}
-                  value={minutes}
-                />
-              ))}
-            </Picker>
+        <View style={playerStyles.tableRail}>
+          <View style={playerStyles.railSection}>
+            <View style={playerStyles.ballIndicator}>
+              <Text style={playerStyles.ballNumber}>⏰</Text>
+            </View>
+            <Text style={playerStyles.railLabel}>TIME LIMIT</Text>
+            <View style={playerStyles.cueStick}>
+              <Picker
+                selectedValue={selectedMinutes}
+                onValueChange={handleTimeChange}
+                style={playerStyles.picker}
+              >
+                <Picker.Item label="Select time" value={null} />
+                {timeOptions.map(minutes => (
+                  <Picker.Item
+                    key={minutes}
+                    label={`${minutes} min`}
+                    value={minutes}
+                  />
+                ))}
+              </Picker>
+            </View>
           </View>
         </View>
         
-        <View style={playerStyles.pickerContainer}>
-          <Text style={playerStyles.pickerLabel}>🎯 Score Limit</Text>
-          <View style={playerStyles.pickerWrapper}>
-            <Picker
-              selectedValue={scoreLimit}
-              onValueChange={setScoreLimit}
-              style={playerStyles.picker}
-            >
-              <Picker.Item label="Select score limit" value={null} />
-              <Picker.Item label="3 points" value={3} />
-              <Picker.Item label="5 points" value={5} />
-              <Picker.Item label="7 points" value={7} />
-              <Picker.Item label="10 points" value={10} />
-            </Picker>
+        <View style={playerStyles.tableRail}>
+          <View style={playerStyles.railSection}>
+            <View style={playerStyles.ballIndicator}>
+              <Text style={playerStyles.ballNumber}>🎯</Text>
+            </View>
+            <Text style={playerStyles.railLabel}>SCORE LIMIT</Text>
+            <View style={playerStyles.cueStick}>
+              <Picker
+                selectedValue={scoreLimit}
+                onValueChange={setScoreLimit}
+                style={playerStyles.picker}
+              >
+                <Picker.Item label="Select points" value={null} />
+                <Picker.Item label="3 points" value={3} />
+                <Picker.Item label="5 points" value={5} />
+                <Picker.Item label="7 points" value={7} />
+                <Picker.Item label="10 points" value={10} />
+              </Picker>
+            </View>
           </View>
         </View>
       </Animated.View>
 
+
       {selectedPlayer1 && selectedPlayer2 && selectedPlayer1 !== selectedPlayer2 && selectedMinutes && scoreLimit && (
         <Animated.View 
           style={[
-            playerStyles.confirmContainer,
+            playerStyles.matchupTable,
             {
               opacity: fadeAnim,
               transform: [{ scale: bounceAnim }]
             }
           ]}
         >
-          <View style={playerStyles.vsSection}>
-            <View style={playerStyles.vsPlayer}>
-              <Image 
-                source={players.find(p => p.id === selectedPlayer1)?.avatar} 
-                style={playerStyles.vsAvatar} 
-              />
-              <Text style={playerStyles.vsName}>
+          <View style={playerStyles.matchupHeader}>
+            <Text style={playerStyles.matchupTitle}>🎱 MATCH READY</Text>
+            <Text style={playerStyles.matchupSubtitle}>Players selected for battle</Text>
+          </View>
+
+          <View style={playerStyles.battleArena}>
+            <View style={playerStyles.playerBallContainer}>
+              <View style={[
+                playerStyles.matchBall,
+                { backgroundColor: players.find(p => p.id === selectedPlayer1)?.color || '#FF6B6B' }
+              ]}>
+                <View style={playerStyles.ballGloss} />
+                <View style={playerStyles.avatarContainer}>
+                  <Image 
+                    source={players.find(p => p.id === selectedPlayer1)?.avatar} 
+                    style={playerStyles.avatar} 
+                  />
+                </View>
+              </View>
+              <Text style={playerStyles.battlePlayerName}>
                 {players.find(p => p.id === selectedPlayer1)?.name}
               </Text>
             </View>
-            <Text style={playerStyles.vsText}>VS</Text>
-            <View style={playerStyles.vsPlayer}>
-              <Image 
-                source={players.find(p => p.id === selectedPlayer2)?.avatar} 
-                style={playerStyles.vsAvatar} 
-              />
-              <Text style={playerStyles.vsName}>
+            
+            <View style={playerStyles.vsIndicator}>
+              <Text style={playerStyles.vsText}>VS</Text>
+              <View style={playerStyles.vsLine} />
+            </View>
+            
+            <View style={playerStyles.playerBallContainer}>
+              <View style={[
+                playerStyles.matchBall,
+                { backgroundColor: players.find(p => p.id === selectedPlayer2)?.color || '#4ECDC4' }
+              ]}>
+                <View style={playerStyles.ballGloss} />
+                <View style={playerStyles.avatarContainer}>
+                  <Image 
+                    source={players.find(p => p.id === selectedPlayer2)?.avatar} 
+                    style={playerStyles.avatar} 
+                  />
+                </View>
+              </View>
+              <Text style={playerStyles.battlePlayerName}>
                 {players.find(p => p.id === selectedPlayer2)?.name}
               </Text>
             </View>
           </View>
           
-          <Text style={playerStyles.confirmText}>
-            🔥 Ready for an epic showdown?
-          </Text>
-          <Text style={playerStyles.confirmSubtext}>
-            {selectedMinutes} min • {scoreLimit} points to win
-          </Text>
+          <View style={playerStyles.matchInfo}>
+            <Text style={playerStyles.matchInfoText}>
+              🔥 {selectedMinutes} minutes • {scoreLimit} points to win
+            </Text>
+          </View>
           
           <TouchableOpacity
-            style={playerStyles.startButton}
+            style={playerStyles.breakButton}
             onPress={startMatch}
             activeOpacity={0.9}
           >
-            <Text style={playerStyles.startButtonText}>🚀 Start Match</Text>
+            <View style={playerStyles.cueStickButton}>
+              <Text style={playerStyles.breakButtonText}>🎯 BREAK!</Text>
+            </View>
           </TouchableOpacity>
         </Animated.View>
+
       )}
     </ScrollView>
   );
