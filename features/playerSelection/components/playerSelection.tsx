@@ -103,37 +103,64 @@ export function PlayerSelection() {
   }, [selectedPlayer1, selectedPlayer2, selectedMinutes, scoreLimit]);
 
   const renderPlayerCard = (player: any, isSelected: boolean, onPress: () => void, index: number) => {
-
+    const isStriped = index % 2 !== 0;
+    
     return (
       <Animated.View
         key={player.id}
-        style={{
-          transform: [{ scale: scaleAnim }],
-          opacity: fadeAnim,
-        }}
+        style={[
+          playerStyles.playerContainer,
+          {
+            transform: [{ scale: scaleAnim }],
+            opacity: fadeAnim,
+          }
+        ]}
       >
         <TouchableOpacity
-          style={[
-            playerStyles.playerCard,
-            { backgroundColor: player.color },
-            isSelected && playerStyles.selectedPlayer,
-          ]}
           onPress={onPress}
           activeOpacity={0.8}
+          style={playerStyles.playerTouchable}
         >
-          {isSelected && (
-            <Animated.View style={[playerStyles.selectedBadge, { transform: [{ scale: pulseAnim }] }]}>
-              <Text style={playerStyles.selectedBadgeText}>✓</Text>
-            </Animated.View>
-          )}
-          <Image source={player.avatar} style={playerStyles.avatar} />
+          <View style={playerStyles.ballAndFlagContainer}>
+            <View
+              style={[
+                playerStyles.billiardBall,
+                { backgroundColor: isStriped ? '#FFFFFF' : player.color },
+                isSelected && playerStyles.selectedBall,
+              ]}
+            >
+              {isStriped && (
+                <View style={playerStyles.stripesContainer}>
+                  <View style={[playerStyles.stripe, { backgroundColor: 'transparent' }]} />
+                  <View style={[playerStyles.stripe, { backgroundColor: player.color }]} />
+                  <View style={[playerStyles.stripe, { backgroundColor: 'transparent' }]} />
+
+                </View>
+              )}
+              
+              <View style={playerStyles.ballGloss} />
+              
+              {isSelected && (
+                <Animated.View style={[playerStyles.selectedGlow, { transform: [{ scale: pulseAnim }] }]}>
+                  <Text style={playerStyles.selectedCheckmark}>✓</Text>
+                </Animated.View>
+              )}
+              
+              <View style={playerStyles.avatarContainer}>
+                <Image source={player.avatar} style={playerStyles.avatar} />
+              </View>
+            </View>
+            
+            <View style={playerStyles.nationalityOverlay}>
+              <Image source={player.image} style={playerStyles.nationality} />
+            </View>
+          </View>
+          
           <Text style={playerStyles.playerName}>{player.name}</Text>
-          <Image source={player.image} style={playerStyles.nationality} />
         </TouchableOpacity>
       </Animated.View>
     );
   };
-
   return (
     <ScrollView contentContainerStyle={playerStyles.container} showsVerticalScrollIndicator={false}>
       <Animated.View 
