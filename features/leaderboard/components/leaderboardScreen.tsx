@@ -23,6 +23,7 @@ export function leaderboardScreen() {
   const [searchText, setSearchText] = useState('');
   const [dateFilter, setDateFilter] = useState({ year: '', month: '' });
   const { leaderboard, loading } = useLeaderboard(dateFilter);
+  const [showFilterBox, setShowFilterBox] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -221,9 +222,11 @@ export function leaderboardScreen() {
         <MatchSearchBar
           searchText={searchText}
           setSearchText={setSearchText}
-          showDateInput={false}
+          onFilterPress={() => setShowFilterBox(prev => !prev)}
         />
-        <YearMonthFilter onFilterChange={setDateFilter} />
+        {showFilterBox && (
+          <YearMonthFilter onFilterChange={setDateFilter} />
+        )}
       </Animated.View>
 
       {loading ? (

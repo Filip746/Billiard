@@ -306,6 +306,8 @@ export function historyScreen() {
           setSearchText={setSearchText}
           dateText={dateText}
           setDateText={setDateText}
+          showDateInput={true}
+          showFilterIcon={false}
         />
       </Animated.View>
 
