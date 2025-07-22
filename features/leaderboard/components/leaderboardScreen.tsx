@@ -16,8 +16,6 @@ import {
 import { useLeaderboard } from '../hooks';
 import { leaderboardStyles } from '../styles';
 
-
-
 export function leaderboardScreen() {
   const { leaderboard, loading } = useLeaderboard();
   const [isModalVisible, setModalVisible] = useState(false);
