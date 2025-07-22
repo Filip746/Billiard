@@ -47,7 +47,12 @@ export async function fetchMatchesPage(pageSize = 10, lastDoc = null, all = fals
   };
 }
 
-export async function getMatchesForUser(userId: string, n?: number) {
+export async function getMatchesForUser(
+  userId: string, 
+  n?: number,
+  year?: string,
+  month?: string
+) {
   const q1 = query(collection(db, 'matches'), where('player1Id', '==', userId));
   const q2 = query(collection(db, 'matches'), where('player2Id', '==', userId));
   const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
@@ -56,6 +61,17 @@ export async function getMatchesForUser(userId: string, n?: number) {
   snap1.forEach(doc => matches.push(doc.data()));
   snap2.forEach(doc => matches.push(doc.data()));
   matches = matches.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
+
+  if (year || month) {
+    matches = matches.filter(m => {
+      const d = new Date(m.createdAt.seconds * 1000);
+      const mYear = d.getFullYear().toString();
+      const mMonth = (d.getMonth() + 1).toString().padStart(2, "0");
+      const byYear = year ? mYear === year : true;
+      const byMonth = month ? mMonth === month : true;
+      return byYear && byMonth;
+    });
+  }
 
   if (typeof n === 'number') {
     return matches.slice(0, n);

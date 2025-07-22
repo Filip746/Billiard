@@ -2,6 +2,7 @@ import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPl
 import { MatchSearchBar } from '@/shared/components/common/matchSearchBar';
 import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
 import { usePlayers } from '@/shared/hooks/usePlayers';
+import YearMonthFilter from '@/shared/utils/filter';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -17,10 +18,11 @@ import { useLeaderboard } from '../hooks';
 import { leaderboardStyles } from '../styles';
 
 export function leaderboardScreen() {
-  const { leaderboard, loading } = useLeaderboard();
   const [isModalVisible, setModalVisible] = useState(false);
   const players = usePlayers();
   const [searchText, setSearchText] = useState('');
+  const [dateFilter, setDateFilter] = useState({ year: '', month: '' });
+  const { leaderboard, loading } = useLeaderboard(dateFilter);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -76,10 +78,6 @@ export function leaderboardScreen() {
     if (player) await handlePlayerPress(player);
     setModalVisible(true);
   };
-  
-  const filteredLeaderboard = leaderboard.filter(player =>
-    player.name.toLowerCase().includes(searchText.trim().toLowerCase())
-  );
 
   const getRankEmoji = (rank: number) => {
     switch (rank) {
@@ -97,6 +95,9 @@ export function leaderboardScreen() {
     return '💪';
   };
 
+  const searchedLeaderboard = leaderboard.filter(player =>
+    player.name.toLowerCase().includes(searchText.trim().toLowerCase())
+  );
   
 
   const renderItem = ({ item, index }: { item: LeaderboardEntry; index: number }) => {
@@ -169,7 +170,7 @@ export function leaderboardScreen() {
             leaderboardStyles.points,
             isTopThree && leaderboardStyles.topThreePoints
           ]}>
-            {(item.points * 100).toFixed(1)}%
+            {(item.points).toFixed(2)}%
           </Text>
           <View style={[
             leaderboardStyles.progressBar,
@@ -222,6 +223,7 @@ export function leaderboardScreen() {
           setSearchText={setSearchText}
           showDateInput={false}
         />
+        <YearMonthFilter onFilterChange={setDateFilter} />
       </Animated.View>
 
       {loading ? (
@@ -237,7 +239,7 @@ export function leaderboardScreen() {
       ) : (
         <Animated.View style={{ opacity: listAnim, flex: 1 }}>
           <FlatList
-            data={filteredLeaderboard}
+            data={searchedLeaderboard}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             contentContainerStyle={leaderboardStyles.listContainer}
