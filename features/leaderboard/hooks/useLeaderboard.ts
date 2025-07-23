@@ -24,19 +24,12 @@ export function useLeaderboard(dateFilter: { year: string; month: string }) {
           dateFilter.month
         );
 
-        let won = 0;
-        let played = matches.length;
-
-        matches.forEach(match => {       
-          if (
-            match.player1Id === String(player.id) &&
-            match.scorePlayer1 > match.scorePlayer2
-          ) won += 1;      
-          if (
-            match.player2Id === String(player.id) &&
-            match.scorePlayer2 > match.scorePlayer1
-          ) won += 1;
-        });
+        const played = matches.length;
+        const won = matches.reduce((count, match) => {
+          const isP1Win = match.player1Id === String(player.id) && match.scorePlayer1 > match.scorePlayer2;
+          const isP2Win = match.player2Id === String(player.id) && match.scorePlayer2 > match.scorePlayer1;
+          return count + (isP1Win || isP2Win ? 1 : 0);
+        }, 0);
         const points = played > 0 ? (won / played) * 100 : 0;
         return {
           id: String(player.id),

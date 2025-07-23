@@ -79,21 +79,21 @@ export function leaderboardScreen() {
     setModalVisible(true);
   };
 
-  const getRankEmoji = (rank: number) => {
-    switch (rank) {
-      case 1: return '🥇';
-      case 2: return '🥈';
-      case 3: return '🥉';
-      default: return '🏅';
-    }
+  const rankEmoji: Record<number, string> = {
+    1: '🥇',
+    2: '🥈',
+    3: '🥉',
   };
+  
 
-  const getRankIcon = (rank: number) => {
-    if (rank <= 3) return '👑';
-    if (rank <= 5) return '⭐';
-    if (rank <= 10) return '🔥';
-    return '💪';
+  const rankIcon: Record<number, string> = {
+    1: '👑',
+    2: '👑',
+    3: '👑',
+    4: '⭐',
+    5: '⭐',
   };
+  
 
   const searchedLeaderboard = leaderboard.filter(player =>
     player.name.toLowerCase().includes(searchText.trim().toLowerCase())
@@ -104,11 +104,15 @@ export function leaderboardScreen() {
     const rank = index + 1;
     const isTopThree = rank <= 3;
 
-    const podiumStyle =
-      rank === 1 ? leaderboardStyles.firstPlace
-      : rank === 2 ? leaderboardStyles.secondPlace
-      : rank === 3 ? leaderboardStyles.thirdPlace
-      : {};
+    const emoji = rankEmoji[rank] || '🏅';
+    const icon = rankIcon[rank] || '💪';
+
+    const podiumStyles: { [key: number]: any } = {
+      1: leaderboardStyles.firstPlace,
+      2: leaderboardStyles.secondPlace,
+      3: leaderboardStyles.thirdPlace,
+    };
+    const podiumStyle = podiumStyles[rank] ?? {};
 
     return (
       <Animated.View 
@@ -128,7 +132,7 @@ export function leaderboardScreen() {
             {rank}
           </Text>
           <Text style={leaderboardStyles.rankEmoji}>
-            {getRankEmoji(rank)}
+            {emoji}
           </Text>
         </View>
         
@@ -147,7 +151,7 @@ export function leaderboardScreen() {
             </View>
           )}
           {isTopThree && (
-            <Text style={leaderboardStyles.crownIcon}>{getRankIcon(rank)}</Text>
+            <Text style={leaderboardStyles.crownIcon}>{icon}</Text>
           )}
         </View>
         
