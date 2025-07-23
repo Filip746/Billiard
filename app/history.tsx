@@ -1,9 +1,9 @@
 import {
-    HistoryHeader,
-    HistoryList,
-    HistoryLoading,
-    HistorySearch,
-    MatchItem,
+  HistoryHeader,
+  HistoryList,
+  HistoryLoading,
+  HistorySearch,
+  MatchItem,
 } from '@/features/history/components';
 import { useHistory, useHistoryAnimations } from '@/features/history/hooks';
 import { historyStyles } from '@/features/history/styles';
@@ -36,10 +36,10 @@ export default function History() {
         ? new Date(item.createdAt.seconds * 1000).toLocaleDateString()
         : item.createdAt || item.date || '';
     const nameMatch =
-      searchText.trim().length === 0 ||
+      !searchText.trim().length ||
       playerNames.includes(searchText.trim().toLowerCase());
     const dateMatch =
-      dateText.trim().length === 0 ||
+      !dateText.trim().length ||
       dateStr.includes(dateText.trim());
     return nameMatch && dateMatch;
   });
@@ -81,7 +81,7 @@ export default function History() {
         dateText={dateText}
         setDateText={setDateText}
       />
-      {loading && matches.length === 0 ? (
+      {loading && !matches.length ? (
         <HistoryLoading fadeAnim={fadeAnim} />
       ) : (
         <HistoryList

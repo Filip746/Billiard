@@ -13,7 +13,7 @@ export function HistoryList({
         { opacity: listAnim },
       ]}
     >
-      {filteredMatches.length === 0 ? (
+      {!filteredMatches.length ? (
         <View style={historyStyles.emptyState}>
           <Text style={historyStyles.emptyStateIcon}>🎱</Text>
           <Text style={historyStyles.emptyStateTitle}>No matches found</Text>

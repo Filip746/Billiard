@@ -18,7 +18,7 @@ export function useCountdown(initialEndTime: number): [number, (newEndTime: numb
       const remaining = calcTimeLeft(endTime);
       setTimeLeft(remaining);
 
-      if (remaining === 0) {
+      if (!remaining) {
         clearInterval(timer);
       }
     }, 1000);
