@@ -1,7 +1,6 @@
 import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
 import { MatchSearchBar } from '@/shared/components/common/matchSearchBar';
-import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
-import { usePlayers } from '@/shared/hooks/usePlayers';
+import { usePlayerModal, usePlayers } from '@/shared/hooks';
 import YearMonthFilter from '@/shared/utils/filter';
 import React, { useEffect, useRef, useState } from 'react';
 import {

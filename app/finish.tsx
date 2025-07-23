@@ -1,9 +1,14 @@
-import { ChampionSection, FinalScoreInfo, LeaderboardButton, MatchCompleteHeader, PlayersSection } from '@/features/finishScreen/components';
+import {
+  ChampionSection,
+  FinalScoreInfo,
+  LeaderboardButton,
+  MatchCompleteHeader,
+  PlayersSection,
+} from '@/features/finishScreen/components';
 import { useFinishAnimations, useFinishScreen } from '@/features/finishScreen/hooks';
 import { finishStyles } from '@/features/finishScreen/styles';
 import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
-import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
-import { usePlayers } from '@/shared/hooks/usePlayers';
+import { usePlayerModal, usePlayers } from '@/shared/hooks';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';

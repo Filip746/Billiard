@@ -1,12 +1,12 @@
 import { billiard } from '@/const/images';
-import { gameStyles, useGameLogic } from '@/features/game';
-import { GameCenter } from '@/features/game/components/GameCenter';
-import { GameSummaryModal } from '@/features/game/components/GameSummaryModal';
-import { PlayerCard } from '@/features/game/components/PlayerCard';
-import { useGameAnimations } from '@/features/game/hooks/useGameAnimations';
+import { gameStyles, useGameAnimations, useGameLogic } from '@/features/game';
+import {
+  GameCenter,
+  GameSummaryModal,
+  PlayerCard,
+} from '@/features/game/components';
 import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
-import { usePlayerModal } from '@/shared/hooks/usePlayerModal';
-import { usePlayers } from '@/shared/hooks/usePlayers';
+import { usePlayerModal, usePlayers } from '@/shared/hooks';
 import { useFocusEffect } from '@react-navigation/native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useState } from 'react';

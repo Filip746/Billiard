@@ -10,8 +10,7 @@ import {
   selectedPlayer1Atom,
   selectedPlayer2Atom,
 } from '@/features/playerSelection/state/';
-import { useCountdown } from '@/shared/hooks/useCountdown';
-import { usePlayers } from '@/shared/hooks/usePlayers';
+import { useCountdown, usePlayers } from '@/shared/hooks';
 import { addMatch } from '@/shared/services/matchService';
 import { router } from 'expo-router';
 import { useAtom } from 'jotai';
@@ -37,14 +36,14 @@ export function useGameLogic() {
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
   const handleFinishMatch = async () => {
-    const totalTimeMs = Number(selectedMinutes) * 60 * 1000;
+    const totalTimeMs = (selectedMinutes ?? 0) * 60 * 1000;
     const timeUsed = totalTimeMs - timeLeft;
     setElapsedTime(timeUsed);
 
     try {
       await addMatch({
-        player1Id: String(selectedPlayer1),
-        player2Id: String(selectedPlayer2),
+        player1Id: selectedPlayer1?.toString() || '',
+        player2Id: selectedPlayer2?.toString() || '',
         player1Name: player1?.name || '',
         player2Name: player2?.name || '',
         scorePlayer1,
