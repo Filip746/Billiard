@@ -26,7 +26,7 @@ export function useGameLogic() {
   const [scorePlayer2, setScorePlayer2] = useAtom(scorePlayer2Atom);
   const [, setElapsedTime] = useAtom(elapsedTimeAtom);
 
-  const timeLeft = useCountdown(endTime ?? (Date.now() + (selectedMinutes ?? 0) * 60 * 1000))[0];
+  const [timeLeft] = useCountdown(endTime ?? (Date.now() + (selectedMinutes ?? 0) * 60 * 1000));
 
   const players = usePlayers();
   const player1 = players.find(p => p.id === selectedPlayer1);
