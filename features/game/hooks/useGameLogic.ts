@@ -2,14 +2,14 @@ import {
   elapsedTimeAtom,
   scorePlayer1Atom,
   scorePlayer2Atom,
-} from '@/features/game/state/gameAtoms';
+} from '@/features/game/state';
 import {
   endTimeAtom,
   scoreLimitAtom,
   selectedMinutesAtom,
   selectedPlayer1Atom,
   selectedPlayer2Atom,
-} from '@/features/playerSelection/state/playerSelectionAtoms';
+} from '@/features/playerSelection/state/';
 import { useCountdown } from '@/shared/hooks/useCountdown';
 import { usePlayers } from '@/shared/hooks/usePlayers';
 import { addMatch } from '@/shared/services/matchService';
@@ -36,13 +36,6 @@ export function useGameLogic() {
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
 
-  const increaseScore1 = () => {
-    if (scorePlayer1 < Number(scoreLimit)) setScorePlayer1(prev => prev + 1);
-  };
-  const increaseScore2 = () => {
-    if (scorePlayer2 < Number(scoreLimit)) setScorePlayer2(prev => prev + 1);
-  };
-
   const handleFinishMatch = async () => {
     const totalTimeMs = Number(selectedMinutes) * 60 * 1000;
     const timeUsed = totalTimeMs - timeLeft;
@@ -66,7 +59,7 @@ export function useGameLogic() {
   };
 
   const shouldShowFinish =
-    (scorePlayer1 === Number(scoreLimit) || scorePlayer2 === Number(scoreLimit)) &&
+    (scorePlayer1 === scoreLimit || scorePlayer2 === scoreLimit) &&
     scorePlayer1 !== scorePlayer2;
 
   return {
@@ -78,10 +71,9 @@ export function useGameLogic() {
     setScorePlayer2,
     minutes,
     seconds,
-    increaseScore1,
-    increaseScore2,
     handleFinishMatch,
     shouldShowFinish,
     scoreLimit,
   };
 }
+
