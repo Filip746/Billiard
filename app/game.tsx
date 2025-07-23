@@ -1,16 +1,16 @@
-import { billiard } from '@/const/images';
-import { gameStyles, useGameAnimations, useGameLogic } from '@/features/game';
+import { billiard } from "@/const/images";
+import { gameStyles, useGameAnimations, useGameLogic } from "@/features/game";
 import {
   GameCenter,
   GameSummaryModal,
   PlayerCard,
-} from '@/features/game/components';
-import { LeaderboardPlayerModal } from '@/shared/components/common/leaderboardPlayerModal';
-import { usePlayerModal, usePlayers } from '@/shared/hooks';
-import { useFocusEffect } from '@react-navigation/native';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useState } from 'react';
-import { Animated, ImageBackground } from 'react-native';
+} from "@/features/game/components";
+import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
+import { usePlayerModal, usePlayers } from "@/shared/hooks";
+import { useFocusEffect } from "@react-navigation/native";
+import * as ScreenOrientation from "expo-screen-orientation";
+import React, { useState } from "react";
+import { Animated, ImageBackground } from "react-native";
 
 export default function Game() {
   useFocusEffect(
@@ -59,7 +59,7 @@ export default function Game() {
     pulseAnim,
     timerPulseAnim,
     finishButtonAnim,
-    spin
+    spin,
   } = useGameAnimations(shouldShowFinish);
 
   const onPlayerPress = async (player: any) => {
@@ -73,21 +73,13 @@ export default function Game() {
 
   return (
     <ImageBackground source={billiard} style={gameStyles.background}>
-      <Animated.View 
-        style={[
-          gameStyles.landscapeRow,
-          { opacity: fadeAnim }
-        ]}
-      >
+      <Animated.View style={[gameStyles.landscapeRow, { opacity: fadeAnim }]}>
         <PlayerCard
           player={player1}
           badge="P1"
           onPress={onPlayerPress}
           animStyle={{
-            transform: [
-              { translateX: slideLeftAnim },
-              { scale: pulseAnim }
-            ]
+            transform: [{ translateX: slideLeftAnim }, { scale: pulseAnim }],
           }}
         />
         <GameCenter
@@ -110,16 +102,16 @@ export default function Game() {
           badge="P2"
           onPress={onPlayerPress}
           animStyle={{
-            transform: [
-              { translateX: slideRightAnim },
-              { scale: pulseAnim }
-            ]
+            transform: [{ translateX: slideRightAnim }, { scale: pulseAnim }],
           }}
         />
       </Animated.View>
       <GameSummaryModal
         isModalVisible={isModalVisible}
-        onConfirm={() => { setModalVisible(false); handleFinishMatch(); }}
+        onConfirm={() => {
+          setModalVisible(false);
+          handleFinishMatch();
+        }}
         onCancel={() => setModalVisible(false)}
         player1={player1}
         player2={player2}

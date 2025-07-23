@@ -1,8 +1,20 @@
-import React from 'react';
-import { Animated, Text } from 'react-native';
-import { historyStyles } from '../styles';
+import React from "react";
+import { Animated, Text } from "react-native";
+import { historyStyles } from "../styles";
 
-export function HistoryHeader({ fadeAnim, headerAnim, loading, matchCount }: any) {
+type Props = {
+  fadeAnim: Animated.Value;
+  headerAnim: Animated.Value;
+  loading: boolean;
+  matchCount: number;
+};
+
+export function HistoryHeader({
+  fadeAnim,
+  headerAnim,
+  loading,
+  matchCount,
+}: Props) {
   return (
     <Animated.View
       style={[
@@ -15,7 +27,7 @@ export function HistoryHeader({ fadeAnim, headerAnim, loading, matchCount }: any
     >
       <Text style={historyStyles.title}>📊 Match History</Text>
       <Text style={historyStyles.subtitle}>
-        {loading ? 'Loading...' : `${matchCount} matches found`}
+        {loading ? "Loading..." : `${matchCount} matches found`}
       </Text>
     </Animated.View>
   );

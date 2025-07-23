@@ -2,6 +2,7 @@ import { avatars, images } from '@/const/images';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../services/firebase';
+import { Player } from '../types/players';
 
 export const usePlayers = (): Player[] => {
   const [players, setPlayers] = useState<Player[]>([]);

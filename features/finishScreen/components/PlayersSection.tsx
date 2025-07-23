@@ -1,10 +1,16 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { finishStyles } from '../styles';
-import { PlayerCard } from './PlayerCard';
+import React from "react";
+import { Text, View } from "react-native";
+import { finishStyles } from "../styles";
+import { PlayerCard } from "./PlayerCard";
 
 export function PlayersSection({
-  player1, player2, winner, scaleAnim, scorePlayer1, scorePlayer2, onPlayerPress
+  player1,
+  player2,
+  winner,
+  scaleAnim,
+  scorePlayer1,
+  scorePlayer2,
+  onPlayerPress,
 }: any) {
   return (
     <View style={finishStyles.playersSection}>

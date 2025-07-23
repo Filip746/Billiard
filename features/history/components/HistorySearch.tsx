@@ -1,7 +1,7 @@
-import { MatchSearchBar } from '@/shared/components/common/matchSearchBar';
-import React from 'react';
-import { Animated } from 'react-native';
-import { historyStyles } from '../styles';
+import { MatchSearchBar } from "@/shared/components/common/matchSearchBar";
+import React from "react";
+import { Animated } from "react-native";
+import { historyStyles } from "../styles";
 
 type HistorySearchProps = {
   fadeAnim: Animated.AnimatedInterpolation<string | number> | Animated.Value;

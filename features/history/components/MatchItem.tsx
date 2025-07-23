@@ -1,6 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Easing, InteractionManager, Text, TouchableOpacity, View } from 'react-native';
-import { historyStyles } from '../styles';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  Easing,
+  InteractionManager,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { historyStyles } from "../styles";
 
 type MatchItemProps = {
   item: any;
@@ -9,157 +16,170 @@ type MatchItemProps = {
   router: any;
 };
 
-export const MatchItem = React.memo(({ item, index, players, router }: MatchItemProps) => {
-  const [animationsEnabled, setAnimationsEnabled] = useState(false);
-  const itemAnim = useRef(new Animated.Value(0)).current;
-  const scaleItemAnim = useRef(new Animated.Value(0.95)).current;
+export const MatchItem = React.memo(
+  ({ item, index, players, router }: MatchItemProps) => {
+    const [animationsEnabled, setAnimationsEnabled] = useState(false);
+    const itemAnim = useRef(new Animated.Value(0)).current;
+    const scaleItemAnim = useRef(new Animated.Value(0.95)).current;
 
-  useEffect(() => {
-    InteractionManager.runAfterInteractions(() => {
-      setAnimationsEnabled(true);
-      
-      Animated.parallel([
-        Animated.timing(itemAnim, {
-          toValue: 1,
-          delay: Math.min(index * 50, 500), 
-          duration: 300, 
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleItemAnim, {
-          toValue: 1,
-          delay: Math.min(index * 50, 500),
-          duration: 300,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
-  }, [index]);
+    useEffect(() => {
+      InteractionManager.runAfterInteractions(() => {
+        setAnimationsEnabled(true);
 
-  const player1 = players.find(p => p.id === Number(item.player1Id));
-  const player2 = players.find(p => p.id === Number(item.player2Id));
-  let dateStr = '';
-  if (typeof item.createdAt === 'object' && item.createdAt.seconds) {
-    dateStr = new Date(item.createdAt.seconds * 1000).toLocaleDateString();
-  } else {
-    dateStr = item.createdAt || item.date;
-  }
+        Animated.parallel([
+          Animated.timing(itemAnim, {
+            toValue: 1,
+            delay: Math.min(index * 50, 500),
+            duration: 300,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(scaleItemAnim, {
+            toValue: 1,
+            delay: Math.min(index * 50, 500),
+            duration: 300,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]).start();
+      });
+    }, [index, itemAnim, scaleItemAnim]);
 
-  const winner = item.scorePlayer1 > item.scorePlayer2 ? player1?.name : player2?.name;
-  const isPlayer1Winner = item.scorePlayer1 > item.scorePlayer2;
+    const player1 = players.find((p) => p.id === Number(item.player1Id));
+    const player2 = players.find((p) => p.id === Number(item.player2Id));
+    let dateStr = "";
+    if (typeof item.createdAt === "object" && item.createdAt.seconds) {
+      dateStr = new Date(item.createdAt.seconds * 1000).toLocaleDateString();
+    } else {
+      dateStr = item.createdAt || item.date;
+    }
 
-  const handlePress = useCallback(() => {
-    router.push({
-      pathname: '/finish',
-      params: {
-        player1Id: item.player1Id,
-        player2Id: item.player2Id,
-        scorePlayer1: item.scorePlayer1,
-        scorePlayer2: item.scorePlayer2,
-        elapsedTime: item.elapsedTime ?? item.timeUsedMs ?? '',
-      },
-    });
-  }, [item, router]);
+    const winner =
+      item.scorePlayer1 > item.scorePlayer2 ? player1?.name : player2?.name;
+    const isPlayer1Winner = item.scorePlayer1 > item.scorePlayer2;
 
-  if (!animationsEnabled && index > 10) {
+    const handlePress = useCallback(() => {
+      router.push({
+        pathname: "/finish",
+        params: {
+          player1Id: item.player1Id,
+          player2Id: item.player2Id,
+          scorePlayer1: item.scorePlayer1,
+          scorePlayer2: item.scorePlayer2,
+          elapsedTime: item.elapsedTime ?? item.timeUsedMs ?? "",
+        },
+      });
+    }, [item, router]);
+
+    if (!animationsEnabled && index > 10) {
+      return (
+        <View style={historyStyles.matchRow}>
+          <TouchableOpacity
+            onPress={handlePress}
+            activeOpacity={0.8}
+            style={historyStyles.matchContent}
+          >
+            <View style={historyStyles.playersSection}>
+              <Text style={historyStyles.matchPlayers}>
+                {player1?.name || "Player 1"}
+                <Text style={historyStyles.vsText}> vs </Text>
+                {player2?.name || "Player 2"}
+              </Text>
+              <Text style={historyStyles.winnerText}>🏆 {winner} wins!</Text>
+            </View>
+
+            <View style={historyStyles.scoreSection}>
+              <View
+                style={[
+                  historyStyles.scoreContainer,
+                  isPlayer1Winner && historyStyles.winnerScore,
+                ]}
+              >
+                <Text
+                  style={[
+                    historyStyles.matchResult,
+                    isPlayer1Winner && historyStyles.winnerScoreText,
+                  ]}
+                >
+                  {item.scorePlayer1} : {item.scorePlayer2}
+                </Text>
+              </View>
+            </View>
+
+            <View style={historyStyles.dateSection}>
+              <Text style={historyStyles.matchDate}>📅 {dateStr}</Text>
+            </View>
+
+            <View style={historyStyles.matchIndicator} />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
     return (
-      <View style={historyStyles.matchRow}>
+      <Animated.View
+        style={
+          animationsEnabled
+            ? [
+                {
+                  opacity: itemAnim,
+                  transform: [
+                    { scale: scaleItemAnim },
+                    {
+                      translateY: itemAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [20, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]
+            : {}
+        }
+      >
         <TouchableOpacity
+          style={historyStyles.matchRow}
           onPress={handlePress}
           activeOpacity={0.8}
-          style={historyStyles.matchContent}
         >
-          <View style={historyStyles.playersSection}>
-            <Text style={historyStyles.matchPlayers}>
-              {player1?.name || 'Player 1'} 
-              <Text style={historyStyles.vsText}> vs </Text>
-              {player2?.name || 'Player 2'}
-            </Text>
-            <Text style={historyStyles.winnerText}>
-              🏆 {winner} wins!
-            </Text>
-          </View>
-
-          <View style={historyStyles.scoreSection}>
-            <View style={[
-              historyStyles.scoreContainer,
-              isPlayer1Winner && historyStyles.winnerScore
-            ]}>
-              <Text style={[
-                historyStyles.matchResult,
-                isPlayer1Winner && historyStyles.winnerScoreText
-              ]}>
-                {item.scorePlayer1} : {item.scorePlayer2}
+          <View style={historyStyles.matchContent}>
+            <View style={historyStyles.playersSection}>
+              <Text style={historyStyles.matchPlayers}>
+                {player1?.name || "Player 1"}
+                <Text style={historyStyles.vsText}> vs </Text>
+                {player2?.name || "Player 2"}
               </Text>
+              <Text style={historyStyles.winnerText}>🏆 {winner} wins!</Text>
+            </View>
+
+            <View style={historyStyles.scoreSection}>
+              <View
+                style={[
+                  historyStyles.scoreContainer,
+                  isPlayer1Winner && historyStyles.winnerScore,
+                ]}
+              >
+                <Text
+                  style={[
+                    historyStyles.matchResult,
+                    isPlayer1Winner && historyStyles.winnerScoreText,
+                  ]}
+                >
+                  {item.scorePlayer1} : {item.scorePlayer2}
+                </Text>
+              </View>
+            </View>
+
+            <View style={historyStyles.dateSection}>
+              <Text style={historyStyles.matchDate}>📅 {dateStr}</Text>
             </View>
           </View>
 
-          <View style={historyStyles.dateSection}>
-            <Text style={historyStyles.matchDate}>📅 {dateStr}</Text>
-          </View>
-          
           <View style={historyStyles.matchIndicator} />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     );
   }
+);
 
-  return (
-    <Animated.View
-      style={animationsEnabled ? [
-        {
-          opacity: itemAnim,
-          transform: [
-            { scale: scaleItemAnim },
-            { 
-              translateY: itemAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [20, 0],
-              })
-            }
-          ]
-        }
-      ] : {}}
-    >
-      <TouchableOpacity
-        style={historyStyles.matchRow}
-        onPress={handlePress}
-        activeOpacity={0.8}
-      >
-        <View style={historyStyles.matchContent}>
-          <View style={historyStyles.playersSection}>
-            <Text style={historyStyles.matchPlayers}>
-              {player1?.name || 'Player 1'} 
-              <Text style={historyStyles.vsText}> vs </Text>
-              {player2?.name || 'Player 2'}
-            </Text>
-            <Text style={historyStyles.winnerText}>
-              🏆 {winner} wins!
-            </Text>
-          </View>
-
-          <View style={historyStyles.scoreSection}>
-            <View style={[
-              historyStyles.scoreContainer,
-              isPlayer1Winner && historyStyles.winnerScore
-            ]}>
-              <Text style={[
-                historyStyles.matchResult,
-                isPlayer1Winner && historyStyles.winnerScoreText
-              ]}>
-                {item.scorePlayer1} : {item.scorePlayer2}
-              </Text>
-            </View>
-          </View>
-
-          <View style={historyStyles.dateSection}>
-            <Text style={historyStyles.matchDate}>📅 {dateStr}</Text>
-          </View>
-        </View>
-        
-        <View style={historyStyles.matchIndicator} />
-      </TouchableOpacity>
-    </Animated.View>
-  );
-});
+MatchItem.displayName = "MatchItem";

@@ -1,5 +1,14 @@
 import React from "react";
-import { Animated, Image, ImageSourcePropType, StyleProp, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+  Animated,
+  Image,
+  ImageSourcePropType,
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import { gameStyles } from "../styles/gameStyles";
 
 interface PlayerCardProps {
@@ -9,7 +18,12 @@ interface PlayerCardProps {
   animStyle?: StyleProp<ViewStyle>;
 }
 
-export function PlayerCard({ player, badge, onPress, animStyle }: PlayerCardProps) {
+export function PlayerCard({
+  player,
+  badge,
+  onPress,
+  animStyle,
+}: PlayerCardProps) {
   if (!player) return null;
   return (
     <Animated.View style={[gameStyles.sidePlayer, animStyle]}>

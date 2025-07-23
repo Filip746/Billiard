@@ -30,7 +30,7 @@ export function useFinishAnimations() {
         Animated.timing(pulseAnim, { toValue: 1, duration: 1500, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
       ])
     ).start();
-  }, []);
+  }, [fadeAnim, slideAnim, scaleAnim, rotateAnim, pulseAnim]);
 
   const spin = rotateAnim.interpolate({
     inputRange: [0, 1],

@@ -1,11 +1,12 @@
 import { fetchMatchesPage } from '@/shared/services/matchService';
 import { useAtom } from 'jotai';
-import { useEffect } from 'react';
-import { fetchingMoreAtom, hasMoreAtom, lastDocAtom, loadingAtom, matchesAtom } from '../state';
+import React, { useEffect } from 'react';
+import { fetchingMoreAtom, hasMoreAtom, lastDocAtom, matchesAtom } from '../state';
+
 
 export function useHistory(pageSize: number = 10) {
   const [matches, setMatches] = useAtom(matchesAtom);
-  const [loading, setLoading] = useAtom(loadingAtom);
+  const [loading, setLoading] = React.useState(true);
   const [fetchingMore, setFetchingMore] = useAtom(fetchingMoreAtom);
   const [lastDoc, setLastDoc] = useAtom(lastDocAtom);
   const [hasMore, setHasMore] = useAtom(hasMoreAtom);

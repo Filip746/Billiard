@@ -1,16 +1,20 @@
-import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
-import { historyStyles } from '../styles';
-import { HistoryFooter } from './HistoryFooter';
-import { LoadableListEmptyState } from './LoadableListEmptyState';
-import { LoadableListWrapper } from './LoadableListWrapper';
+import React from "react";
+import { ActivityIndicator, FlatList } from "react-native";
+import { historyStyles } from "../styles";
+import { HistoryFooter } from "./HistoryFooter";
+import { LoadableListEmptyState } from "./LoadableListEmptyState";
+import { LoadableListWrapper } from "./LoadableListWrapper";
 
 export function HistoryList({
-  filteredMatches, keyExtractor, renderItem,
-  handleLoadMore, listAnim, fetchingMore,
+  filteredMatches,
+  keyExtractor,
+  renderItem,
+  handleLoadMore,
+  listAnim,
+  fetchingMore,
   searching,
   emptyStateTitle = "No matches found",
-  emptyStateText = "Try adjusting your search filters or play some matches!"
+  emptyStateText = "Try adjusting your search filters or play some matches!",
 }: any) {
   if (!filteredMatches.length) {
     return (
@@ -19,7 +23,7 @@ export function HistoryList({
           <ActivityIndicator
             size="small"
             color="#667eea"
-            style={{ margin: 16, alignSelf: 'center' }}
+            style={{ margin: 16, alignSelf: "center" }}
           />
         )}
         <LoadableListEmptyState title={emptyStateTitle} text={emptyStateText} />
@@ -33,7 +37,7 @@ export function HistoryList({
         <ActivityIndicator
           size="small"
           color="#667eea"
-          style={{ margin: 16, alignSelf: 'center' }}
+          style={{ margin: 16, alignSelf: "center" }}
         />
       )}
       <FlatList
@@ -44,7 +48,9 @@ export function HistoryList({
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={historyStyles.listContent}
-        ListFooterComponent={() => <HistoryFooter fetchingMore={fetchingMore} />}
+        ListFooterComponent={() => (
+          <HistoryFooter fetchingMore={fetchingMore} />
+        )}
         removeClippedSubviews={true}
         maxToRenderPerBatch={10}
         windowSize={21}

@@ -1,8 +1,14 @@
-import React from 'react';
-import { Animated, Text, TouchableOpacity } from 'react-native';
-import { finishStyles } from '../styles';
+import React from "react";
+import { Animated, Text, TouchableOpacity } from "react-native";
+import { finishStyles } from "../styles";
 
-export function LeaderboardButton({ scaleAnim, onPress }: { scaleAnim: any, onPress: () => void }) {
+export function LeaderboardButton({
+  scaleAnim,
+  onPress,
+}: {
+  scaleAnim: any;
+  onPress: () => void;
+}) {
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
       <TouchableOpacity

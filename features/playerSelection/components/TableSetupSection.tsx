@@ -1,21 +1,25 @@
-import { Picker } from '@react-native-picker/picker';
-import React from 'react';
-import { Animated, Text, View } from 'react-native';
-import { playerStyles } from '../styles';
+import { Picker } from "@react-native-picker/picker";
+import React from "react";
+import { Animated, Text, View } from "react-native";
+import { playerStyles } from "../styles";
 
 export function TableSetupSection({
-  fadeAnim, scaleAnim,
-  timeOptions, selectedMinutes, handleTimeChange,
-  scoreLimit, setScoreLimit
+  fadeAnim,
+  scaleAnim,
+  timeOptions,
+  selectedMinutes,
+  handleTimeChange,
+  scoreLimit,
+  setScoreLimit,
 }: any) {
   return (
-    <Animated.View 
+    <Animated.View
       style={[
         playerStyles.billiardTable,
         {
           opacity: fadeAnim,
-          transform: [{ scale: scaleAnim }]
-        }
+          transform: [{ scale: scaleAnim }],
+        },
       ]}
     >
       <View style={playerStyles.tableHeader}>

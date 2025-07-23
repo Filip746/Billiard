@@ -1,9 +1,25 @@
-import React from 'react';
-import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { playerStyles } from '../styles';
+import React from "react";
+import {
+  Animated,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { playerStyles } from "../styles";
 
 export function PlayerListSection({
-  fadeAnim, scaleAnim, slideAnim, players, selectedId, setSelected, pulseAnim, title, sectionHeader, label
+  fadeAnim,
+  scaleAnim,
+  slideAnim,
+  players,
+  selectedId,
+  setSelected,
+  pulseAnim,
+  title,
+  sectionHeader,
+  label,
 }: any) {
   return (
     <Animated.View
@@ -11,10 +27,11 @@ export function PlayerListSection({
         playerStyles.section,
         {
           opacity: fadeAnim,
-          transform: sectionHeader === 'Player 2'
-            ? [{ translateY: slideAnim }, { scale: scaleAnim }]
-            : [{ translateY: slideAnim }]
-        }
+          transform:
+            sectionHeader === "Player 2"
+              ? [{ translateY: slideAnim }, { scale: scaleAnim }]
+              : [{ translateY: slideAnim }],
+        },
       ]}
     >
       <View style={playerStyles.sectionHeader}>
@@ -23,7 +40,11 @@ export function PlayerListSection({
           <Text style={playerStyles.selectedIndicator}>Selected ✨</Text>
         )}
       </View>
-      <ScrollView horizontal contentContainerStyle={playerStyles.scrollContainer} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={playerStyles.scrollContainer}
+        showsHorizontalScrollIndicator={false}
+      >
         {players.map((player: any, index: number) => {
           const isStriped = index % 2 !== 0;
           const isSelected = selectedId === player.id;
@@ -35,7 +56,7 @@ export function PlayerListSection({
                 {
                   transform: [{ scale: scaleAnim }],
                   opacity: fadeAnim,
-                }
+                },
               ]}
             >
               <TouchableOpacity
@@ -47,29 +68,55 @@ export function PlayerListSection({
                   <View
                     style={[
                       playerStyles.billiardBall,
-                      { backgroundColor: isStriped ? '#FFFFFF' : player.color },
+                      { backgroundColor: isStriped ? "#FFFFFF" : player.color },
                       isSelected && playerStyles.selectedBall,
                     ]}
                   >
                     {isStriped && (
                       <View style={playerStyles.stripesContainer}>
-                        <View style={[playerStyles.stripe, { backgroundColor: 'transparent' }]} />
-                        <View style={[playerStyles.stripe, { backgroundColor: player.color }]} />
-                        <View style={[playerStyles.stripe, { backgroundColor: 'transparent' }]} />
+                        <View
+                          style={[
+                            playerStyles.stripe,
+                            { backgroundColor: "transparent" },
+                          ]}
+                        />
+                        <View
+                          style={[
+                            playerStyles.stripe,
+                            { backgroundColor: player.color },
+                          ]}
+                        />
+                        <View
+                          style={[
+                            playerStyles.stripe,
+                            { backgroundColor: "transparent" },
+                          ]}
+                        />
                       </View>
                     )}
                     <View style={playerStyles.ballGloss} />
                     {isSelected && (
-                      <Animated.View style={[playerStyles.selectedGlow, { transform: [{ scale: pulseAnim }] }]}>
+                      <Animated.View
+                        style={[
+                          playerStyles.selectedGlow,
+                          { transform: [{ scale: pulseAnim }] },
+                        ]}
+                      >
                         <Text style={playerStyles.selectedCheckmark}>✓</Text>
                       </Animated.View>
                     )}
                     <View style={playerStyles.avatarContainer}>
-                      <Image source={player.avatar} style={playerStyles.avatar} />
+                      <Image
+                        source={player.avatar}
+                        style={playerStyles.avatar}
+                      />
                     </View>
                   </View>
                   <View style={playerStyles.nationalityOverlay}>
-                    <Image source={player.image} style={playerStyles.nationality} />
+                    <Image
+                      source={player.image}
+                      style={playerStyles.nationality}
+                    />
                   </View>
                 </View>
                 <Text style={playerStyles.playerName}>{player.name}</Text>

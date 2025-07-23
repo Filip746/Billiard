@@ -3,13 +3,16 @@ import {
   PlayerListSection,
   PlayerSelectionHeader,
   TableSetupSection,
-} from '@/features/playerSelection/components';
-import { usePlayerSelection, usePlayerSelectionAnimations } from '@/features/playerSelection/hooks';
-import { playerStyles } from '@/features/playerSelection/styles';
-import { usePlayers } from '@/shared/hooks';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useEffect } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
+} from "@/features/playerSelection/components";
+import {
+  usePlayerSelection,
+  usePlayerSelectionAnimations,
+} from "@/features/playerSelection/hooks";
+import { playerStyles } from "@/features/playerSelection/styles";
+import { usePlayers } from "@/shared/hooks";
+import * as ScreenOrientation from "expo-screen-orientation";
+import React, { useEffect } from "react";
+import { FlatList, SafeAreaView } from "react-native";
 
 const MAX_MINUTES = 60;
 const timeOptions = Array.from(
@@ -23,42 +26,40 @@ export default function HomeScreen() {
   }, []);
 
   const {
-    selectedPlayer1, setSelectedPlayer1,
-    selectedPlayer2, setSelectedPlayer2,
-    selectedMinutes, handleTimeChange,
-    scoreLimit, setScoreLimit,
+    selectedPlayer1,
+    setSelectedPlayer1,
+    selectedPlayer2,
+    setSelectedPlayer2,
+    selectedMinutes,
+    handleTimeChange,
+    scoreLimit,
+    setScoreLimit,
     startMatch,
   } = usePlayerSelection();
   const players = usePlayers();
 
   const isReady = Boolean(
     selectedPlayer1 &&
-    selectedPlayer2 &&
-    selectedPlayer1 !== selectedPlayer2 &&
-    selectedMinutes &&
-    scoreLimit
+      selectedPlayer2 &&
+      selectedPlayer1 !== selectedPlayer2 &&
+      selectedMinutes &&
+      scoreLimit
   );
 
-  const {
-    fadeAnim,
-    slideAnim,
-    scaleAnim,
-    headerAnim,
-    pulseAnim,
-    bounceAnim,
-  } = usePlayerSelectionAnimations(isReady);
+  const { fadeAnim, slideAnim, scaleAnim, headerAnim, pulseAnim, bounceAnim } =
+    usePlayerSelectionAnimations(isReady);
 
   const screenBlocks = [
-    { type: 'header' },
-    { type: 'player1' },
-    { type: 'player2' },
-    { type: 'setup' },
-    { type: 'matchReady' }
+    { type: "header" },
+    { type: "player1" },
+    { type: "player2" },
+    { type: "setup" },
+    { type: "matchReady" },
   ];
 
   const renderBlock = ({ item }: { item: { type: string } }) => {
     switch (item.type) {
-      case 'header':
+      case "header":
         return (
           <PlayerSelectionHeader
             fadeAnim={fadeAnim}
@@ -66,7 +67,7 @@ export default function HomeScreen() {
             pulseAnim={pulseAnim}
           />
         );
-      case 'player1':
+      case "player1":
         return (
           <PlayerListSection
             fadeAnim={fadeAnim}
@@ -81,7 +82,7 @@ export default function HomeScreen() {
             title=""
           />
         );
-      case 'player2':
+      case "player2":
         return (
           <PlayerListSection
             fadeAnim={fadeAnim}
@@ -96,7 +97,7 @@ export default function HomeScreen() {
             title=""
           />
         );
-      case 'setup':
+      case "setup":
         return (
           <TableSetupSection
             fadeAnim={fadeAnim}
@@ -108,7 +109,7 @@ export default function HomeScreen() {
             setScoreLimit={setScoreLimit}
           />
         );
-      case 'matchReady':
+      case "matchReady":
         return (
           <MatchReadySection
             fadeAnim={fadeAnim}
@@ -131,7 +132,7 @@ export default function HomeScreen() {
       <FlatList
         data={screenBlocks}
         renderItem={renderBlock}
-        keyExtractor={item => item.type}
+        keyExtractor={(item) => item.type}
         contentContainerStyle={playerStyles.container}
       />
     </SafeAreaView>

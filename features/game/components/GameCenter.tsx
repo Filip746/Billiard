@@ -1,11 +1,6 @@
 import { ScoreSnapScroll } from "@/shared/hooks/scoreSnapScroll";
 import React from "react";
-import {
-    Animated,
-    Text,
-    TouchableOpacity,
-    View
-} from "react-native";
+import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { gameStyles } from "../styles/gameStyles";
 
 interface GameCenterProps {
@@ -44,8 +39,8 @@ export function GameCenter({
       style={[
         gameStyles.centerBlock,
         {
-          transform: [{ scale: scaleAnim }]
-        }
+          transform: [{ scale: scaleAnim }],
+        },
       ]}
     >
       <View style={gameStyles.scoreSnapRow}>
@@ -61,21 +56,18 @@ export function GameCenter({
 
         <View style={gameStyles.scoreSnapMiddle}>
           <Animated.Text
-            style={[
-              gameStyles.vsLarge,
-              { transform: [{ rotate: spin }] }
-            ]}
+            style={[gameStyles.vsLarge, { transform: [{ rotate: spin }] }]}
           >
             ⚡
           </Animated.Text>
           <Animated.View
             style={[
               gameStyles.timerContainer,
-              { transform: [{ scale: timerPulseAnim }] }
+              { transform: [{ scale: timerPulseAnim }] },
             ]}
           >
             <Text style={gameStyles.timerLarge}>
-              {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
+              {`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}
             </Text>
             <Text style={gameStyles.timerLabel}>TIME</Text>
           </Animated.View>
@@ -96,7 +88,7 @@ export function GameCenter({
         <Animated.View
           style={{
             opacity: finishButtonAnim,
-            transform: [{ scale: finishButtonAnim }]
+            transform: [{ scale: finishButtonAnim }],
           }}
         >
           <TouchableOpacity
@@ -108,7 +100,7 @@ export function GameCenter({
           </TouchableOpacity>
         </Animated.View>
       ) : (
-        <View style={{ minHeight: 60, width: '100%' }} />
+        <View style={{ minHeight: 60, width: "100%" }} />
       )}
     </Animated.View>
   );

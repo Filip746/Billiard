@@ -1,6 +1,6 @@
-import React from 'react';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
-import { finishStyles } from '../styles';
+import React from "react";
+import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
+import { finishStyles } from "../styles";
 
 export function PlayerCard({
   player,
@@ -20,7 +20,7 @@ export function PlayerCard({
       style={[
         finishStyles.playerCard,
         isWinner && finishStyles.winnerCard,
-        { transform: [{ scale: scaleAnim }] }
+        { transform: [{ scale: scaleAnim }] },
       ]}
     >
       <TouchableOpacity onPress={() => player && onPlayerPress(player)}>

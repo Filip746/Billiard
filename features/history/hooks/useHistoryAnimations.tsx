@@ -40,7 +40,7 @@ export function useHistoryAnimations() {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [fadeAnim, headerAnim, listAnim, scaleAnim, slideAnim]);
 
   return {
     fadeAnim,

@@ -81,7 +81,7 @@ export function useGameAnimations(shouldShowFinish: boolean) {
       })
     ).start();
     
-  }, []);
+  }, [fadeAnim, pulseAnim, rotateAnim, scaleAnim, slideLeftAnim, slideRightAnim, timerPulseAnim]);
 
   useEffect(() => {
     if (shouldShowFinish) {
@@ -94,7 +94,7 @@ export function useGameAnimations(shouldShowFinish: boolean) {
     } else {
       finishButtonAnim.setValue(0);
     }
-  }, [shouldShowFinish]);
+  }, [shouldShowFinish, finishButtonAnim]);
 
   const spin = rotateAnim.interpolate({
     inputRange: [0, 1],

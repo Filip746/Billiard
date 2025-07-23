@@ -2,21 +2,30 @@ import {
   HistoryHeader,
   HistoryList,
   HistoryLoading,
-  HistorySearch
-} from '@/features/history/components';
-import { useHistoryScreen } from '@/features/history/hooks/useHistoryScreen';
-import React from 'react';
-import { SafeAreaView } from 'react-native';
+  HistorySearch,
+} from "@/features/history/components";
+import { useHistoryScreen } from "@/features/history/hooks/useHistoryScreen";
+import React from "react";
+import { SafeAreaView } from "react-native";
 
 export default function HistoryScreen() {
   const {
-    searchText, setSearchText,
-    dateText, setDateText,
+    searchText,
+    setSearchText,
+    dateText,
+    setDateText,
     filteredMatches,
-    loading, fetchingMore,
-    renderItem, keyExtractor, handleLoadMore,
-    fadeAnim, slideAnim, scaleAnim, headerAnim, listAnim,
-    searching
+    loading,
+    fetchingMore,
+    renderItem,
+    keyExtractor,
+    handleLoadMore,
+    fadeAnim,
+    slideAnim,
+    scaleAnim,
+    headerAnim,
+    listAnim,
+    searching,
   } = useHistoryScreen();
 
   if (loading && !filteredMatches.length) {
@@ -24,7 +33,7 @@ export default function HistoryScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0B4D2C' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#0B4D2C" }}>
       <HistoryHeader
         fadeAnim={fadeAnim}
         headerAnim={headerAnim}
