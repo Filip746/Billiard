@@ -49,5 +49,6 @@ export function useHistory(pageSize: number = 10) {
     hasMore,
     loadMore,
     loadAllMatches,
+    loadFirstPage
   };
 }

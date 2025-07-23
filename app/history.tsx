@@ -15,7 +15,8 @@ export default function HistoryScreen() {
     filteredMatches,
     loading, fetchingMore,
     renderItem, keyExtractor, handleLoadMore,
-    fadeAnim, slideAnim, scaleAnim, headerAnim, listAnim
+    fadeAnim, slideAnim, scaleAnim, headerAnim, listAnim,
+    searching
   } = useHistoryScreen();
 
   if (loading && !filteredMatches.length) {
@@ -46,6 +47,7 @@ export default function HistoryScreen() {
         handleLoadMore={handleLoadMore}
         listAnim={listAnim}
         fetchingMore={fetchingMore}
+        searching={searching}
       />
     </SafeAreaView>
   );

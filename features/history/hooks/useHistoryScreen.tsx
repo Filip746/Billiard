@@ -8,7 +8,8 @@ import { useHistoryAnimations } from './useHistoryAnimations';
 export function useHistoryScreen() {
   const [searchText, setSearchText] = useState('');
   const [dateText, setDateText] = useState('');
-  const { matches, loading, fetchingMore, hasMore, loadMore, loadAllMatches } = useHistory();
+  const [searching, setSearching] = useState(false);
+  const { loadFirstPage, matches, loading, fetchingMore, hasMore, loadMore, loadAllMatches } = useHistory();
   const players = usePlayers();
   const router = useRouter();
   const anim = useHistoryAnimations();
@@ -16,6 +17,12 @@ export function useHistoryScreen() {
   useEffect(() => {
     if (searchText.trim().length > 0 || dateText.trim().length > 0) {
       loadAllMatches();
+    }
+  }, [searchText, dateText]);
+
+  useEffect(() => {
+    if (searchText.trim().length === 0 && dateText.trim().length === 0) {
+      loadFirstPage();
     }
   }, [searchText, dateText]);
 
@@ -61,6 +68,7 @@ export function useHistoryScreen() {
     renderItem,
     keyExtractor,
     handleLoadMore,
+    searching,
     ...anim
   };
 }
