@@ -9,7 +9,7 @@ interface PlayerCardProps {
   animStyle?: StyleProp<ViewStyle>;
 }
 
-export default function PlayerCard({ player, badge, onPress, animStyle }: PlayerCardProps) {
+export function PlayerCard({ player, badge, onPress, animStyle }: PlayerCardProps) {
   if (!player) return null;
   return (
     <Animated.View style={[gameStyles.sidePlayer, animStyle]}>

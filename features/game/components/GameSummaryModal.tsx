@@ -13,7 +13,7 @@ interface GameSummaryModalProps {
   animStyle?: StyleProp<ViewStyle>;
 }
 
-export default function GameSummaryModal({
+export function GameSummaryModal({
   isModalVisible, onConfirm, onCancel,
   player1, player2, score1, score2,
   animStyle
