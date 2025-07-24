@@ -12,6 +12,7 @@ import {
 } from '@/features/playerSelection/state/';
 import { useCountdown, usePlayers } from '@/shared/hooks';
 import { addMatch } from '@/shared/services/matchService';
+import { getPlayerById } from '@/shared/utils/getPlayerById';
 import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 
@@ -29,8 +30,8 @@ export function useGameLogic() {
   const [timeLeft] = useCountdown(endTime ?? (Date.now() + (selectedMinutes ?? 0) * 60 * 1000));
 
   const players = usePlayers();
-  const player1 = players.find(p => p.id === selectedPlayer1);
-  const player2 = players.find(p => p.id === selectedPlayer2);
+  const player1 = getPlayerById(players, selectedPlayer1);
+  const player2 = getPlayerById(players, selectedPlayer2);
 
   const minutes = Math.floor(timeLeft / 60000);
   const seconds = Math.floor((timeLeft % 60000) / 1000);
@@ -75,4 +76,3 @@ export function useGameLogic() {
     scoreLimit,
   };
 }
-

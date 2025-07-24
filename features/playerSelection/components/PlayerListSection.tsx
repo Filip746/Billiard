@@ -2,8 +2,8 @@ import { Player } from "@/shared/types/players";
 import React from "react";
 import {
   Animated,
+  FlatList,
   Image,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -53,17 +53,17 @@ export function PlayerListSection({
           <Text style={playerStyles.selectedIndicator}>Selected ✨</Text>
         )}
       </View>
-      <ScrollView
+      <FlatList
+        data={players}
+        keyExtractor={(player) => player.id}
         horizontal
-        contentContainerStyle={playerStyles.scrollContainer}
         showsHorizontalScrollIndicator={false}
-      >
-        {players.map((player, index: number) => {
+        contentContainerStyle={playerStyles.scrollContainer}
+        renderItem={({ item: player, index }) => {
           const isStriped = index % 2 !== 0;
           const isSelected = selectedId === player.id;
           return (
             <Animated.View
-              key={player.id}
               style={[
                 playerStyles.playerContainer,
                 {
@@ -136,8 +136,8 @@ export function PlayerListSection({
               </TouchableOpacity>
             </Animated.View>
           );
-        })}
-      </ScrollView>
+        }}
+      />
     </Animated.View>
   );
 }

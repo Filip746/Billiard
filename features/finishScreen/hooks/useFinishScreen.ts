@@ -14,8 +14,8 @@ export function useFinishScreen() {
   const scoreFromAtom2 = useAtomValue(scorePlayer2Atom);
   const elapsedTimeAtomValue = useAtomValue(elapsedTimeAtom);
 
-  const player1Id = params.player1Id ? Number(params.player1Id) : selectedPlayer1;
-  const player2Id = params.player2Id ? Number(params.player2Id) : selectedPlayer2;
+  const player1Id = params.player1Id ? params.player1Id : selectedPlayer1;
+  const player2Id = params.player2Id ? params.player2Id : selectedPlayer2;
   const scorePlayer1 = params.scorePlayer1 ? Number(params.scorePlayer1) : scoreFromAtom1;
   const scorePlayer2 = params.scorePlayer2 ? Number(params.scorePlayer2) : scoreFromAtom2;
   const elapsedTime = params.elapsedTime ? Number(params.elapsedTime) : elapsedTimeAtomValue;

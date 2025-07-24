@@ -3,14 +3,7 @@ import { Match } from "@/shared/types/match";
 import { Player } from "@/shared/types/players";
 import { ViewMatch } from "@/shared/types/viewMatch";
 import React from "react";
-import {
-  Image,
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { MatchList } from "./matchList";
 
 type LeaderboardPlayerModalProps = {
@@ -185,12 +178,10 @@ export function LeaderboardPlayerModal({
                   All Matches
                 </Text>
                 <View style={{ width: "100%", maxHeight: "85%" }}>
-                  <ScrollView>
-                    <MatchList
-                      matches={formattedAllMatches}
-                      emptyText="No matches found."
-                    />
-                  </ScrollView>
+                  <MatchList
+                    matches={formattedAllMatches}
+                    emptyText="No matches found."
+                  />
                 </View>
               </View>
             </View>

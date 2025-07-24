@@ -17,7 +17,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
-import { Animated, ScrollView } from "react-native";
+import { Animated, FlatList } from "react-native";
 
 export default function Finish() {
   useFocusEffect(
@@ -74,40 +74,50 @@ export default function Finish() {
 
   return (
     <>
-      <ScrollView contentContainerStyle={finishStyles.scrollContainer}>
-        <Animated.View
-          style={[
-            finishStyles.root,
-            { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
-          ]}
-        >
-          <MatchCompleteHeader scaleAnim={scaleAnim} />
-          <FinalScoreInfo
-            scorePlayer1={scorePlayer1}
-            scorePlayer2={scorePlayer2}
-            formattedTime={formattedTime ?? undefined}
-            scaleAnim={scaleAnim}
-          />
-          {winner && (
-            <ChampionSection
+      <FlatList
+        data={[]}
+        keyExtractor={() => "static-header"}
+        ListHeaderComponent={
+          <Animated.View
+            style={[
+              finishStyles.root,
+              { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+            ]}
+          >
+            <MatchCompleteHeader scaleAnim={scaleAnim} />
+            <FinalScoreInfo
+              scorePlayer1={scorePlayer1}
+              scorePlayer2={scorePlayer2}
+              formattedTime={formattedTime ?? undefined}
+              scaleAnim={scaleAnim}
+            />
+            {winner && (
+              <ChampionSection
+                winner={winner}
+                spin={spin}
+                pulseAnim={pulseAnim}
+                onPlayerPress={onPlayerPress}
+              />
+            )}
+            <PlayersSection
+              player1={player1}
+              player2={player2}
               winner={winner}
-              spin={spin}
-              pulseAnim={pulseAnim}
+              scaleAnim={scaleAnim}
+              scorePlayer1={scorePlayer1}
+              scorePlayer2={scorePlayer2}
               onPlayerPress={onPlayerPress}
             />
-          )}
-          <PlayersSection
-            player1={player1}
-            player2={player2}
-            winner={winner}
-            scaleAnim={scaleAnim}
-            scorePlayer1={scorePlayer1}
-            scorePlayer2={scorePlayer2}
-            onPlayerPress={onPlayerPress}
-          />
-          <LeaderboardButton scaleAnim={scaleAnim} onPress={goToLeaderboard} />
-        </Animated.View>
-      </ScrollView>
+            <LeaderboardButton
+              scaleAnim={scaleAnim}
+              onPress={goToLeaderboard}
+            />
+          </Animated.View>
+        }
+        contentContainerStyle={finishStyles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        renderItem={() => null}
+      />
       <LeaderboardPlayerModal
         visible={playerModalVisible}
         onClose={closeModal}
