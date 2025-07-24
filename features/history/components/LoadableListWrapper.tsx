@@ -6,7 +6,7 @@ export function LoadableListWrapper({
   opacityAnimation,
   children,
 }: {
-  opacityAnimation: any;
+  opacityAnimation: Animated.Value;
   children: React.ReactNode;
 }) {
   return (

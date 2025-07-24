@@ -8,5 +8,7 @@ export type Match = {
   scorePlayer1: number;
   scorePlayer2: number;
   timeUsedMs: number;
-  createdAt: Timestamp;
+  createdAt: string | Timestamp;
+  date?: string;
+  elapsedTime?: string | number;
 };

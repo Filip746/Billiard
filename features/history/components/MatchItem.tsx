@@ -1,3 +1,5 @@
+import { Match } from "@/shared/types/match";
+import { Player } from "@/shared/types/players";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -10,10 +12,12 @@ import {
 import { historyStyles } from "../styles";
 
 type MatchItemProps = {
-  item: any;
+  item: Match;
   index: number;
-  players: any[];
-  router: any;
+  players: Player[];
+  router: {
+    push: (params: { pathname: string; params: Record<string, any> }) => void;
+  };
 };
 
 export const MatchItem = React.memo(
@@ -47,12 +51,13 @@ export const MatchItem = React.memo(
 
     const player1 = players.find((p) => p.id === Number(item.player1Id));
     const player2 = players.find((p) => p.id === Number(item.player2Id));
-    let dateStr = "";
-    if (typeof item.createdAt === "object" && item.createdAt.seconds) {
-      dateStr = new Date(item.createdAt.seconds * 1000).toLocaleDateString();
-    } else {
-      dateStr = item.createdAt || item.date;
-    }
+    const dateStr =
+      (typeof item.createdAt === "object" &&
+        item.createdAt?.seconds &&
+        new Date(item.createdAt.seconds * 1000).toLocaleDateString()) ||
+      (typeof item.createdAt === "string" && item.createdAt) ||
+      (typeof item.date === "string" && item.date) ||
+      "N/A";
 
     const winner =
       item.scorePlayer1 > item.scorePlayer2 ? player1?.name : player2?.name;

@@ -1,9 +1,27 @@
+import { Match } from "@/shared/types/match";
 import React from "react";
-import { ActivityIndicator, FlatList } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  ListRenderItemInfo,
+} from "react-native";
 import { historyStyles } from "../styles";
 import { HistoryFooter } from "./HistoryFooter";
 import { LoadableListEmptyState } from "./LoadableListEmptyState";
 import { LoadableListWrapper } from "./LoadableListWrapper";
+
+type HistoryListProps = {
+  filteredMatches: Match[];
+  keyExtractor: (item: Match, index: number) => string;
+  renderItem: (info: ListRenderItemInfo<Match>) => React.ReactElement | null;
+  handleLoadMore: () => void;
+  listAnim: Animated.Value;
+  fetchingMore: boolean;
+  searching: boolean;
+  emptyStateTitle?: string;
+  emptyStateText?: string;
+};
 
 export function HistoryList({
   filteredMatches,
@@ -15,7 +33,7 @@ export function HistoryList({
   searching,
   emptyStateTitle = "No matches found",
   emptyStateText = "Try adjusting your search filters or play some matches!",
-}: any) {
+}: HistoryListProps) {
   if (!filteredMatches.length) {
     return (
       <LoadableListWrapper opacityAnimation={listAnim}>
