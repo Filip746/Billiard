@@ -9,23 +9,19 @@ import {
   useFinishAnimations,
   useFinishScreen,
 } from "@/features/finishScreen/hooks";
+import { useScreenOrientationLock } from "@/features/finishScreen/hooks/useScreenOrientationLock";
 import { finishStyles } from "@/features/finishScreen/styles";
 import { usePlayerModal } from "@/features/leaderboard";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
 import { usePlayers } from "@/shared/hooks";
 import { Player } from "@/shared/types/players";
-import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
 import { Animated, FlatList } from "react-native";
 
 export default function Finish() {
-  useFocusEffect(
-    React.useCallback(() => {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-    }, [])
-  );
+  useScreenOrientationLock(ScreenOrientation.OrientationLock.PORTRAIT);
 
   const {
     player1,

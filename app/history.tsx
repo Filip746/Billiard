@@ -1,3 +1,4 @@
+import { useScreenOrientationLock } from "@/features/finishScreen/hooks/useScreenOrientationLock";
 import {
   HistoryHeader,
   HistoryList,
@@ -5,10 +6,13 @@ import {
   HistorySearch,
 } from "@/features/history/components";
 import { useHistoryScreen } from "@/features/history/hooks/useHistoryScreen";
+import * as ScreenOrientation from "expo-screen-orientation";
 import React from "react";
 import { SafeAreaView } from "react-native";
 
 export default function HistoryScreen() {
+  useScreenOrientationLock(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const {
     searchText,
     setSearchText,

@@ -1,4 +1,5 @@
 import { billiard } from "@/const/images";
+import { useScreenOrientationLock } from "@/features/finishScreen/hooks/useScreenOrientationLock";
 import { gameStyles, useGameAnimations, useGameLogic } from "@/features/game";
 import {
   GameCenter,
@@ -8,21 +9,12 @@ import {
 import { usePlayerModal } from "@/features/leaderboard";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
 import { usePlayers } from "@/shared/hooks";
-import { useFocusEffect } from "@react-navigation/native";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
 import { Animated, ImageBackground } from "react-native";
 
 export default function Game() {
-  useFocusEffect(
-    React.useCallback(() => {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-
-      return () => {
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-      };
-    }, [])
-  );
+  useScreenOrientationLock(ScreenOrientation.OrientationLock.LANDSCAPE);
 
   const {
     player1,

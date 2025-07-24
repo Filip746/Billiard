@@ -8,14 +8,18 @@ import {
 } from "@/features/leaderboard";
 import { usePlayerModal } from "@/features/leaderboard/hooks/usePlayerModal";
 
+import { useScreenOrientationLock } from "@/features/finishScreen/hooks/useScreenOrientationLock";
 import { useLeaderboardAnimations } from "@/features/leaderboard/hooks/useLeaderboardAnimations";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
 import { usePlayers } from "@/shared/hooks";
 import { LeaderboardEntry } from "@/shared/types/leaderboard";
+import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
 import { View } from "react-native";
 
 export default function Leaderboard() {
+  useScreenOrientationLock(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [dateFilter, setDateFilter] = useState({ year: "", month: "" });

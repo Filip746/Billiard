@@ -1,3 +1,4 @@
+import { useScreenOrientationLock } from "@/features/finishScreen/hooks/useScreenOrientationLock";
 import {
   MatchReadySection,
   PlayerListSection,
@@ -10,8 +11,9 @@ import {
 } from "@/features/playerSelection/hooks";
 import { playerStyles } from "@/features/playerSelection/styles";
 import { usePlayers } from "@/shared/hooks";
+import { usePlayersListener } from "@/shared/hooks/usePlayersListener";
 import * as ScreenOrientation from "expo-screen-orientation";
-import React, { useEffect } from "react";
+import React from "react";
 import { FlatList, SafeAreaView } from "react-native";
 
 const MAX_MINUTES = 60;
@@ -21,9 +23,8 @@ const timeOptions = Array.from(
 );
 
 export default function HomeScreen() {
-  useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-  }, []);
+  usePlayersListener();
+  useScreenOrientationLock(ScreenOrientation.OrientationLock.PORTRAIT);
 
   const {
     selectedPlayer1,
