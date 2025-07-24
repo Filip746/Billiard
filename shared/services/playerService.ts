@@ -1,7 +1,8 @@
-import { db } from '@/shared/services/firebase';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { getApp } from 'firebase/app';
+import { collection, doc, getDocs, getFirestore, updateDoc } from 'firebase/firestore';
 
 export async function updateAllPlayersPoints() {
+  const db = getFirestore(getApp());
   const playersSnapshot = await getDocs(collection(db, 'players'));
   const matchesSnapshot = await getDocs(collection(db, 'matches'));
 

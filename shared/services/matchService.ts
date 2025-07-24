@@ -1,10 +1,11 @@
-import { db } from '@/shared/services/firebase';
 import { Match } from '@/shared/types/match';
+import { getApp } from 'firebase/app';
 import {
   addDoc,
   collection,
   DocumentData,
   getDocs,
+  getFirestore,
   limit,
   or,
   orderBy,
@@ -15,6 +16,8 @@ import {
   where
 } from 'firebase/firestore';
 import { toDate } from '../utils/toDateStr';
+
+const db = getFirestore(getApp());
 
 export async function addMatch(match: Omit<Match, 'createdAt'>) {
   return await addDoc(collection(db, 'matches'), {
