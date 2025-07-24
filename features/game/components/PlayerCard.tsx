@@ -1,8 +1,8 @@
+import { Player } from "@/shared/types/players";
 import React from "react";
 import {
   Animated,
   Image,
-  ImageSourcePropType,
   StyleProp,
   Text,
   TouchableOpacity,
@@ -12,9 +12,9 @@ import {
 import { gameStyles } from "../styles/gameStyles";
 
 interface PlayerCardProps {
-  player?: { name: string; avatar: ImageSourcePropType } | null;
+  player?: Player | null;
   badge: string;
-  onPress: (player: { name: string; avatar: ImageSourcePropType }) => void;
+  onPress: (player: Player) => void;
   animStyle?: StyleProp<ViewStyle>;
 }
 

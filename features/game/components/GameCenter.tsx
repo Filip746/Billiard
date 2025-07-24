@@ -5,17 +5,17 @@ import { gameStyles } from "../styles/gameStyles";
 
 interface GameCenterProps {
   scorePlayer1: number;
-  setScorePlayer1: (n: number) => void;
+  setScorePlayer1: (score: number) => void;
   scorePlayer2: number;
-  setScorePlayer2: (n: number) => void;
+  setScorePlayer2: (score: number) => void;
   scoreLimit: number | null;
-  spin: any;
+  spin: Animated.Value;
   minutes: number;
   seconds: number;
-  timerPulseAnim: any;
+  timerPulseAnim: Animated.Value;
   shouldShowFinish: boolean;
-  finishButtonAnim: any;
-  scaleAnim: any;
+  finishButtonAnim: Animated.Value;
+  scaleAnim: Animated.Value;
   onFinishPress: () => void;
 }
 
