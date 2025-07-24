@@ -3,17 +3,19 @@ import React from "react";
 import { Animated, Image, Text, TouchableOpacity } from "react-native";
 import { finishStyles } from "../styles";
 
+type Props = {
+  winner: Player;
+  spin: Animated.Value;
+  pulseAnim: Animated.Value;
+  onPlayerPress: (player: Player) => void;
+};
+
 export function ChampionSection({
   winner,
   spin,
   pulseAnim,
   onPlayerPress,
-}: {
-  winner: Player;
-  spin: any;
-  pulseAnim: any;
-  onPlayerPress: (player: any) => void;
-}) {
+}: Props) {
   return (
     <Animated.View
       style={[

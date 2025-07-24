@@ -2,17 +2,19 @@ import React from "react";
 import { Animated, Text } from "react-native";
 import { finishStyles } from "../styles";
 
+type Props = {
+  scorePlayer1: number;
+  scorePlayer2: number;
+  formattedTime?: string | null;
+  scaleAnim: Animated.Value;
+};
+
 export function FinalScoreInfo({
   scorePlayer1,
   scorePlayer2,
   formattedTime,
   scaleAnim,
-}: {
-  scorePlayer1: number;
-  scorePlayer2: number;
-  formattedTime?: string | null;
-  scaleAnim: any;
-}) {
+}: Props) {
   return (
     <Animated.View
       style={[

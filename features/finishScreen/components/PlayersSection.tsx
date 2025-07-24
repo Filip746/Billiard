@@ -1,7 +1,18 @@
+import { Player } from "@/shared/types/players";
 import React from "react";
-import { Text, View } from "react-native";
+import { Animated, Text, View } from "react-native";
 import { finishStyles } from "../styles";
 import { PlayerCard } from "./PlayerCard";
+
+type Props = {
+  player1: Player;
+  player2: Player;
+  winner: Player;
+  scaleAnim: Animated.Value;
+  scorePlayer1: number;
+  scorePlayer2: number;
+  onPlayerPress: (player: Player) => void;
+};
 
 export function PlayersSection({
   player1,
@@ -11,7 +22,7 @@ export function PlayersSection({
   scorePlayer1,
   scorePlayer2,
   onPlayerPress,
-}: any) {
+}: Props) {
   return (
     <View style={finishStyles.playersSection}>
       <Text style={finishStyles.playersTitle}>Match Players</Text>

@@ -2,7 +2,11 @@ import React from "react";
 import { Animated, Text } from "react-native";
 import { finishStyles } from "../styles";
 
-export function MatchCompleteHeader({ scaleAnim }: { scaleAnim: any }) {
+type Props = {
+  scaleAnim: Animated.Value;
+};
+
+export function MatchCompleteHeader({ scaleAnim }: Props) {
   return (
     <Animated.View
       style={[finishStyles.header, { transform: [{ scale: scaleAnim }] }]}

@@ -1,6 +1,15 @@
+import { Player } from "@/shared/types/players";
 import React from "react";
 import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
 import { finishStyles } from "../styles";
+
+type Props = {
+  player: Player;
+  isWinner: boolean;
+  scaleAnim: Animated.Value;
+  score: number;
+  onPlayerPress: (player: Player) => void;
+};
 
 export function PlayerCard({
   player,
@@ -8,13 +17,7 @@ export function PlayerCard({
   scaleAnim,
   score,
   onPlayerPress,
-}: {
-  player: any;
-  isWinner: boolean;
-  scaleAnim: any;
-  score: number;
-  onPlayerPress: (player: any) => void;
-}) {
+}: Props) {
   return (
     <Animated.View
       style={[
