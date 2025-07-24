@@ -5,7 +5,7 @@ import { finishStyles } from "../styles";
 
 type Props = {
   winner: Player;
-  spin: Animated.Value;
+  spin: Animated.Value | Animated.AnimatedInterpolation<string | number>;
   pulseAnim: Animated.Value;
   onPlayerPress: (player: Player) => void;
 };

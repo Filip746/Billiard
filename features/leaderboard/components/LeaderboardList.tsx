@@ -1,9 +1,9 @@
+import { LeaderboardEntry } from "@/shared/types/leaderboard";
 import React from "react";
 import { Animated, FlatList, View } from "react-native";
 import { leaderboardStyles } from "../styles";
 import { LeaderboardListItem } from "./LeaderboardListItem";
 
-// Pretpostavka: LeaderboardEntry tip postoji vec negdje
 type LeaderboardListProps = {
   leaderboard: LeaderboardEntry[];
   listAnim: Animated.Value;

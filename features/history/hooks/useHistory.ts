@@ -1,4 +1,5 @@
 import { fetchMatchesPage } from '@/shared/services/matchService';
+import { Match } from '@/shared/types/match';
 import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { fetchingMoreAtom, hasMoreAtom, lastDocAtom, matchesAtom } from '../state';
@@ -18,7 +19,7 @@ export function useHistory(pageSize: number = 10) {
   const loadFirstPage = async () => {
     setLoading(true);
     const res = await fetchMatchesPage(pageSize);
-    setMatches(res.matches);
+    setMatches(res.matches as (Match & { id: string })[]);
     setLastDoc(res.lastDoc);
     setHasMore(res.hasMore);
     setLoading(false);
@@ -28,7 +29,10 @@ export function useHistory(pageSize: number = 10) {
     if (!hasMore || fetchingMore) return;
     setFetchingMore(true);
     const res = await fetchMatchesPage(pageSize, lastDoc);
-    setMatches(prev => [...prev, ...res.matches]);
+    setMatches(prev => [
+      ...prev, 
+      ...res.matches as (Match & { id: string })[]
+    ]);
     setLastDoc(res.lastDoc);
     setHasMore(res.hasMore);
     setFetchingMore(false);
@@ -37,7 +41,7 @@ export function useHistory(pageSize: number = 10) {
   const loadAllMatches = async () => {
     setLoading(true);
     const res = await fetchMatchesPage(5000, null, true);
-    setMatches(res.matches);
+    setMatches(res.matches as (Match & { id: string })[]);
     setLastDoc(res.lastDoc);
     setHasMore(false);
     setLoading(false);

@@ -1,14 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 
-type LeaderboardAnimations = {
-  fadeAnim: Animated.Value;
-  slideAnim: Animated.Value;
-  scaleAnim: Animated.Value;
-  listAnim: Animated.Value;
-};
-
-export function useLeaderboardAnimations(): LeaderboardAnimations {
+export function useLeaderboardAnimations() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
   const scaleAnim = useRef(new Animated.Value(0.9)).current;

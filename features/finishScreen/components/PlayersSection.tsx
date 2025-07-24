@@ -5,9 +5,9 @@ import { finishStyles } from "../styles";
 import { PlayerCard } from "./PlayerCard";
 
 type Props = {
-  player1: Player;
-  player2: Player;
-  winner: Player;
+  player1?: Player;
+  player2?: Player;
+  winner?: Player;
   scaleAnim: Animated.Value;
   scorePlayer1: number;
   scorePlayer2: number;

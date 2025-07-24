@@ -1,6 +1,18 @@
+import { Player } from "@/shared/types/players";
 import React from "react";
 import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
 import { playerStyles } from "../styles";
+
+type MatchReadySectionProps = {
+  fadeAnim: Animated.Value;
+  bounceAnim: Animated.Value;
+  players: Player[];
+  selectedPlayer1: string | null;
+  selectedPlayer2: string | null;
+  selectedMinutes: number | null;
+  scoreLimit: number | null;
+  startMatch: () => void;
+};
 
 export function MatchReadySection({
   fadeAnim,
@@ -11,7 +23,7 @@ export function MatchReadySection({
   selectedMinutes,
   scoreLimit,
   startMatch,
-}: any) {
+}: MatchReadySectionProps) {
   if (
     !(
       selectedPlayer1 &&
@@ -23,8 +35,8 @@ export function MatchReadySection({
   )
     return null;
 
-  const player1 = players.find((p: any) => p.id === selectedPlayer1);
-  const player2 = players.find((p: any) => p.id === selectedPlayer2);
+  const player1 = players.find((p) => p.id === selectedPlayer1);
+  const player2 = players.find((p) => p.id === selectedPlayer2);
 
   return (
     <Animated.View

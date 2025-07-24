@@ -3,11 +3,17 @@ import React from "react";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { playerStyles } from "../styles";
 
+type PlayerSelectionHeaderProps = {
+  fadeAnim: Animated.Value;
+  headerAnim: Animated.Value;
+  pulseAnim: Animated.Value;
+};
+
 export function PlayerSelectionHeader({
   fadeAnim,
   headerAnim,
   pulseAnim,
-}: any) {
+}: PlayerSelectionHeaderProps) {
   return (
     <Animated.View
       style={[

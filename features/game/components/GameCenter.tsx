@@ -9,7 +9,7 @@ interface GameCenterProps {
   scorePlayer2: number;
   setScorePlayer2: (score: number) => void;
   scoreLimit: number | null;
-  spin: Animated.Value;
+  spin: Animated.Value | Animated.AnimatedInterpolation<string | number>;
   minutes: number;
   seconds: number;
   timerPulseAnim: Animated.Value;

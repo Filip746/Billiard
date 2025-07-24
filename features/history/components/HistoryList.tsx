@@ -1,4 +1,3 @@
-import { Match } from "@/shared/types/match";
 import React from "react";
 import {
   ActivityIndicator,
@@ -6,15 +5,18 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
+import { FirestoreMatch } from "../hooks/useHistoryScreen";
 import { historyStyles } from "../styles";
 import { HistoryFooter } from "./HistoryFooter";
 import { LoadableListEmptyState } from "./LoadableListEmptyState";
 import { LoadableListWrapper } from "./LoadableListWrapper";
 
 type HistoryListProps = {
-  filteredMatches: Match[];
-  keyExtractor: (item: Match, index: number) => string;
-  renderItem: (info: ListRenderItemInfo<Match>) => React.ReactElement | null;
+  filteredMatches: FirestoreMatch[];
+  keyExtractor: (item: FirestoreMatch, index: number) => string;
+  renderItem: (
+    info: ListRenderItemInfo<FirestoreMatch>
+  ) => React.ReactElement | null;
   handleLoadMore: () => void;
   listAnim: Animated.Value;
   fetchingMore: boolean;

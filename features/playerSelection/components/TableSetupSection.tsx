@@ -3,6 +3,16 @@ import React from "react";
 import { Animated, Text, View } from "react-native";
 import { playerStyles } from "../styles";
 
+type TableSetupSectionProps = {
+  fadeAnim: Animated.Value;
+  scaleAnim: Animated.Value;
+  timeOptions: number[];
+  selectedMinutes: number | null;
+  handleTimeChange: (value: number) => void;
+  scoreLimit: number | null;
+  setScoreLimit: (value: number) => void;
+};
+
 export function TableSetupSection({
   fadeAnim,
   scaleAnim,
@@ -11,7 +21,7 @@ export function TableSetupSection({
   handleTimeChange,
   scoreLimit,
   setScoreLimit,
-}: any) {
+}: TableSetupSectionProps) {
   return (
     <Animated.View
       style={[
@@ -34,11 +44,11 @@ export function TableSetupSection({
           <Text style={playerStyles.railLabel}>TIME LIMIT</Text>
           <View style={playerStyles.cueStick}>
             <Picker
-              selectedValue={selectedMinutes}
+              selectedValue={selectedMinutes ?? undefined}
               onValueChange={handleTimeChange}
               style={playerStyles.picker}
             >
-              <Picker.Item label="Select time" value={null} />
+              <Picker.Item label="Select time" value={undefined} />
               {timeOptions.map((minutes: number) => (
                 <Picker.Item
                   key={minutes}
@@ -58,11 +68,11 @@ export function TableSetupSection({
           <Text style={playerStyles.railLabel}>SCORE LIMIT</Text>
           <View style={playerStyles.cueStick}>
             <Picker
-              selectedValue={scoreLimit}
+              selectedValue={scoreLimit ?? undefined}
               onValueChange={setScoreLimit}
               style={playerStyles.picker}
             >
-              <Picker.Item label="Select points" value={null} />
+              <Picker.Item label="Select points" value={undefined} />
               <Picker.Item label="3 points" value={3} />
               <Picker.Item label="5 points" value={5} />
               <Picker.Item label="7 points" value={7} />

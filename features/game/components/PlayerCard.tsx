@@ -12,7 +12,7 @@ import {
 import { gameStyles } from "../styles/gameStyles";
 
 interface PlayerCardProps {
-  player?: Player | null;
+  player?: Player;
   badge: string;
   onPress: (player: Player) => void;
   animStyle?: StyleProp<ViewStyle>;

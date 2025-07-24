@@ -43,7 +43,7 @@ export default function Leaderboard() {
 
   const handleNamePress = async (entry: LeaderboardEntry): Promise<void> => {
     const player = players.find(
-      (p) => p.id === Number(entry.id) || p.name === entry.name
+      (p) => p.id === entry.id || p.name === entry.name
     );
     if (player) await handlePlayerPress(player);
     setModalVisible(true);

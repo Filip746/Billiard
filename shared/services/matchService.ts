@@ -3,10 +3,12 @@ import { Match } from '@/shared/types/match';
 import {
   addDoc,
   collection,
+  DocumentData,
   getDocs,
   limit,
   orderBy,
   query,
+  QueryDocumentSnapshot,
   startAfter,
   Timestamp,
   where
@@ -19,7 +21,7 @@ export async function addMatch(match: Omit<Match, 'createdAt'>) {
   });
 }
 
-export async function fetchMatchesPage(pageSize = 10, lastDoc = null, all = false) {
+export async function fetchMatchesPage(pageSize = 10, lastDoc: QueryDocumentSnapshot<DocumentData> | null = null, all = false) {
   let q = query(
     collection(db, 'matches'),
     orderBy('createdAt', 'desc'),

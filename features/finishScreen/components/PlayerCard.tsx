@@ -4,7 +4,7 @@ import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
 import { finishStyles } from "../styles";
 
 type Props = {
-  player: Player;
+  player?: Player;
   isWinner: boolean;
   scaleAnim: Animated.Value;
   score: number;

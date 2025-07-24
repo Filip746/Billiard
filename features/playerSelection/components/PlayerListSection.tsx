@@ -1,3 +1,4 @@
+import { Player } from "@/shared/types/players";
 import React from "react";
 import {
   Animated,
@@ -9,6 +10,19 @@ import {
 } from "react-native";
 import { playerStyles } from "../styles";
 
+type PlayerListSectionProps = {
+  fadeAnim: Animated.Value;
+  scaleAnim: Animated.Value;
+  slideAnim: Animated.Value;
+  players: Player[];
+  selectedId: string | null;
+  setSelected: (id: string) => void;
+  pulseAnim: Animated.Value;
+  title?: string;
+  sectionHeader?: string;
+  label?: string;
+};
+
 export function PlayerListSection({
   fadeAnim,
   scaleAnim,
@@ -17,10 +31,9 @@ export function PlayerListSection({
   selectedId,
   setSelected,
   pulseAnim,
-  title,
   sectionHeader,
   label,
-}: any) {
+}: PlayerListSectionProps) {
   return (
     <Animated.View
       style={[
@@ -45,7 +58,7 @@ export function PlayerListSection({
         contentContainerStyle={playerStyles.scrollContainer}
         showsHorizontalScrollIndicator={false}
       >
-        {players.map((player: any, index: number) => {
+        {players.map((player, index: number) => {
           const isStriped = index % 2 !== 0;
           const isSelected = selectedId === player.id;
           return (

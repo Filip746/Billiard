@@ -1,5 +1,5 @@
-import { Match } from "@/shared/types/match";
 import { Player } from "@/shared/types/players";
+import { Router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -9,15 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { FirestoreMatch } from "../hooks/useHistoryScreen";
 import { historyStyles } from "../styles";
 
 type MatchItemProps = {
-  item: Match;
+  item: FirestoreMatch;
   index: number;
   players: Player[];
-  router: {
-    push: (params: { pathname: string; params: Record<string, any> }) => void;
-  };
+  router: Router;
 };
 
 export const MatchItem = React.memo(
@@ -49,8 +48,8 @@ export const MatchItem = React.memo(
       });
     }, [index, itemAnim, scaleItemAnim]);
 
-    const player1 = players.find((p) => p.id === Number(item.player1Id));
-    const player2 = players.find((p) => p.id === Number(item.player2Id));
+    const player1 = players.find((p) => p.id === item.player1Id);
+    const player2 = players.find((p) => p.id === item.player2Id);
     const dateStr =
       (typeof item.createdAt === "object" &&
         item.createdAt?.seconds &&
@@ -67,11 +66,7 @@ export const MatchItem = React.memo(
       router.push({
         pathname: "/finish",
         params: {
-          player1Id: item.player1Id,
-          player2Id: item.player2Id,
-          scorePlayer1: item.scorePlayer1,
-          scorePlayer2: item.scorePlayer2,
-          elapsedTime: item.elapsedTime ?? item.timeUsedMs ?? "",
+          matchId: item.id,
         },
       });
     }, [item, router]);

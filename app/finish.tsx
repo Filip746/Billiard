@@ -12,6 +12,7 @@ import {
 import { finishStyles } from "@/features/finishScreen/styles";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
 import { usePlayerModal, usePlayers } from "@/shared/hooks";
+import { Player } from "@/shared/types/players";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -55,7 +56,7 @@ export default function Finish() {
     handleShowAllMatches,
   } = usePlayerModal(players);
 
-  const onPlayerPress = async (player: any) => {
+  const onPlayerPress = async (player: Player) => {
     await handlePlayerPress(player);
     setPlayerModalVisible(true);
   };
@@ -68,6 +69,8 @@ export default function Finish() {
   const goToLeaderboard = () => {
     router.push("/leaderboard");
   };
+
+  if (!player1 || !player2 || !winner) return null;
 
   return (
     <>
