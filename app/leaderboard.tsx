@@ -6,9 +6,11 @@ import {
   leaderboardStyles,
   useLeaderboard,
 } from "@/features/leaderboard";
+import { usePlayerModal } from "@/features/leaderboard/hooks/usePlayerModal";
+
 import { useLeaderboardAnimations } from "@/features/leaderboard/hooks/useLeaderboardAnimations";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
-import { usePlayerModal, usePlayers } from "@/shared/hooks";
+import { usePlayers } from "@/shared/hooks";
 import { LeaderboardEntry } from "@/shared/types/leaderboard";
 import React, { useState } from "react";
 import { View } from "react-native";

@@ -1,12 +1,11 @@
 import { avatars, images } from '@/const/images';
-import { getApp } from 'firebase/app';
-import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { db } from '../services/firebase';
 import { Player } from '../types/players';
 
 export const usePlayers = (): Player[] => {
   const [players, setPlayers] = useState<Player[]>([]);
-  const db = getFirestore(getApp());
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'players'), (snapshot) => {

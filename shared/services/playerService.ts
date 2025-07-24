@@ -1,8 +1,7 @@
-import { getApp } from 'firebase/app';
-import { collection, doc, getDocs, getFirestore, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { db } from './firebase';
 
 export async function updateAllPlayersPoints() {
-  const db = getFirestore(getApp());
   const playersSnapshot = await getDocs(collection(db, 'players'));
   const matchesSnapshot = await getDocs(collection(db, 'matches'));
 

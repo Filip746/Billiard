@@ -47,7 +47,7 @@ export const MatchItem = React.memo(
           }),
         ]).start();
       });
-    }, [index, itemAnim, scaleItemAnim]);
+    }, []);
 
     const player1 = players.find((p) => p.id === item.player1Id);
     const player2 = players.find((p) => p.id === item.player2Id);

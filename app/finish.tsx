@@ -10,8 +10,9 @@ import {
   useFinishScreen,
 } from "@/features/finishScreen/hooks";
 import { finishStyles } from "@/features/finishScreen/styles";
+import { usePlayerModal } from "@/features/leaderboard";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
-import { usePlayerModal, usePlayers } from "@/shared/hooks";
+import { usePlayers } from "@/shared/hooks";
 import { Player } from "@/shared/types/players";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";

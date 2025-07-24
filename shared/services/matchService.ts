@@ -1,11 +1,12 @@
+import { FirestoreMatch } from '@/features/history/hooks/useHistoryScreen';
 import { Match } from '@/shared/types/match';
-import { getApp } from 'firebase/app';
 import {
   addDoc,
   collection,
+  doc,
   DocumentData,
+  getDoc,
   getDocs,
-  getFirestore,
   limit,
   or,
   orderBy,
@@ -16,8 +17,7 @@ import {
   where
 } from 'firebase/firestore';
 import { toDate } from '../utils/toDateStr';
-
-const db = getFirestore(getApp());
+import { db } from './firebase';
 
 export async function addMatch(match: Omit<Match, 'createdAt'>) {
   return await addDoc(collection(db, 'matches'), {
@@ -90,4 +90,24 @@ export async function getMatchesForUser(
     return matches.slice(0, n);
   }
   return matches;
+}
+
+
+export async function getMatchById(matchId: string): Promise<Match | null> {
+  try {
+    const docRef = doc(db, 'matches', matchId);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return { 
+        id: docSnap.id, 
+        ...data 
+      } as FirestoreMatch;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching match:', error);
+    return null;
+  }
 }

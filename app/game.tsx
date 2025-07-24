@@ -5,8 +5,9 @@ import {
   GameSummaryModal,
   PlayerCard,
 } from "@/features/game/components";
+import { usePlayerModal } from "@/features/leaderboard";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
-import { usePlayerModal, usePlayers } from "@/shared/hooks";
+import { usePlayers } from "@/shared/hooks";
 import { useFocusEffect } from "@react-navigation/native";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
