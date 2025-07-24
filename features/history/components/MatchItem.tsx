@@ -1,4 +1,5 @@
 import { Player } from "@/shared/types/players";
+import { toDateStr } from "@/shared/utils/toDateStr";
 import { Router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -50,13 +51,7 @@ export const MatchItem = React.memo(
 
     const player1 = players.find((p) => p.id === item.player1Id);
     const player2 = players.find((p) => p.id === item.player2Id);
-    const dateStr =
-      (typeof item.createdAt === "object" &&
-        item.createdAt?.seconds &&
-        new Date(item.createdAt.seconds * 1000).toLocaleDateString()) ||
-      (typeof item.createdAt === "string" && item.createdAt) ||
-      (typeof item.date === "string" && item.date) ||
-      "N/A";
+    const dateStr = toDateStr(item.createdAt);
 
     const winner =
       item.scorePlayer1 > item.scorePlayer2 ? player1?.name : player2?.name;

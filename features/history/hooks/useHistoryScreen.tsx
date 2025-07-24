@@ -1,5 +1,6 @@
 import { usePlayers } from "@/shared/hooks";
 import { Match } from "@/shared/types/match";
+import { toDateStr } from "@/shared/utils/toDateStr";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { MatchItem } from "../components";
@@ -44,14 +45,7 @@ export function useHistoryScreen() {
     const playerNames = [player1?.name || "", player2?.name || ""]
       .join(" ")
       .toLowerCase();
-    const dateStr =
-      typeof item.createdAt === "object" && item.createdAt?.seconds
-        ? new Date(item.createdAt.seconds * 1000).toLocaleDateString()
-        : typeof item.createdAt === "string"
-        ? item.createdAt
-        : typeof item.date === "string"
-        ? item.date
-        : "";
+    const dateStr = toDateStr(item.createdAt);
     const nameMatch =
       !searchText.trim().length ||
       playerNames.includes(searchText.trim().toLowerCase());

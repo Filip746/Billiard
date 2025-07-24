@@ -2,6 +2,7 @@ import { leaderboardModalStyles } from "@/features/leaderboard/styles/leaderboar
 import { Match } from "@/shared/types/match";
 import { Player } from "@/shared/types/players";
 import { ViewMatch } from "@/shared/types/viewMatch";
+import { toDateStr } from "@/shared/utils/toDateStr";
 import React from "react";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { MatchList } from "./matchList";
@@ -30,16 +31,7 @@ function formatMatches(
     const opponentName = isPlayer1 ? match.player2Name : match.player1Name;
     const scoreSelf = isPlayer1 ? match.scorePlayer1 : match.scorePlayer2;
     const scoreOpponent = isPlayer1 ? match.scorePlayer2 : match.scorePlayer1;
-    let dateStr = "";
-    if (
-      match.createdAt &&
-      typeof match.createdAt === "object" &&
-      match.createdAt.seconds
-    ) {
-      dateStr = new Date(match.createdAt.seconds * 1000).toLocaleDateString();
-    } else if (typeof match.createdAt === "string") {
-      dateStr = match.createdAt;
-    }
+    const dateStr = toDateStr(match.createdAt);
     return {
       opponentId,
       opponentName,

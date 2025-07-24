@@ -6,6 +6,7 @@ import {
   DocumentData,
   getDocs,
   limit,
+  or,
   orderBy,
   query,
   QueryDocumentSnapshot,
@@ -13,6 +14,7 @@ import {
   Timestamp,
   where
 } from 'firebase/firestore';
+import { toDate } from '../utils/toDateStr';
 
 export async function addMatch(match: Omit<Match, 'createdAt'>) {
   return await addDoc(collection(db, 'matches'), {
@@ -27,6 +29,7 @@ export async function fetchMatchesPage(pageSize = 10, lastDoc: QueryDocumentSnap
     orderBy('createdAt', 'desc'),
     limit(pageSize)
   );
+
   if (lastDoc) {
     q = query(
       collection(db, 'matches'),
@@ -35,12 +38,14 @@ export async function fetchMatchesPage(pageSize = 10, lastDoc: QueryDocumentSnap
       limit(pageSize)
     );
   }
+
   if (all) {
     q = query(
       collection(db, 'matches'),
       orderBy('createdAt', 'desc')
     );
   }
+
   const snapshot = await getDocs(q);
   return {
     matches: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
@@ -55,18 +60,21 @@ export async function getMatchesForUser(
   year?: string,
   month?: string
 ) {
-  const q1 = query(collection(db, 'matches'), where('player1Id', '==', userId));
-  const q2 = query(collection(db, 'matches'), where('player2Id', '==', userId));
-  const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
-
-  let matches: any[] = [];
-  snap1.forEach(doc => matches.push(doc.data()));
-  snap2.forEach(doc => matches.push(doc.data()));
-  matches = matches.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
-
+  const q = query(
+    collection(db, 'matches'),
+    or(
+      where('player1Id', '==', userId),
+      where('player2Id', '==', userId),
+    )
+  );
+  const snapshot = await getDocs(q);
+  let matches = snapshot.docs.map(doc => doc.data() as Match);
+  matches = matches.sort(
+    (a, b) => toDate(b.createdAt).getTime() - toDate(a.createdAt).getTime()
+  );
   if (year || month) {
     matches = matches.filter(m => {
-      const d = new Date(m.createdAt.seconds * 1000);
+      const d = toDate(m.createdAt);
       const mYear = d.getFullYear().toString();
       const mMonth = (d.getMonth() + 1).toString().padStart(2, "0");
       const byYear = year ? mYear === year : true;
