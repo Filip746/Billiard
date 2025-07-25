@@ -1,13 +1,11 @@
 import { usePlayers } from "@/shared/hooks";
-import { Match } from "@/shared/types/match";
+import { FirestoreMatch } from "@/shared/types/match";
 import { toDateStr } from "@/shared/utils/toDateStr";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { MatchItem } from "../components";
 import { useHistory } from "./useHistory";
 import { useHistoryAnimations } from "./useHistoryAnimations";
-
-export type FirestoreMatch = Match & { id: string };
 
 export function useHistoryScreen() {
   const [searchText, setSearchText] = useState("");

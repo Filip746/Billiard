@@ -12,3 +12,5 @@ export type Match = {
   date?: string;
   elapsedTime?: string | number;
 };
+
+export type FirestoreMatch = Match & { id: string };

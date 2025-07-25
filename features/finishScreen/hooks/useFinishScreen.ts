@@ -2,6 +2,7 @@ import { elapsedTimeAtom, scorePlayer1Atom, scorePlayer2Atom } from "@/features/
 import { selectedPlayer1Atom, selectedPlayer2Atom } from "@/features/playerSelection";
 import { usePlayers } from "@/shared/hooks";
 import { getMatchById } from "@/shared/services/matchService";
+import { Match } from "@/shared/types/match";
 import { useLocalSearchParams } from "expo-router";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import { useEffect, useState } from "react";
 export function useFinishScreen() {
   const players = usePlayers();
   const params = useLocalSearchParams();
-  const [matchData, setMatchData] = useState<any>(null);
+  const [matchData, setMatchData] = useState<Match | null>(null);
 
   const selectedPlayer1 = useAtomValue(selectedPlayer1Atom);
   const selectedPlayer2 = useAtomValue(selectedPlayer2Atom);
@@ -17,14 +18,12 @@ export function useFinishScreen() {
   const scoreFromAtom2 = useAtomValue(scorePlayer2Atom);
   const elapsedTimeAtomValue = useAtomValue(elapsedTimeAtom);
 
-  // Ako imamo matchId, dohvati match podatke
   useEffect(() => {
     if (params.matchId && typeof params.matchId === 'string') {
       getMatchById(params.matchId).then(setMatchData);
     }
   }, [params.matchId]);
 
-  // Koristi match podatke ako ih imamo, inače koristi atoms/params
   const player1Id = matchData?.player1Id || params.player1Id || selectedPlayer1;
   const player2Id = matchData?.player2Id || params.player2Id || selectedPlayer2;
   const scorePlayer1 = matchData?.scorePlayer1 ?? (params.scorePlayer1 ? Number(params.scorePlayer1) : scoreFromAtom1);
@@ -37,7 +36,7 @@ export function useFinishScreen() {
   const winner = scorePlayer1 > scorePlayer2 ? player1 : player2;
 
   const formattedTime = elapsedTime !== null
-    ? `${Math.floor(elapsedTime / 60000)}:${(Math.floor((elapsedTime % 60000) / 1000) + 1)
+    ? `${Math.floor(Number(elapsedTime) / 60000)}:${(Math.floor((Number(elapsedTime) % 60000) / 1000) + 1)
         .toString()
         .padStart(2, '0')}`
     : null;

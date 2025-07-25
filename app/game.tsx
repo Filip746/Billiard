@@ -9,6 +9,7 @@ import {
 import { usePlayerModal } from "@/features/leaderboard";
 import { LeaderboardPlayerModal } from "@/shared/components/common/leaderboardPlayerModal";
 import { usePlayers } from "@/shared/hooks";
+import { Player } from "@/shared/types/players";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useState } from "react";
 import { Animated, ImageBackground } from "react-native";
@@ -55,7 +56,7 @@ export default function Game() {
     spin,
   } = useGameAnimations(shouldShowFinish);
 
-  const onPlayerPress = async (player: any) => {
+  const onPlayerPress = async (player: Player) => {
     await handlePlayerPress(player);
     setPlayerModalVisible(true);
   };

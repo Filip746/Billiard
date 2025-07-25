@@ -1,3 +1,4 @@
+import { FirestoreMatch } from "@/shared/types/match";
 import React from "react";
 import {
   ActivityIndicator,
@@ -5,7 +6,6 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { FirestoreMatch } from "../hooks/useHistoryScreen";
 import { historyStyles } from "../styles";
 import { HistoryFooter } from "./HistoryFooter";
 import { LoadableListEmptyState } from "./LoadableListEmptyState";
